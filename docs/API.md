@@ -1,4 +1,4 @@
-# Perlin mod API reference (schema v4)
+# Perlin mod API reference (schema v1)
 
 Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this file.
 
@@ -29,13 +29,13 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x0001 | Log | `perlin_log` | [LogRequest](#logrequest) | - | client, server | - | `@category(core)` |
 | 0x0002 | Meta | `perlin_meta` | - | [Meta](#meta) | client | - | `@category(core)` |
 | 0x0003 | Clock | `perlin_clock` | - | `i64` | client, server | - | `@category(core)` |
-| 0x0004 | ApiInfo | `perlin_api_info` | - | [ApiInfoResponse](#apiinforesponse) | client, server | - | `@category(core)` `@since(4)` |
-| 0x0005 | Capabilities | `perlin_capabilities` | - | [CapabilityList](#capabilitylist) | client, server | - | `@category(core)` `@since(4)` |
+| 0x0004 | ApiInfo | `perlin_api_info` | - | [ApiInfoResponse](#apiinforesponse) | client, server | - | `@category(core)` |
+| 0x0005 | Capabilities | `perlin_capabilities` | - | [CapabilityList](#capabilitylist) | client, server | - | `@category(core)` |
 | 0x0100 | PlayerState | `perlin_player_state` | - | [PlayerState](#playerstate) | client | - | `@category(player)` `@hot` |
 | 0x0101 | PlayerEffects | `perlin_player_effects` | - | [PlayerEffectsResponse](#playereffectsresponse) | client | - | `@category(player)` |
 | 0x0102 | PlayerLook | `perlin_player_look` | - | [PlayerLookResponse](#playerlookresponse) | client | - | `@category(player)` |
-| 0x0110 | ScoreboardGet | `perlin_scoreboard_get` | - | [ScoreboardInfo](#scoreboardinfo) | client | - | `@category(hud)` `@since(4)` |
-| 0x0111 | BossbarList | `perlin_bossbar_list` | - | [BossbarListResponse](#bossbarlistresponse) | client | - | `@category(hud)` `@since(4)` |
+| 0x0110 | ScoreboardGet | `perlin_scoreboard_get` | - | [ScoreboardInfo](#scoreboardinfo) | client | - | `@category(hud)` |
+| 0x0111 | BossbarList | `perlin_bossbar_list` | - | [BossbarListResponse](#bossbarlistresponse) | client | - | `@category(hud)` |
 | 0x0200 | Inventory | `perlin_inventory` | - | [Inventory](#inventory) | client | - | `@category(inventory)` |
 | 0x0201 | InventorySelect | `perlin_inventory_select` | [InventorySelectRequest](#inventoryselectrequest) | - | client | Control | `@category(inventory)` |
 | 0x0202 | InventoryDrop | `perlin_inventory_drop` | [InventoryDropRequest](#inventorydroprequest) | - | client | Control | `@category(inventory)` |
@@ -43,10 +43,10 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x0204 | InventoryClick | `perlin_inventory_click` | [InventoryClickRequest](#inventoryclickrequest) | - | client | Control | `@category(inventory)` |
 | 0x0205 | InventoryOpen | `perlin_inventory_open` | - | - | client | Control | `@category(inventory)` |
 | 0x0206 | InventoryClose | `perlin_inventory_close` | - | - | client | Control | `@category(inventory)` |
-| 0x0210 | ItemInfo | `perlin_item_info` | [ItemInfoRequest](#iteminforequest) | [ItemInfoData](#iteminfodata) | client | - | `@category(inventory)` `@since(4)` |
-| 0x0211 | ItemNames | `perlin_item_names` | - | [ItemNamesResponse](#itemnamesresponse) | client | - | `@category(inventory)` `@since(4)` |
-| 0x0220 | SlotOverlay | `perlin_slot_overlay` | [SlotOverlayData](#slotoverlaydata) | - | client | - | `@category(hud)` `@since(4)` |
-| 0x0221 | SlotOverlayClear | `perlin_slot_overlay_clear` | [SlotOverlayClearRequest](#slotoverlayclearrequest) | - | client | - | `@category(hud)` `@since(4)` |
+| 0x0210 | ItemInfo | `perlin_item_info` | [ItemInfoRequest](#iteminforequest) | [ItemInfoData](#iteminfodata) | client | - | `@category(inventory)` |
+| 0x0211 | ItemNames | `perlin_item_names` | - | [ItemNamesResponse](#itemnamesresponse) | client | - | `@category(inventory)` |
+| 0x0220 | SlotOverlay | `perlin_slot_overlay` | [SlotOverlayData](#slotoverlaydata) | - | client | - | `@category(hud)` |
+| 0x0221 | SlotOverlayClear | `perlin_slot_overlay_clear` | [SlotOverlayClearRequest](#slotoverlayclearrequest) | - | client | - | `@category(hud)` |
 | 0x0300 | WorldState | `perlin_world_state` | - | [WorldState](#worldstate) | client | - | `@category(world)` |
 | 0x0301 | Block | `perlin_block` | [BlockRequest](#blockrequest) | [BlockInfo](#blockinfo) | client | - | `@category(world)` `@hot` |
 | 0x0302 | Region | `perlin_region` | [RegionRequest](#regionrequest) | [Region](#region) | client | - | `@category(world)` |
@@ -131,9 +131,9 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x0D04 | CopyToClipboard | `perlin_copy_to_clipboard` | [CopyToClipboardRequest](#copytoclipboardrequest) | - | client | - | `@category(ui)` |
 | 0x0D05 | OpenUrl | `perlin_open_url` | [OpenUrlRequest](#openurlrequest) | - | client | Network | `@category(ui)` |
 | 0x0D06 | ToggleHud | `perlin_toggle_hud` | - | - | client | - | `@category(ui)` |
-| 0x0D10 | ClipboardRead | `perlin_clipboard_read` | - | `rest_text` | client | Clipboard | `@category(ui)` `@since(4)` |
-| 0x0D20 | WindowControl | `perlin_window_control` | [WindowControlData](#windowcontroldata) | - | client | Window | `@category(ui)` `@since(4)` |
-| 0x0D30 | ServerConnect | `perlin_server_connect` | [ServerConnectRequest](#serverconnectrequest) | - | client | Control | `@category(network)` `@since(4)` |
+| 0x0D10 | ClipboardRead | `perlin_clipboard_read` | - | `rest_text` | client | Clipboard | `@category(ui)` |
+| 0x0D20 | WindowControl | `perlin_window_control` | [WindowControlData](#windowcontroldata) | - | client | Window | `@category(ui)` |
+| 0x0D30 | ServerConnect | `perlin_server_connect` | [ServerConnectRequest](#serverconnectrequest) | - | client | Control | `@category(network)` |
 | 0x0E00 | CopyFile | `perlin_copy_file` | [CopyFileRequest](#copyfilerequest) | - | client | Files | `@category(storage)` |
 | 0x0E01 | MoveFile | `perlin_move_file` | [MoveFileRequest](#movefilerequest) | - | client | Files | `@category(storage)` |
 | 0x0E02 | DownloadFile | `perlin_download_file` | [DownloadFileRequest](#downloadfilerequest) | - | client | Network, Files | `@category(storage)` |
@@ -173,26 +173,26 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x1081 | ShaderPackSet | `perlin_shader_pack_set` | [ShaderPackSetRequest](#shaderpacksetrequest) | - | client | Control | `@category(resources)` |
 | 0x1090 | ParticleSpawn | `perlin_particle_spawn` | [ParticleRequest](#particlerequest) | - | client | - | `@category(render)` |
 | 0x10A0 | KeyRegisterEx | `perlin_key_register_ex` | [KeyBindEx](#keybindex) | - | client | - | `@category(input)` |
-| 0x10B0 | ClientTime | `perlin_client_time` | [ClientTimeData](#clienttimedata) | - | client | - | `@category(render)` `@since(4)` |
-| 0x10B1 | ClientWeather | `perlin_client_weather` | [ClientWeatherData](#clientweatherdata) | - | client | - | `@category(render)` `@since(4)` |
-| 0x10B2 | ViewModel | `perlin_view_model` | [ViewModelData](#viewmodeldata) | - | client | - | `@category(render)` `@since(4)` |
-| 0x10B3 | BlockOutline | `perlin_block_outline` | [BlockOutlineData](#blockoutlinedata) | - | client | - | `@category(render)` `@since(4)` |
-| 0x10B4 | EntityMesh | `perlin_entity_mesh` | [EntityMeshData](#entitymeshdata) | - | client | - | `@category(render)` `@since(4)` |
-| 0x10B5 | EntityMeshClear | `perlin_entity_mesh_clear` | [EntityMeshClearRequest](#entitymeshclearrequest) | - | client | - | `@category(render)` `@since(4)` |
-| 0x1100 | SocketOpen | `perlin_socket_open` | [SocketOpenRequest](#socketopenrequest) | - | client, server | Sockets | the result arrives as the SocketOpen or SocketClose event with the same id `@category(network)` `@since(4)` |
-| 0x1101 | SocketSend | `perlin_socket_send` | [SocketSendRequest](#socketsendrequest) | - | client, server | Sockets | `@category(network)` `@since(4)` `@hot` |
-| 0x1102 | SocketClose | `perlin_socket_close` | [SocketCloseRequest](#socketcloserequest) | - | client, server | Sockets | `@category(network)` `@since(4)` |
-| 0x1110 | ConnectionStats | `perlin_connection_stats` | - | [ConnectionStatsData](#connectionstatsdata) | client | - | `@category(network)` `@since(4)` |
-| 0x1200 | AudioStreamOpen | `perlin_audio_stream_open` | [AudioStreamRequest](#audiostreamrequest) | `u32` | client | - | `@category(audio)` `@since(4)` |
-| 0x1201 | AudioStreamWrite | `perlin_audio_stream_write` | [AudioStreamWriteRequest](#audiostreamwriterequest) | [AudioStreamStatus](#audiostreamstatus) | client | - | `@category(audio)` `@since(4)` `@hot` |
-| 0x1202 | AudioStreamUpdate | `perlin_audio_stream_update` | [AudioStreamUpdateRequest](#audiostreamupdaterequest) | - | client | - | `@category(audio)` `@since(4)` |
-| 0x1203 | AudioStreamClose | `perlin_audio_stream_close` | [AudioStreamCloseRequest](#audiostreamcloserequest) | - | client | - | `@category(audio)` `@since(4)` |
-| 0x1204 | SoundStop | `perlin_sound_stop` | [SoundStopRequest](#soundstoprequest) | - | client | - | `@category(audio)` `@since(4)` |
-| 0x1210 | MicList | `perlin_mic_list` | - | [MicListResponse](#miclistresponse) | client | Microphone | `@category(audio)` `@since(4)` |
-| 0x1211 | MicStart | `perlin_mic_start` | [MicStartRequest](#micstartrequest) | - | client | Microphone | `@category(audio)` `@since(4)` |
-| 0x1212 | MicStop | `perlin_mic_stop` | - | - | client | Microphone | `@category(audio)` `@since(4)` |
-| 0x1213 | MicState | `perlin_mic_state` | - | [MicStateData](#micstatedata) | client | Microphone | `@category(audio)` `@since(4)` |
-| 0x1400 | PostEffect | `perlin_post_effect` | [PostEffectData](#posteffectdata) | - | client | - | `@category(render)` `@since(4)` |
+| 0x10B0 | ClientTime | `perlin_client_time` | [ClientTimeData](#clienttimedata) | - | client | - | `@category(render)` |
+| 0x10B1 | ClientWeather | `perlin_client_weather` | [ClientWeatherData](#clientweatherdata) | - | client | - | `@category(render)` |
+| 0x10B2 | ViewModel | `perlin_view_model` | [ViewModelData](#viewmodeldata) | - | client | - | `@category(render)` |
+| 0x10B3 | BlockOutline | `perlin_block_outline` | [BlockOutlineData](#blockoutlinedata) | - | client | - | `@category(render)` |
+| 0x10B4 | EntityMesh | `perlin_entity_mesh` | [EntityMeshData](#entitymeshdata) | - | client | - | `@category(render)` |
+| 0x10B5 | EntityMeshClear | `perlin_entity_mesh_clear` | [EntityMeshClearRequest](#entitymeshclearrequest) | - | client | - | `@category(render)` |
+| 0x1100 | SocketOpen | `perlin_socket_open` | [SocketOpenRequest](#socketopenrequest) | - | client, server | Sockets | the result arrives as the SocketOpen or SocketClose event with the same id `@category(network)` |
+| 0x1101 | SocketSend | `perlin_socket_send` | [SocketSendRequest](#socketsendrequest) | - | client, server | Sockets | `@category(network)` `@hot` |
+| 0x1102 | SocketClose | `perlin_socket_close` | [SocketCloseRequest](#socketcloserequest) | - | client, server | Sockets | `@category(network)` |
+| 0x1110 | ConnectionStats | `perlin_connection_stats` | - | [ConnectionStatsData](#connectionstatsdata) | client | - | `@category(network)` |
+| 0x1200 | AudioStreamOpen | `perlin_audio_stream_open` | [AudioStreamRequest](#audiostreamrequest) | `u32` | client | - | `@category(audio)` |
+| 0x1201 | AudioStreamWrite | `perlin_audio_stream_write` | [AudioStreamWriteRequest](#audiostreamwriterequest) | [AudioStreamStatus](#audiostreamstatus) | client | - | `@category(audio)` `@hot` |
+| 0x1202 | AudioStreamUpdate | `perlin_audio_stream_update` | [AudioStreamUpdateRequest](#audiostreamupdaterequest) | - | client | - | `@category(audio)` |
+| 0x1203 | AudioStreamClose | `perlin_audio_stream_close` | [AudioStreamCloseRequest](#audiostreamcloserequest) | - | client | - | `@category(audio)` |
+| 0x1204 | SoundStop | `perlin_sound_stop` | [SoundStopRequest](#soundstoprequest) | - | client | - | `@category(audio)` |
+| 0x1210 | MicList | `perlin_mic_list` | - | [MicListResponse](#miclistresponse) | client | Microphone | `@category(audio)` |
+| 0x1211 | MicStart | `perlin_mic_start` | [MicStartRequest](#micstartrequest) | - | client | Microphone | `@category(audio)` |
+| 0x1212 | MicStop | `perlin_mic_stop` | - | - | client | Microphone | `@category(audio)` |
+| 0x1213 | MicState | `perlin_mic_state` | - | [MicStateData](#micstatedata) | client | Microphone | `@category(audio)` |
+| 0x1400 | PostEffect | `perlin_post_effect` | [PostEffectData](#posteffectdata) | - | client | - | `@category(render)` |
 | 0x7000 | Broadcast | `perlin_broadcast` | [TextMessage](#textmessage) | - | server | - | `@category(server)` |
 | 0x7001 | PlayerMessage | `perlin_player_message` | [PlayerText](#playertext) | - | server | - | `@category(server)` |
 | 0x7002 | Kick | `perlin_kick` | [PlayerText](#playertext) | - | server | Admin | `@category(server)` |
@@ -202,57 +202,57 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x7006 | BlockName | `perlin_block_name` | [BlockCoord](#blockcoord) | [TextMessage](#textmessage) | server | - | `@category(world)` |
 | 0x7007 | ServerInfo | `perlin_server_info` | - | [ServerStatus](#serverstatus) | server | - | `@category(server)` |
 | 0x7008 | GiveItem | `perlin_give_item` | [GiveItemRequest](#giveitemrequest) | [GiveItemResult](#giveitemresult) | server | Players | `@category(inventory)` |
-| 0x7010 | PlayerInfo | `perlin_player_info` | [PlayerInfoRequest](#playerinforequest) | [PlayerDetails](#playerdetails) | server | - | `@since(3)` `@category(players)` |
-| 0x7011 | PlayerSetGameMode | `perlin_player_set_game_mode` | [PlayerSetGameModeRequest](#playersetgamemoderequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7012 | PlayerSetHealth | `perlin_player_set_health` | [PlayerSetHealthRequest](#playersethealthrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7013 | PlayerDamage | `perlin_player_damage` | [PlayerDamageRequest](#playerdamagerequest) | `bool` | server | Players | `@since(3)` `@category(players)` |
-| 0x7014 | PlayerKill | `perlin_player_kill` | [PlayerKillRequest](#playerkillrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7015 | PlayerSetFood | `perlin_player_set_food` | [PlayerSetFoodRequest](#playersetfoodrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7016 | PlayerAddExperience | `perlin_player_add_experience` | [PlayerAddExperienceRequest](#playeraddexperiencerequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7017 | PlayerEffectAdd | `perlin_player_effect_add` | [PlayerEffectAddRequest](#playereffectaddrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7018 | PlayerEffectRemove | `perlin_player_effect_remove` | [PlayerEffectRemoveRequest](#playereffectremoverequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7019 | PlayerInventory | `perlin_player_inventory` | [PlayerInventoryRequest](#playerinventoryrequest) | [ServerInventory](#serverinventory) | server | - | `@since(3)` `@category(inventory)` |
-| 0x701A | PlayerSetSlot | `perlin_player_set_slot` | [PlayerSetSlotRequest](#playersetslotrequest) | - | server | Players | `@since(3)` `@category(inventory)` |
-| 0x701B | PlayerClearInventory | `perlin_player_clear_inventory` | [PlayerClearInventoryRequest](#playerclearinventoryrequest) | - | server | Players | `@since(3)` `@category(inventory)` |
-| 0x701C | PlayerSetVelocity | `perlin_player_set_velocity` | [PlayerSetVelocityRequest](#playersetvelocityrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x701D | PlayerTransferDimension | `perlin_player_transfer_dimension` | [PlayerTransferDimensionRequest](#playertransferdimensionrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x701E | PlayerTitle | `perlin_player_title` | [PlayerTitleRequest](#playertitlerequest) | - | server | - | `@since(3)` `@category(players)` |
-| 0x701F | PlayerActionBar | `perlin_player_action_bar` | [PlayerActionBarRequest](#playeractionbarrequest) | - | server | - | `@since(3)` `@category(players)` |
-| 0x7020 | PlayerSound | `perlin_player_sound` | [PlayerSoundRequest](#playersoundrequest) | - | server | - | `@since(3)` `@category(players)` |
-| 0x7021 | PlayerTransfer | `perlin_player_transfer` | [PlayerTransferRequest](#playertransferrequest) | - | server | Admin | `@since(3)` `@category(players)` |
-| 0x7022 | PlayerSetOperator | `perlin_player_set_operator` | [PlayerSetOperatorRequest](#playersetoperatorrequest) | - | server | Admin | `@since(3)` `@category(players)` |
-| 0x7023 | PlayerForm | `perlin_player_form` | [PlayerFormRequest](#playerformrequest) | `u32` | server | - | form id; the answer arrives as FormResponse `@since(3)` `@category(ui)` |
-| 0x7024 | PlayerRunCommand | `perlin_player_run_command` | [PlayerRunCommandRequest](#playerruncommandrequest) | - | server | Admin | `@since(3)` `@category(players)` |
-| 0x7025 | PlayerSetSpawn | `perlin_player_set_spawn` | [PlayerSetSpawnRequest](#playersetspawnrequest) | - | server | Players | `@since(3)` `@category(players)` |
-| 0x7026 | PlayerByName | `perlin_player_by_name` | [PlayerByNameRequest](#playerbynamerequest) | `u64` | server | - | `@since(3)` `@category(players)` |
-| 0x7040 | BlockState | `perlin_block_state` | [BlockStateRequest](#blockstaterequest) | [BlockInfo](#blockinfo) | server | - | `@since(3)` `@category(world)` |
-| 0x7041 | BlockStateSet | `perlin_block_state_set` | [BlockStateSetRequest](#blockstatesetrequest) | - | server | World | `@since(3)` `@category(world)` |
-| 0x7042 | Fill | `perlin_fill` | [FillRequest](#fillrequest) | `u32` | server | World | `@since(3)` `@category(world)` |
-| 0x7043 | TimeGet | `perlin_time_get` | - | [TimeGetResponse](#timegetresponse) | server | - | `@since(3)` `@category(world)` |
-| 0x7044 | TimeSet | `perlin_time_set` | [TimeSetRequest](#timesetrequest) | - | server | World | `@since(3)` `@category(world)` |
-| 0x7045 | WeatherSet | `perlin_weather_set` | [WeatherSetRequest](#weathersetrequest) | - | server | World | `@since(3)` `@category(world)` |
-| 0x7046 | GameRuleGet | `perlin_game_rule_get` | [GameRuleGetRequest](#gamerulegetrequest) | `i32` | server | - | `@since(3)` `@category(world)` |
-| 0x7047 | GameRuleSet | `perlin_game_rule_set` | [GameRuleSetRequest](#gamerulesetrequest) | - | server | Admin | `@since(3)` `@category(world)` |
-| 0x7048 | DifficultySet | `perlin_difficulty_set` | [DifficultySetRequest](#difficultysetrequest) | - | server | Admin | `@since(3)` `@category(world)` |
-| 0x7049 | Explode | `perlin_explode` | [ExplodeRequest](#exploderequest) | - | server | World | `@since(3)` `@category(world)` |
-| 0x704A | HighestBlock | `perlin_highest_block` | [HighestBlockRequest](#highestblockrequest) | `i32` | server | - | `@since(3)` `@category(world)` |
-| 0x704B | ParticleAt | `perlin_particle_at` | [ParticleAtRequest](#particleatrequest) | - | server | - | `@since(3)` `@category(world)` |
-| 0x704C | DropItem | `perlin_drop_item` | [DropItemRequest](#dropitemrequest) | - | server | World | `@since(3)` `@category(world)` |
-| 0x704D | WorldSpawnGet | `perlin_world_spawn_get` | - | [BlockCoord](#blockcoord) | server | - | `@since(3)` `@category(world)` |
-| 0x704E | WorldSpawnSet | `perlin_world_spawn_set` | [BlockCoord](#blockcoord) | - | server | Admin | `@since(3)` `@category(world)` |
-| 0x7060 | EntitySpawn | `perlin_entity_spawn` | [EntitySpawnRequest](#entityspawnrequest) | `u64` | server | World | `@since(3)` `@category(entity)` |
-| 0x7061 | EntityList | `perlin_entity_list` | [EntityListRequest](#entitylistrequest) | [EntityListResponse](#entitylistresponse) | server | - | `@since(3)` `@category(entity)` |
-| 0x7062 | EntityRemove | `perlin_entity_remove` | [EntityRemoveRequest](#entityremoverequest) | - | server | World | `@since(3)` `@category(entity)` |
-| 0x7063 | EntityDamage | `perlin_entity_damage` | [EntityDamageRequest](#entitydamagerequest) | `bool` | server | World | `@since(3)` `@category(entity)` |
-| 0x7064 | EntityTeleport | `perlin_entity_teleport` | [EntityTeleportRequest](#entityteleportrequest) | - | server | World | `@since(3)` `@category(entity)` |
-| 0x7065 | EntitySetVelocity | `perlin_entity_set_velocity` | [EntitySetVelocityRequest](#entitysetvelocityrequest) | - | server | World | `@since(3)` `@category(entity)` |
-| 0x7066 | EntityInfo | `perlin_entity_info` | [EntityInfoRequest](#entityinforequest) | [ServerEntity](#serverentity) | server | - | `@since(3)` `@category(entity)` |
-| 0x7067 | EntitySetHealth | `perlin_entity_set_health` | [EntitySetHealthRequest](#entitysethealthrequest) | - | server | World | `@since(3)` `@category(entity)` |
-| 0x7080 | RunCommand | `perlin_run_command` | [RunCommandRequest](#runcommandrequest) | `rest_text` | server | Admin | `@since(3)` `@category(server)` |
-| 0x7081 | MotdSet | `perlin_motd_set` | [MotdSetRequest](#motdsetrequest) | - | server | Admin | `@since(3)` `@category(server)` |
-| 0x7082 | LootTableOverride | `perlin_loot_table_override` | [LootTableOverrideRequest](#loottableoverriderequest) | - | server | World | `@since(3)` `@category(loot)` |
-| 0x7083 | LootTableGet | `perlin_loot_table_get` | [LootTableGetRequest](#loottablegetrequest) | `rest_text` | server | - | `@since(3)` `@category(loot)` |
-| 0x7084 | EventAmend | `perlin_event_amend` | [EventAmendRequest](#eventamendrequest) | - | server | - | changes the event being handled: PlayerDamage amount, EntityDamage amount, PlayerChat message, Explosion power, ServerCommand line, PreLogin reason `@since(3)` `@category(events)` |
+| 0x7010 | PlayerInfo | `perlin_player_info` | [PlayerInfoRequest](#playerinforequest) | [PlayerDetails](#playerdetails) | server | - | `@category(players)` |
+| 0x7011 | PlayerSetGameMode | `perlin_player_set_game_mode` | [PlayerSetGameModeRequest](#playersetgamemoderequest) | - | server | Players | `@category(players)` |
+| 0x7012 | PlayerSetHealth | `perlin_player_set_health` | [PlayerSetHealthRequest](#playersethealthrequest) | - | server | Players | `@category(players)` |
+| 0x7013 | PlayerDamage | `perlin_player_damage` | [PlayerDamageRequest](#playerdamagerequest) | `bool` | server | Players | `@category(players)` |
+| 0x7014 | PlayerKill | `perlin_player_kill` | [PlayerKillRequest](#playerkillrequest) | - | server | Players | `@category(players)` |
+| 0x7015 | PlayerSetFood | `perlin_player_set_food` | [PlayerSetFoodRequest](#playersetfoodrequest) | - | server | Players | `@category(players)` |
+| 0x7016 | PlayerAddExperience | `perlin_player_add_experience` | [PlayerAddExperienceRequest](#playeraddexperiencerequest) | - | server | Players | `@category(players)` |
+| 0x7017 | PlayerEffectAdd | `perlin_player_effect_add` | [PlayerEffectAddRequest](#playereffectaddrequest) | - | server | Players | `@category(players)` |
+| 0x7018 | PlayerEffectRemove | `perlin_player_effect_remove` | [PlayerEffectRemoveRequest](#playereffectremoverequest) | - | server | Players | `@category(players)` |
+| 0x7019 | PlayerInventory | `perlin_player_inventory` | [PlayerInventoryRequest](#playerinventoryrequest) | [ServerInventory](#serverinventory) | server | - | `@category(inventory)` |
+| 0x701A | PlayerSetSlot | `perlin_player_set_slot` | [PlayerSetSlotRequest](#playersetslotrequest) | - | server | Players | `@category(inventory)` |
+| 0x701B | PlayerClearInventory | `perlin_player_clear_inventory` | [PlayerClearInventoryRequest](#playerclearinventoryrequest) | - | server | Players | `@category(inventory)` |
+| 0x701C | PlayerSetVelocity | `perlin_player_set_velocity` | [PlayerSetVelocityRequest](#playersetvelocityrequest) | - | server | Players | `@category(players)` |
+| 0x701D | PlayerTransferDimension | `perlin_player_transfer_dimension` | [PlayerTransferDimensionRequest](#playertransferdimensionrequest) | - | server | Players | `@category(players)` |
+| 0x701E | PlayerTitle | `perlin_player_title` | [PlayerTitleRequest](#playertitlerequest) | - | server | - | `@category(players)` |
+| 0x701F | PlayerActionBar | `perlin_player_action_bar` | [PlayerActionBarRequest](#playeractionbarrequest) | - | server | - | `@category(players)` |
+| 0x7020 | PlayerSound | `perlin_player_sound` | [PlayerSoundRequest](#playersoundrequest) | - | server | - | `@category(players)` |
+| 0x7021 | PlayerTransfer | `perlin_player_transfer` | [PlayerTransferRequest](#playertransferrequest) | - | server | Admin | `@category(players)` |
+| 0x7022 | PlayerSetOperator | `perlin_player_set_operator` | [PlayerSetOperatorRequest](#playersetoperatorrequest) | - | server | Admin | `@category(players)` |
+| 0x7023 | PlayerForm | `perlin_player_form` | [PlayerFormRequest](#playerformrequest) | `u32` | server | - | form id; the answer arrives as FormResponse `@category(ui)` |
+| 0x7024 | PlayerRunCommand | `perlin_player_run_command` | [PlayerRunCommandRequest](#playerruncommandrequest) | - | server | Admin | `@category(players)` |
+| 0x7025 | PlayerSetSpawn | `perlin_player_set_spawn` | [PlayerSetSpawnRequest](#playersetspawnrequest) | - | server | Players | `@category(players)` |
+| 0x7026 | PlayerByName | `perlin_player_by_name` | [PlayerByNameRequest](#playerbynamerequest) | `u64` | server | - | `@category(players)` |
+| 0x7040 | BlockState | `perlin_block_state` | [BlockStateRequest](#blockstaterequest) | [BlockInfo](#blockinfo) | server | - | `@category(world)` |
+| 0x7041 | BlockStateSet | `perlin_block_state_set` | [BlockStateSetRequest](#blockstatesetrequest) | - | server | World | `@category(world)` |
+| 0x7042 | Fill | `perlin_fill` | [FillRequest](#fillrequest) | `u32` | server | World | `@category(world)` |
+| 0x7043 | TimeGet | `perlin_time_get` | - | [TimeGetResponse](#timegetresponse) | server | - | `@category(world)` |
+| 0x7044 | TimeSet | `perlin_time_set` | [TimeSetRequest](#timesetrequest) | - | server | World | `@category(world)` |
+| 0x7045 | WeatherSet | `perlin_weather_set` | [WeatherSetRequest](#weathersetrequest) | - | server | World | `@category(world)` |
+| 0x7046 | GameRuleGet | `perlin_game_rule_get` | [GameRuleGetRequest](#gamerulegetrequest) | `i32` | server | - | `@category(world)` |
+| 0x7047 | GameRuleSet | `perlin_game_rule_set` | [GameRuleSetRequest](#gamerulesetrequest) | - | server | Admin | `@category(world)` |
+| 0x7048 | DifficultySet | `perlin_difficulty_set` | [DifficultySetRequest](#difficultysetrequest) | - | server | Admin | `@category(world)` |
+| 0x7049 | Explode | `perlin_explode` | [ExplodeRequest](#exploderequest) | - | server | World | `@category(world)` |
+| 0x704A | HighestBlock | `perlin_highest_block` | [HighestBlockRequest](#highestblockrequest) | `i32` | server | - | `@category(world)` |
+| 0x704B | ParticleAt | `perlin_particle_at` | [ParticleAtRequest](#particleatrequest) | - | server | - | `@category(world)` |
+| 0x704C | DropItem | `perlin_drop_item` | [DropItemRequest](#dropitemrequest) | - | server | World | `@category(world)` |
+| 0x704D | WorldSpawnGet | `perlin_world_spawn_get` | - | [BlockCoord](#blockcoord) | server | - | `@category(world)` |
+| 0x704E | WorldSpawnSet | `perlin_world_spawn_set` | [BlockCoord](#blockcoord) | - | server | Admin | `@category(world)` |
+| 0x7060 | EntitySpawn | `perlin_entity_spawn` | [EntitySpawnRequest](#entityspawnrequest) | `u64` | server | World | `@category(entity)` |
+| 0x7061 | EntityList | `perlin_entity_list` | [EntityListRequest](#entitylistrequest) | [EntityListResponse](#entitylistresponse) | server | - | `@category(entity)` |
+| 0x7062 | EntityRemove | `perlin_entity_remove` | [EntityRemoveRequest](#entityremoverequest) | - | server | World | `@category(entity)` |
+| 0x7063 | EntityDamage | `perlin_entity_damage` | [EntityDamageRequest](#entitydamagerequest) | `bool` | server | World | `@category(entity)` |
+| 0x7064 | EntityTeleport | `perlin_entity_teleport` | [EntityTeleportRequest](#entityteleportrequest) | - | server | World | `@category(entity)` |
+| 0x7065 | EntitySetVelocity | `perlin_entity_set_velocity` | [EntitySetVelocityRequest](#entitysetvelocityrequest) | - | server | World | `@category(entity)` |
+| 0x7066 | EntityInfo | `perlin_entity_info` | [EntityInfoRequest](#entityinforequest) | [ServerEntity](#serverentity) | server | - | `@category(entity)` |
+| 0x7067 | EntitySetHealth | `perlin_entity_set_health` | [EntitySetHealthRequest](#entitysethealthrequest) | - | server | World | `@category(entity)` |
+| 0x7080 | RunCommand | `perlin_run_command` | [RunCommandRequest](#runcommandrequest) | `rest_text` | server | Admin | `@category(server)` |
+| 0x7081 | MotdSet | `perlin_motd_set` | [MotdSetRequest](#motdsetrequest) | - | server | Admin | `@category(server)` |
+| 0x7082 | LootTableOverride | `perlin_loot_table_override` | [LootTableOverrideRequest](#loottableoverriderequest) | - | server | World | `@category(loot)` |
+| 0x7083 | LootTableGet | `perlin_loot_table_get` | [LootTableGetRequest](#loottablegetrequest) | `rest_text` | server | - | `@category(loot)` |
+| 0x7084 | EventAmend | `perlin_event_amend` | [EventAmendRequest](#eventamendrequest) | - | server | - | changes the event being handled: PlayerDamage amount, EntityDamage amount, PlayerChat message, Explosion power, ServerCommand line, PreLogin reason `@category(events)` |
 
 ## Events
 
@@ -309,29 +309,29 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 49 | PlayerChat | [EventPlayerChat](#eventplayerchat) | server | `@cancellable` |
 | 50 | BlockBreak | [EventPlayerBlock](#eventplayerblock) | server | `@cancellable` |
 | 51 | BlockPlace | [EventPlayerBlock](#eventplayerblock) | server | `@cancellable` |
-| 52 | PlayerDamage | [EventServerDamage](#eventserverdamage) | server | `@since(3)` `@cancellable` |
-| 53 | PlayerDeath | [EventServerDeath](#eventserverdeath) | server | `@since(3)` |
-| 54 | PlayerRespawn | [EventPlayer](#eventplayer) | server | `@since(3)` |
-| 55 | PlayerUseBlock | [EventPlayerUse](#eventplayeruse) | server | `@since(3)` `@cancellable` |
-| 56 | PlayerAttack | [EventPlayerAttack](#eventplayerattack) | server | `@since(3)` `@cancellable` |
-| 57 | EntityDamage | [EventEntityDamage](#evententitydamage) | server | `@since(3)` `@cancellable` |
-| 58 | EntityDeath | [EventEntityDeath](#evententitydeath) | server | `@since(3)` |
-| 59 | EntitySpawn | [EventEntitySpawn](#evententityspawn) | server | `@since(3)` `@cancellable` |
-| 60 | ItemConsume | [EventItem](#eventitem) | server | `@since(3)` `@cancellable` |
-| 61 | GameModeChange | [EventGameModeChange](#eventgamemodechange) | server | `@since(3)` |
-| 62 | FormResponse | [EventFormResponse](#eventformresponse) | server | `@since(3)` |
-| 63 | PlayerMove | [EventPlayerMove](#eventplayermove) | server | `@since(3)` `@hot` |
-| 64 | Explosion | [EventExplosion](#eventexplosion) | server | `@since(3)` `@cancellable` |
-| 65 | ItemDrop | [EventItem](#eventitem) | server | `@since(3)` `@cancellable` |
-| 66 | ItemPickup | [EventItem](#eventitem) | server | `@since(3)` `@cancellable` |
-| 67 | ContainerOpen | [EventContainer](#eventcontainer) | server | `@since(3)` `@cancellable` |
-| 68 | DimensionChange | [EventPlayerDimension](#eventplayerdimension) | server | `@since(3)` |
-| 69 | ServerCommand | [EventServerCommand](#eventservercommand) | server | `@since(3)` `@cancellable` |
-| 70 | PreLogin | [EventPreLogin](#eventprelogin) | server | `@since(3)` `@cancellable` |
-| 71 | SocketOpen | [EventSocketOpen](#eventsocketopen) | client, server | `@category(network)` `@since(4)` |
-| 72 | SocketData | [EventSocketData](#eventsocketdata) | client, server | `@category(network)` `@since(4)` `@hot` |
-| 73 | SocketClose | [EventSocketClose](#eventsocketclose) | client, server | `@category(network)` `@since(4)` |
-| 74 | MicData | [EventMicData](#eventmicdata) | client | `@category(audio)` `@since(4)` `@hot` |
+| 52 | PlayerDamage | [EventServerDamage](#eventserverdamage) | server | `@cancellable` |
+| 53 | PlayerDeath | [EventServerDeath](#eventserverdeath) | server |  |
+| 54 | PlayerRespawn | [EventPlayer](#eventplayer) | server |  |
+| 55 | PlayerUseBlock | [EventPlayerUse](#eventplayeruse) | server | `@cancellable` |
+| 56 | PlayerAttack | [EventPlayerAttack](#eventplayerattack) | server | `@cancellable` |
+| 57 | EntityDamage | [EventEntityDamage](#evententitydamage) | server | `@cancellable` |
+| 58 | EntityDeath | [EventEntityDeath](#evententitydeath) | server |  |
+| 59 | EntitySpawn | [EventEntitySpawn](#evententityspawn) | server | `@cancellable` |
+| 60 | ItemConsume | [EventItem](#eventitem) | server | `@cancellable` |
+| 61 | GameModeChange | [EventGameModeChange](#eventgamemodechange) | server |  |
+| 62 | FormResponse | [EventFormResponse](#eventformresponse) | server |  |
+| 63 | PlayerMove | [EventPlayerMove](#eventplayermove) | server | `@hot` |
+| 64 | Explosion | [EventExplosion](#eventexplosion) | server | `@cancellable` |
+| 65 | ItemDrop | [EventItem](#eventitem) | server | `@cancellable` |
+| 66 | ItemPickup | [EventItem](#eventitem) | server | `@cancellable` |
+| 67 | ContainerOpen | [EventContainer](#eventcontainer) | server | `@cancellable` |
+| 68 | DimensionChange | [EventPlayerDimension](#eventplayerdimension) | server |  |
+| 69 | ServerCommand | [EventServerCommand](#eventservercommand) | server | `@cancellable` |
+| 70 | PreLogin | [EventPreLogin](#eventprelogin) | server | `@cancellable` |
+| 71 | SocketOpen | [EventSocketOpen](#eventsocketopen) | client, server | `@category(network)` |
+| 72 | SocketData | [EventSocketData](#eventsocketdata) | client, server | `@category(network)` `@hot` |
+| 73 | SocketClose | [EventSocketClose](#eventsocketclose) | client, server | `@category(network)` |
+| 74 | MicData | [EventMicData](#eventmicdata) | client | `@category(audio)` `@hot` |
 
 ## Enums
 

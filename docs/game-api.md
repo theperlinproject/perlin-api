@@ -108,7 +108,7 @@ For mods that need to reach into the game itself. Everything that changes the ga
 | `game::to_screen(x, y, z)` | Projects a world point to GUI pixels (use it with `ui::Canvas` for ESP-style overlays, labels and markers). |
 | `game::set_velocity` / `add_velocity` / `motion` | Sets or adds to the local player's velocity (per axis). Elytra boosts, dashes, grapples. |
 | `game::teleport` | Moves the local player; the server sees ordinary movement. |
-| `game::model_pose({.pitch, .yaw, .roll})` | Rotates the local player's model about its middle after the glide lean. `yaw` is a spin around the body's axis, which in flight is a barrel roll. |
+| `game::model_pose({.pitch, .yaw, .roll})` | Rotates the local player's model about its middle after the glide lean. `yaw` is a spin around the body's axis, a roll when flying. |
 | `game::lines` / `game::boxes` | World-space lines and box outlines drawn through the world renderer. A schematic overlay (Litematica style) is one `boxes` call per frame. |
 | `game::find_block` / `game::set_blocks` | Looks up a block by name and states, and changes blocks in the client's own copy of the world (ghost blocks, previews). |
 | `game::drop_packets(ids, ticks, outgoing)` | Discards incoming (or, with `outgoing`, outgoing) packets by id for a while; needs `packets` too. |

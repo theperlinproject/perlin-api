@@ -38,16 +38,16 @@ int main(int argc, char** argv) {
     const uint32_t current = static_cast<uint32_t>(std::stoul(argv[2]));
     int failures = 0;
     bool ok = false;
-    const uint32_t built = RevisionOf(dir + "/hello_rev4.wasm", ok);
-    if (!ok || built != current) {
-        std::printf("FAIL: a plugin built with the current headers declares revision %u, expected %u\n", built, current);
+    const uint32_t newer = RevisionOf(dir + "/hello_rev2.wasm", ok);
+    if (!ok || newer != current + 1) {
+        std::printf("FAIL: a plugin built for a newer revision declares %u, expected %u\n", newer, current + 1);
         failures++;
     }
-    const uint32_t legacy = RevisionOf(dir + "/hello_legacy32.wasm", ok);
-    if (!ok || legacy != kLegacyApiRevision) {
-        std::printf("FAIL: a plugin without the export reports revision %u, expected %u\n", legacy, kLegacyApiRevision);
+    const uint32_t undeclared = RevisionOf(dir + "/hello_undeclared32.wasm", ok);
+    if (!ok || undeclared != kDefaultApiRevision) {
+        std::printf("FAIL: a plugin without the export reports revision %u, expected %u\n", undeclared, kDefaultApiRevision);
         failures++;
     }
-    std::printf("host_revision_test: current-headers plugin = %u, legacy plugin = %u\n", built, legacy);
+    std::printf("host_revision_test: newer plugin = %u, plugin without the export = %u\n", newer, undeclared);
     return failures ? 1 : 0;
 }

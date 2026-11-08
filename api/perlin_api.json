@@ -1,6 +1,6 @@
 {
  "api": "perlin",
- "version": 4,
+ "version": 1,
  "tags": [
   {
    "name": "doc",
@@ -174,16 +174,10 @@
    "type": "u32",
    "value": {
     "kind": "int",
-    "value": 4,
-    "text": "4"
+    "value": 1,
+    "text": "1"
    },
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -201,12 +195,6 @@
     "text": "1"
    },
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -339,12 +327,6 @@
    },
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "Open sockets per plugin"
@@ -362,12 +344,6 @@
    },
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "Largest single send or received message in bytes"
@@ -384,12 +360,6 @@
     "text": "16"
    },
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -523,12 +493,6 @@
        "args": [
         "Server: change blocks, entities and the world"
        ]
-      },
-      {
-       "name": "since",
-       "args": [
-        3
-       ]
       }
      ]
     },
@@ -540,12 +504,6 @@
        "name": "doc",
        "args": [
         "Server: change players, their inventories and stats"
-       ]
-      },
-      {
-       "name": "since",
-       "args": [
-        3
        ]
       }
      ]
@@ -559,12 +517,6 @@
        "args": [
         "Server: run commands, kick and ban, change game rules"
        ]
-      },
-      {
-       "name": "since",
-       "args": [
-        3
-       ]
       }
      ]
     },
@@ -576,12 +528,6 @@
        "name": "doc",
        "args": [
         "Client: record from the microphone"
-       ]
-      },
-      {
-       "name": "since",
-       "args": [
-        4
        ]
       }
      ]
@@ -595,12 +541,6 @@
        "args": [
         "Client: read the system clipboard"
        ]
-      },
-      {
-       "name": "since",
-       "args": [
-        4
-       ]
       }
      ]
     },
@@ -613,12 +553,6 @@
        "args": [
         "Client: change the game window"
        ]
-      },
-      {
-       "name": "since",
-       "args": [
-        4
-       ]
       }
      ]
     },
@@ -630,12 +564,6 @@
        "name": "doc",
        "args": [
         "Open raw TCP and WebSocket connections"
-       ]
-      },
-      {
-       "name": "since",
-       "args": [
-        4
        ]
       }
      ]
@@ -1922,12 +1850,6 @@
    "flags": false,
    "tags": [
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "Why a player or mob took damage"
@@ -2051,14 +1973,7 @@
    "name": "Weather",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "Clear",
@@ -2081,14 +1996,7 @@
    "name": "FormKind",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "Message",
@@ -2111,14 +2019,7 @@
    "name": "FormElement",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "Label",
@@ -2166,14 +2067,7 @@
    "name": "LogLevel",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "Debug",
@@ -2202,12 +2096,6 @@
    "base": "i32",
    "flags": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -2259,12 +2147,6 @@
    "base": "u32",
    "flags": true,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -2324,14 +2206,7 @@
    "name": "SocketKind",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "Tcp",
@@ -2350,12 +2225,6 @@
    "base": "i32",
    "flags": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -2420,14 +2289,7 @@
    "name": "SlotCorner",
    "base": "i32",
    "flags": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "members": [
     {
      "name": "TopLeft",
@@ -2461,12 +2323,6 @@
    "base": "u32",
    "flags": true,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -7583,14 +7439,7 @@
   {
    "name": "ScoreRow",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "name",
@@ -7614,12 +7463,6 @@
    "name": "ScoreboardInfo",
    "synthetic": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -7684,14 +7527,7 @@
   {
    "name": "Bossbar",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -7767,12 +7603,6 @@
    "synthetic": false,
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "Shows a fixed time of day to this player only; the server's clock is not touched"
@@ -7842,12 +7672,6 @@
    "name": "ClientWeatherData",
    "synthetic": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -7924,12 +7748,6 @@
    "synthetic": false,
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "Colour of the outline around the targeted block"
@@ -7987,12 +7805,6 @@
    "name": "ViewModelData",
    "synthetic": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -8255,12 +8067,6 @@
    "synthetic": false,
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "A mesh that follows an entity: capes, wings, hats, halos"
@@ -8385,14 +8191,7 @@
   {
    "name": "SocketOpenRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -8493,14 +8292,7 @@
   {
    "name": "SocketSendRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -8540,14 +8332,7 @@
   {
    "name": "SocketCloseRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -8587,14 +8372,7 @@
   {
    "name": "ConnectionStatsData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "connected",
@@ -8722,12 +8500,6 @@
    "synthetic": false,
    "tags": [
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "doc",
      "args": [
       "A stream of raw PCM that the plugin keeps feeding with AudioStreamWrite"
@@ -8851,14 +8623,7 @@
   {
    "name": "AudioStreamWriteRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -8888,14 +8653,7 @@
   {
    "name": "AudioStreamUpdateRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -8979,14 +8737,7 @@
   {
    "name": "AudioStreamStatus",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "bufferedMs",
@@ -9020,14 +8771,7 @@
   {
    "name": "MicStartRequest",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "device",
@@ -9087,14 +8831,7 @@
   {
    "name": "MicStateData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "active",
@@ -9127,14 +8864,7 @@
   {
    "name": "ItemInfoData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "found",
@@ -9198,12 +8928,6 @@
    "name": "SlotOverlayData",
    "synthetic": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -9348,12 +9072,6 @@
    "name": "PostEffectData",
    "synthetic": false,
    "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
     {
      "name": "doc",
      "args": [
@@ -9560,14 +9278,7 @@
   {
    "name": "WindowControlData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "fields",
@@ -9596,14 +9307,7 @@
   {
    "name": "CapabilityList",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "ops",
@@ -11055,14 +10759,7 @@
   {
    "name": "EventSocketOpen",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -11085,14 +10782,7 @@
   {
    "name": "EventSocketData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -11125,14 +10815,7 @@
   {
    "name": "EventSocketClose",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -11171,14 +10854,7 @@
   {
    "name": "EventMicData",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "sampleRate",
@@ -13172,14 +12848,7 @@
   {
    "name": "ServerItem",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "name",
@@ -13212,14 +12881,7 @@
   {
    "name": "ServerInventory",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "main",
@@ -13278,14 +12940,7 @@
   {
    "name": "PlayerDetails",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -13521,14 +13176,7 @@
   {
    "name": "ServerEntity",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "id",
@@ -13631,14 +13279,7 @@
   {
    "name": "FormButton",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "text",
@@ -13664,14 +13305,7 @@
   {
    "name": "FormControl",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "kind",
@@ -13771,14 +13405,7 @@
   {
    "name": "Form",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "kind",
@@ -13843,14 +13470,7 @@
   {
    "name": "EventServerDamage",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -13910,14 +13530,7 @@
   {
    "name": "EventServerDeath",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -13960,14 +13573,7 @@
   {
    "name": "EventPlayerUse",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14036,14 +13642,7 @@
   {
    "name": "EventPlayerAttack",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14086,14 +13685,7 @@
   {
    "name": "EventEntityDamage",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "entity",
@@ -14146,14 +13738,7 @@
   {
    "name": "EventEntityDeath",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "entity",
@@ -14223,14 +13808,7 @@
   {
    "name": "EventEntitySpawn",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "entity",
@@ -14300,14 +13878,7 @@
   {
    "name": "EventItem",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14340,14 +13911,7 @@
   {
    "name": "EventGameModeChange",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14376,14 +13940,7 @@
   {
    "name": "EventFormResponse",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14462,14 +14019,7 @@
   {
    "name": "EventPlayerMove",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14556,14 +14106,7 @@
   {
    "name": "EventExplosion",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "x",
@@ -14626,14 +14169,7 @@
   {
    "name": "EventContainer",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14686,14 +14222,7 @@
   {
    "name": "EventPlayerDimension",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14722,14 +14251,7 @@
   {
    "name": "EventServerCommand",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "player",
@@ -14759,14 +14281,7 @@
   {
    "name": "EventPreLogin",
    "synthetic": false,
-   "tags": [
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
-    }
-   ],
+   "tags": [],
    "fields": [
     {
      "name": "name",
@@ -16179,12 +15694,6 @@
      "args": [
       "core"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -16210,12 +15719,6 @@
      "name": "category",
      "args": [
       "core"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -16317,12 +15820,6 @@
      "args": [
       "hud"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -16346,12 +15843,6 @@
      "name": "category",
      "args": [
       "hud"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -16593,12 +16084,6 @@
      "args": [
       "inventory"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -16622,12 +16107,6 @@
      "name": "category",
      "args": [
       "inventory"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -16653,12 +16132,6 @@
      "args": [
       "hud"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -16682,12 +16155,6 @@
      "name": "category",
      "args": [
       "hud"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -19005,12 +18472,6 @@
      "args": [
       "ui"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -19043,12 +18504,6 @@
      "args": [
       "ui"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -19080,12 +18535,6 @@
      "name": "category",
      "args": [
       "network"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20173,12 +19622,6 @@
      "args": [
       "render"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20202,12 +19645,6 @@
      "name": "category",
      "args": [
       "render"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20233,12 +19670,6 @@
      "args": [
       "render"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20262,12 +19693,6 @@
      "name": "category",
      "args": [
       "render"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20293,12 +19718,6 @@
      "args": [
       "render"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20322,12 +19741,6 @@
      "name": "category",
      "args": [
       "render"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20362,12 +19775,6 @@
      "name": "category",
      "args": [
       "network"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     },
     {
@@ -20411,12 +19818,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      4
-     ]
-    },
-    {
      "name": "hot",
      "args": []
     }
@@ -20453,12 +19854,6 @@
      "args": [
       "network"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20482,12 +19877,6 @@
      "name": "category",
      "args": [
       "network"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20513,12 +19902,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20542,12 +19925,6 @@
      "name": "category",
      "args": [
       "audio"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     },
     {
@@ -20577,12 +19954,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20607,12 +19978,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20636,12 +20001,6 @@
      "name": "category",
      "args": [
       "audio"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20675,12 +20034,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20712,12 +20065,6 @@
      "name": "category",
      "args": [
       "audio"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -20751,12 +20098,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20789,12 +20130,6 @@
      "args": [
       "audio"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -20818,12 +20153,6 @@
      "name": "category",
      "args": [
       "render"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     }
    ]
@@ -21093,12 +20422,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "players"
@@ -21122,12 +20445,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21163,12 +20480,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21198,12 +20509,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21239,12 +20544,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21274,12 +20573,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21315,12 +20608,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21350,12 +20637,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21391,12 +20672,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21427,12 +20702,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "inventory"
@@ -21456,12 +20725,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21497,12 +20760,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21532,12 +20789,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21573,12 +20824,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Players"
@@ -21609,12 +20854,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "players"
@@ -21636,12 +20875,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21669,12 +20902,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "players"
@@ -21698,12 +20925,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21739,12 +20960,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Admin"
@@ -21772,12 +20987,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21813,12 +21022,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Admin"
@@ -21848,12 +21051,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21887,12 +21084,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "players"
@@ -21914,12 +21105,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21946,12 +21131,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -21987,12 +21166,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22023,12 +21196,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "world"
@@ -22052,12 +21219,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22093,12 +21254,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22129,12 +21284,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "world"
@@ -22158,12 +21307,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22199,12 +21342,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Admin"
@@ -22234,12 +21371,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22273,12 +21404,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "world"
@@ -22300,12 +21425,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22332,12 +21451,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22371,12 +21484,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "world"
@@ -22400,12 +21507,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22441,12 +21542,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22477,12 +21572,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "entity"
@@ -22506,12 +21595,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22547,12 +21630,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22582,12 +21659,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22623,12 +21694,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22659,12 +21724,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "entity"
@@ -22688,12 +21747,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22729,12 +21782,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "Admin"
@@ -22764,12 +21811,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -22805,12 +21846,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "permission",
      "args": [
       "World"
@@ -22841,12 +21876,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "category",
      "args": [
       "loot"
@@ -22868,12 +21897,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -23843,12 +22866,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "cancellable",
      "args": []
     }
@@ -23867,12 +22884,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -23889,12 +22900,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -23910,12 +22915,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -23939,12 +22938,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "cancellable",
      "args": []
     }
@@ -23962,12 +22955,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -23989,12 +22976,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -24010,12 +22991,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24039,12 +23014,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "cancellable",
      "args": []
     }
@@ -24063,12 +23032,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -24085,12 +23048,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -24106,12 +23063,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24135,12 +23086,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "cancellable",
      "args": []
     }
@@ -24158,12 +23103,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24187,12 +23126,6 @@
      ]
     },
     {
-     "name": "since",
-     "args": [
-      3
-     ]
-    },
-    {
      "name": "cancellable",
      "args": []
     }
@@ -24210,12 +23143,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24237,12 +23164,6 @@
      "args": [
       "server"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
-     ]
     }
    ]
   },
@@ -24258,12 +23179,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24284,12 +23199,6 @@
      "name": "hosts",
      "args": [
       "server"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      3
      ]
     },
     {
@@ -24319,12 +23228,6 @@
      "args": [
       "network"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -24348,12 +23251,6 @@
      "name": "category",
      "args": [
       "network"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     },
     {
@@ -24383,12 +23280,6 @@
      "args": [
       "network"
      ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
-     ]
     }
    ]
   },
@@ -24410,12 +23301,6 @@
      "name": "category",
      "args": [
       "audio"
-     ]
-    },
-    {
-     "name": "since",
-     "args": [
-      4
      ]
     },
     {

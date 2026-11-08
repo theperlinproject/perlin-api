@@ -53,7 +53,7 @@ namespace perlin::mods {
 
     Subscriptions ReadSubscriptions(WasmInstance& instance);
 
-    inline constexpr uint32_t kLegacyApiRevision = 3;
+    inline constexpr uint32_t kDefaultApiRevision = 1;
 
     uint32_t ReadApiRevision(WasmInstance& instance);
 

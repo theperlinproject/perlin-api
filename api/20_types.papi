@@ -432,14 +432,14 @@ struct ServerStatus {
 struct GiveItemRequest { player: u64 = 0; item: string; count: u32 = 1; }
 struct GiveItemResult { leftover: u32 = 0 @doc("what did not fit in the inventory"); }
 
-struct ScoreRow @since(4) { name: string; score: i32 = 0; }
-struct ScoreboardInfo @since(4) @doc("The server's sidebar scoreboard") {
+struct ScoreRow { name: string; score: i32 = 0; }
+struct ScoreboardInfo @doc("The server's sidebar scoreboard") {
     visible: bool = false;
     title: string;
     descending: bool = true @doc("rows are listed highest score first");
     rows: list<ScoreRow> @doc("in display order");
 }
-struct Bossbar @since(4) {
+struct Bossbar {
     id: i64 = 0;
     title: string;
     progress: f32 = 1 @doc("0 to 1");
@@ -447,23 +447,23 @@ struct Bossbar @since(4) {
     overlay: u8 = 0 @doc("0 solid, then the protocol's notched styles");
 }
 
-struct ClientTimeData @since(4) @doc("Shows a fixed time of day to this player only; the server's clock is not touched") {
+struct ClientTimeData @doc("Shows a fixed time of day to this player only; the server's clock is not touched") {
     enabled: bool = false;
     timeOfDay: i32 = 6000 @unit(ticks) @doc("0 to 23999; 6000 is noon");
     ticks: i32 = 2 @unit(ticks) @doc("how long the override lasts unless refreshed");
 }
-struct ClientWeatherData @since(4) @doc("Shows weather to this player only") {
+struct ClientWeatherData @doc("Shows weather to this player only") {
     enabled: bool = false;
     rain: f32 = 0 @doc("0 to 1");
     thunder: f32 = 0 @doc("0 to 1");
     ticks: i32 = 2 @unit(ticks);
 }
-struct BlockOutlineData @since(4) @doc("Colour of the outline around the targeted block") {
+struct BlockOutlineData @doc("Colour of the outline around the targeted block") {
     hidden: bool = false;
     color: u32 = 0x66000000 @doc("ARGB");
     ticks: i32 = 2 @unit(ticks);
 }
-struct ViewModelData @since(4) @doc("First-person hand and held item; only the fields named in `fields` are applied") {
+struct ViewModelData @doc("First-person hand and held item; only the fields named in `fields` are applied") {
     fields: ViewModelFields;
     ticks: i32 = 2 @unit(ticks);
     swingSpeed: f32 = 1 @doc("above 1 swings faster");
@@ -476,7 +476,7 @@ struct ViewModelData @since(4) @doc("First-person hand and held item; only the f
     armX: f32 = 0; armY: f32 = 0; armZ: f32 = 0; armRotX: f32 = 0; armRotY: f32 = 0; armRotZ: f32 = 0; armScale: f32 = 1;
     itemX: f32 = 0; itemY: f32 = 0; itemZ: f32 = 0; itemRotX: f32 = 0; itemRotY: f32 = 0; itemRotZ: f32 = 0; itemScale: f32 = 1;
 }
-struct EntityMeshData @since(4) @doc("A mesh that follows an entity: capes, wings, hats, halos") {
+struct EntityMeshData @doc("A mesh that follows an entity: capes, wings, hats, halos") {
     id: string;
     entity: u64 = 0 @doc("runtime id; 0 is the local player");
     anchor: MeshAnchor = Body;
@@ -487,7 +487,7 @@ struct EntityMeshData @since(4) @doc("A mesh that follows an entity: capes, wing
     triangles: list<MeshVertex> @doc("local space: x to the entity's left, y up, z forward, in blocks; three vertices per triangle");
 }
 
-struct SocketOpenRequest @since(4) {
+struct SocketOpenRequest {
     id: u32 = 0 @doc("chosen by the plugin; every SocketOpen, SocketData and SocketClose event carries it");
     kind: SocketKind = Tcp;
     url: string @doc("tcp://host:port, tls://host:port, ws://host[:port]/path or wss://host[:port]/path");
@@ -495,14 +495,14 @@ struct SocketOpenRequest @since(4) {
     headers: list<pair<string, string>> @doc("extra WebSocket handshake headers");
     protocols: string @doc("WebSocket subprotocols, comma separated");
 }
-struct SocketSendRequest @since(4) {
+struct SocketSendRequest {
     id: u32 = 0;
     binary: bool = true @doc("WebSocket frame type; ignored for TCP");
     data: bytes;
 }
-struct SocketCloseRequest @since(4) { id: u32 = 0; code: u32 = 1000 @doc("WebSocket close code"); reason: string; }
+struct SocketCloseRequest { id: u32 = 0; code: u32 = 1000 @doc("WebSocket close code"); reason: string; }
 
-struct ConnectionStatsData @since(4) {
+struct ConnectionStatsData {
     connected: bool = false;
     address: string;
     pingMs: f32 = -1 @unit(ms) @doc("round trip to the server, -1 when not measured yet");
@@ -512,7 +512,7 @@ struct ConnectionStatsData @since(4) {
     bytesInPerSecond: f32 = 0; bytesOutPerSecond: f32 = 0;
 }
 
-struct AudioStreamRequest @since(4) @doc("A stream of raw PCM that the plugin keeps feeding with AudioStreamWrite") {
+struct AudioStreamRequest @doc("A stream of raw PCM that the plugin keeps feeding with AudioStreamWrite") {
     sampleRate: u32 = 48000 @doc("8000 to 96000");
     channels: u32 = 1 @doc("1 or 2");
     category: AudioCategory = Voice;
@@ -521,24 +521,24 @@ struct AudioStreamRequest @since(4) @doc("A stream of raw PCM that the plugin ke
     x: f64 = 0; y: f64 = 0; z: f64 = 0;
     range: f32 = 16 @unit(blocks);
 }
-struct AudioStreamWriteRequest @since(4) { id: u32 = 0; pcm: bytes @doc("signed 16-bit little-endian samples, interleaved"); }
-struct AudioStreamUpdateRequest @since(4) {
+struct AudioStreamWriteRequest { id: u32 = 0; pcm: bytes @doc("signed 16-bit little-endian samples, interleaved"); }
+struct AudioStreamUpdateRequest {
     id: u32 = 0;
     volume: f32 = 1;
     positional: bool = false;
     x: f64 = 0; y: f64 = 0; z: f64 = 0;
     range: f32 = 16 @unit(blocks);
 }
-struct AudioStreamStatus @since(4) { bufferedMs: f32 = 0 @unit(ms); underruns: u32 = 0; }
+struct AudioStreamStatus { bufferedMs: f32 = 0 @unit(ms); underruns: u32 = 0; }
 
-struct MicStartRequest @since(4) {
+struct MicStartRequest {
     device: string @doc("a name from MicList, empty for the default device");
     sampleRate: u32 = 16000 @doc("8000 to 48000");
     frameMs: u32 = 20 @unit(ms) @doc("length of each MicData event, 10 to 100");
 }
-struct MicStateData @since(4) { active: bool = false; device: string; sampleRate: u32 = 0; }
+struct MicStateData { active: bool = false; device: string; sampleRate: u32 = 0; }
 
-struct ItemInfoData @since(4) {
+struct ItemInfoData {
     found: bool = false;
     name: string;
     displayName: string;
@@ -546,7 +546,7 @@ struct ItemInfoData @since(4) {
     maxDurability: i32 = 0 @doc("0 for items that do not wear out");
 }
 
-struct SlotOverlayData @since(4) @doc("Text, background and a bar drawn over an item slot of the hotbar or an open container") {
+struct SlotOverlayData @doc("Text, background and a bar drawn over an item slot of the hotbar or an open container") {
     id: string @doc("overlays with the same id replace each other");
     slot: i32 = 0 @doc("same slot address as InventoryClick; the Perlin client draws hotbar slots 0 to 8");
     text: string;
@@ -558,7 +558,7 @@ struct SlotOverlayData @since(4) @doc("Text, background and a bar drawn over an 
     ticks: i32 = 0 @unit(ticks) @doc("0 keeps it until cleared or the plugin unloads");
 }
 
-struct PostEffectData @since(4) @doc("Full-screen colour adjustments applied after the world and before the hud") {
+struct PostEffectData @doc("Full-screen colour adjustments applied after the world and before the hud") {
     enabled: bool = false;
     ticks: i32 = 2 @unit(ticks);
     brightness: f32 = 0 @doc("-1 to 1, added");
@@ -574,10 +574,10 @@ struct PostEffectData @since(4) @doc("Full-screen colour adjustments applied aft
     invert: f32 = 0 @doc("0 to 1");
 }
 
-struct WindowControlData @since(4) {
+struct WindowControlData {
     fields: WindowFields;
     fullscreen: bool = false;
     title: string;
 }
 
-struct CapabilityList @since(4) { ops: list<u32> @doc("ids of every operation this host serves"); }
+struct CapabilityList { ops: list<u32> @doc("ids of every operation this host serves"); }

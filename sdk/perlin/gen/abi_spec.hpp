@@ -356,7 +356,7 @@ namespace perlin::abi {
         using Response = ApiInfoResponse;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Both;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ApiInfo";
         static constexpr std::string_view kCategory = "core";
@@ -366,7 +366,7 @@ namespace perlin::abi {
         using Response = CapabilityList;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Both;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "Capabilities";
         static constexpr std::string_view kCategory = "core";
@@ -406,7 +406,7 @@ namespace perlin::abi {
         using Response = ScoreboardInfo;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ScoreboardGet";
         static constexpr std::string_view kCategory = "hud";
@@ -416,7 +416,7 @@ namespace perlin::abi {
         using Response = BossbarListResponse;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "BossbarList";
         static constexpr std::string_view kCategory = "hud";
@@ -496,7 +496,7 @@ namespace perlin::abi {
         using Response = ItemInfoData;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ItemInfo";
         static constexpr std::string_view kCategory = "inventory";
@@ -506,7 +506,7 @@ namespace perlin::abi {
         using Response = ItemNamesResponse;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ItemNames";
         static constexpr std::string_view kCategory = "inventory";
@@ -516,7 +516,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "SlotOverlay";
         static constexpr std::string_view kCategory = "hud";
@@ -526,7 +526,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "SlotOverlayClear";
         static constexpr std::string_view kCategory = "hud";
@@ -1376,7 +1376,7 @@ namespace perlin::abi {
         using Response = RestText;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Clipboard);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ClipboardRead";
         static constexpr std::string_view kCategory = "ui";
@@ -1386,7 +1386,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Window);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "WindowControl";
         static constexpr std::string_view kCategory = "ui";
@@ -1396,7 +1396,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Control);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ServerConnect";
         static constexpr std::string_view kCategory = "network";
@@ -1796,7 +1796,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ClientTime";
         static constexpr std::string_view kCategory = "render";
@@ -1806,7 +1806,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ClientWeather";
         static constexpr std::string_view kCategory = "render";
@@ -1816,7 +1816,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ViewModel";
         static constexpr std::string_view kCategory = "render";
@@ -1826,7 +1826,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "BlockOutline";
         static constexpr std::string_view kCategory = "render";
@@ -1836,7 +1836,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityMesh";
         static constexpr std::string_view kCategory = "render";
@@ -1846,7 +1846,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityMeshClear";
         static constexpr std::string_view kCategory = "render";
@@ -1856,7 +1856,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Sockets);
         static constexpr Hosts kHosts = Hosts::Both;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "SocketOpen";
         static constexpr std::string_view kCategory = "network";
@@ -1866,7 +1866,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Sockets);
         static constexpr Hosts kHosts = Hosts::Both;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = true;
         static constexpr std::string_view kName = "SocketSend";
         static constexpr std::string_view kCategory = "network";
@@ -1876,7 +1876,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Sockets);
         static constexpr Hosts kHosts = Hosts::Both;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "SocketClose";
         static constexpr std::string_view kCategory = "network";
@@ -1886,7 +1886,7 @@ namespace perlin::abi {
         using Response = ConnectionStatsData;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ConnectionStats";
         static constexpr std::string_view kCategory = "network";
@@ -1896,7 +1896,7 @@ namespace perlin::abi {
         using Response = uint32_t;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "AudioStreamOpen";
         static constexpr std::string_view kCategory = "audio";
@@ -1906,7 +1906,7 @@ namespace perlin::abi {
         using Response = AudioStreamStatus;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = true;
         static constexpr std::string_view kName = "AudioStreamWrite";
         static constexpr std::string_view kCategory = "audio";
@@ -1916,7 +1916,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "AudioStreamUpdate";
         static constexpr std::string_view kCategory = "audio";
@@ -1926,7 +1926,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "AudioStreamClose";
         static constexpr std::string_view kCategory = "audio";
@@ -1936,7 +1936,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "SoundStop";
         static constexpr std::string_view kCategory = "audio";
@@ -1946,7 +1946,7 @@ namespace perlin::abi {
         using Response = MicListResponse;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Microphone);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "MicList";
         static constexpr std::string_view kCategory = "audio";
@@ -1956,7 +1956,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Microphone);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "MicStart";
         static constexpr std::string_view kCategory = "audio";
@@ -1966,7 +1966,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Microphone);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "MicStop";
         static constexpr std::string_view kCategory = "audio";
@@ -1976,7 +1976,7 @@ namespace perlin::abi {
         using Response = MicStateData;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Microphone);
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "MicState";
         static constexpr std::string_view kCategory = "audio";
@@ -1986,7 +1986,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Client;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PostEffect";
         static constexpr std::string_view kCategory = "render";
@@ -2086,7 +2086,7 @@ namespace perlin::abi {
         using Response = PlayerDetails;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerInfo";
         static constexpr std::string_view kCategory = "players";
@@ -2096,7 +2096,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetGameMode";
         static constexpr std::string_view kCategory = "players";
@@ -2106,7 +2106,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetHealth";
         static constexpr std::string_view kCategory = "players";
@@ -2116,7 +2116,7 @@ namespace perlin::abi {
         using Response = bool;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerDamage";
         static constexpr std::string_view kCategory = "players";
@@ -2126,7 +2126,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerKill";
         static constexpr std::string_view kCategory = "players";
@@ -2136,7 +2136,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetFood";
         static constexpr std::string_view kCategory = "players";
@@ -2146,7 +2146,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerAddExperience";
         static constexpr std::string_view kCategory = "players";
@@ -2156,7 +2156,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerEffectAdd";
         static constexpr std::string_view kCategory = "players";
@@ -2166,7 +2166,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerEffectRemove";
         static constexpr std::string_view kCategory = "players";
@@ -2176,7 +2176,7 @@ namespace perlin::abi {
         using Response = ServerInventory;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerInventory";
         static constexpr std::string_view kCategory = "inventory";
@@ -2186,7 +2186,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetSlot";
         static constexpr std::string_view kCategory = "inventory";
@@ -2196,7 +2196,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerClearInventory";
         static constexpr std::string_view kCategory = "inventory";
@@ -2206,7 +2206,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetVelocity";
         static constexpr std::string_view kCategory = "players";
@@ -2216,7 +2216,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerTransferDimension";
         static constexpr std::string_view kCategory = "players";
@@ -2226,7 +2226,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerTitle";
         static constexpr std::string_view kCategory = "players";
@@ -2236,7 +2236,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerActionBar";
         static constexpr std::string_view kCategory = "players";
@@ -2246,7 +2246,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSound";
         static constexpr std::string_view kCategory = "players";
@@ -2256,7 +2256,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerTransfer";
         static constexpr std::string_view kCategory = "players";
@@ -2266,7 +2266,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetOperator";
         static constexpr std::string_view kCategory = "players";
@@ -2276,7 +2276,7 @@ namespace perlin::abi {
         using Response = uint32_t;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerForm";
         static constexpr std::string_view kCategory = "ui";
@@ -2286,7 +2286,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerRunCommand";
         static constexpr std::string_view kCategory = "players";
@@ -2296,7 +2296,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Players);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerSetSpawn";
         static constexpr std::string_view kCategory = "players";
@@ -2306,7 +2306,7 @@ namespace perlin::abi {
         using Response = uint64_t;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "PlayerByName";
         static constexpr std::string_view kCategory = "players";
@@ -2316,7 +2316,7 @@ namespace perlin::abi {
         using Response = BlockInfo;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "BlockState";
         static constexpr std::string_view kCategory = "world";
@@ -2326,7 +2326,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "BlockStateSet";
         static constexpr std::string_view kCategory = "world";
@@ -2336,7 +2336,7 @@ namespace perlin::abi {
         using Response = uint32_t;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "Fill";
         static constexpr std::string_view kCategory = "world";
@@ -2346,7 +2346,7 @@ namespace perlin::abi {
         using Response = TimeGetResponse;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "TimeGet";
         static constexpr std::string_view kCategory = "world";
@@ -2356,7 +2356,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "TimeSet";
         static constexpr std::string_view kCategory = "world";
@@ -2366,7 +2366,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "WeatherSet";
         static constexpr std::string_view kCategory = "world";
@@ -2376,7 +2376,7 @@ namespace perlin::abi {
         using Response = int32_t;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "GameRuleGet";
         static constexpr std::string_view kCategory = "world";
@@ -2386,7 +2386,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "GameRuleSet";
         static constexpr std::string_view kCategory = "world";
@@ -2396,7 +2396,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "DifficultySet";
         static constexpr std::string_view kCategory = "world";
@@ -2406,7 +2406,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "Explode";
         static constexpr std::string_view kCategory = "world";
@@ -2416,7 +2416,7 @@ namespace perlin::abi {
         using Response = int32_t;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "HighestBlock";
         static constexpr std::string_view kCategory = "world";
@@ -2426,7 +2426,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "ParticleAt";
         static constexpr std::string_view kCategory = "world";
@@ -2436,7 +2436,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "DropItem";
         static constexpr std::string_view kCategory = "world";
@@ -2446,7 +2446,7 @@ namespace perlin::abi {
         using Response = BlockCoord;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "WorldSpawnGet";
         static constexpr std::string_view kCategory = "world";
@@ -2456,7 +2456,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "WorldSpawnSet";
         static constexpr std::string_view kCategory = "world";
@@ -2466,7 +2466,7 @@ namespace perlin::abi {
         using Response = uint64_t;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntitySpawn";
         static constexpr std::string_view kCategory = "entity";
@@ -2476,7 +2476,7 @@ namespace perlin::abi {
         using Response = EntityListResponse;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityList";
         static constexpr std::string_view kCategory = "entity";
@@ -2486,7 +2486,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityRemove";
         static constexpr std::string_view kCategory = "entity";
@@ -2496,7 +2496,7 @@ namespace perlin::abi {
         using Response = bool;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityDamage";
         static constexpr std::string_view kCategory = "entity";
@@ -2506,7 +2506,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityTeleport";
         static constexpr std::string_view kCategory = "entity";
@@ -2516,7 +2516,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntitySetVelocity";
         static constexpr std::string_view kCategory = "entity";
@@ -2526,7 +2526,7 @@ namespace perlin::abi {
         using Response = ServerEntity;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntityInfo";
         static constexpr std::string_view kCategory = "entity";
@@ -2536,7 +2536,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EntitySetHealth";
         static constexpr std::string_view kCategory = "entity";
@@ -2546,7 +2546,7 @@ namespace perlin::abi {
         using Response = RestText;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "RunCommand";
         static constexpr std::string_view kCategory = "server";
@@ -2556,7 +2556,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Admin);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "MotdSet";
         static constexpr std::string_view kCategory = "server";
@@ -2566,7 +2566,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "LootTableOverride";
         static constexpr std::string_view kCategory = "loot";
@@ -2576,7 +2576,7 @@ namespace perlin::abi {
         using Response = RestText;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "LootTableGet";
         static constexpr std::string_view kCategory = "loot";
@@ -2586,7 +2586,7 @@ namespace perlin::abi {
         using Response = Nothing;
         static constexpr uint32_t kPermission = 0u;
         static constexpr Hosts kHosts = Hosts::Server;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr bool kHot = false;
         static constexpr std::string_view kName = "EventAmend";
         static constexpr std::string_view kCategory = "events";
@@ -3058,7 +3058,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerDamage";
     };
     template <> struct EventSpec<Event::PlayerDeath> {
@@ -3067,7 +3067,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerDeath";
     };
     template <> struct EventSpec<Event::PlayerRespawn> {
@@ -3076,7 +3076,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerRespawn";
     };
     template <> struct EventSpec<Event::PlayerUseBlock> {
@@ -3085,7 +3085,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerUseBlock";
     };
     template <> struct EventSpec<Event::PlayerAttack> {
@@ -3094,7 +3094,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerAttack";
     };
     template <> struct EventSpec<Event::EntityDamage> {
@@ -3103,7 +3103,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "EntityDamage";
     };
     template <> struct EventSpec<Event::EntityDeath> {
@@ -3112,7 +3112,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "EntityDeath";
     };
     template <> struct EventSpec<Event::EntitySpawn> {
@@ -3121,7 +3121,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "EntitySpawn";
     };
     template <> struct EventSpec<Event::ItemConsume> {
@@ -3130,7 +3130,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "ItemConsume";
     };
     template <> struct EventSpec<Event::GameModeChange> {
@@ -3139,7 +3139,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "GameModeChange";
     };
     template <> struct EventSpec<Event::FormResponse> {
@@ -3148,7 +3148,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "FormResponse";
     };
     template <> struct EventSpec<Event::PlayerMove> {
@@ -3157,7 +3157,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = true;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PlayerMove";
     };
     template <> struct EventSpec<Event::Explosion> {
@@ -3166,7 +3166,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "Explosion";
     };
     template <> struct EventSpec<Event::ItemDrop> {
@@ -3175,7 +3175,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "ItemDrop";
     };
     template <> struct EventSpec<Event::ItemPickup> {
@@ -3184,7 +3184,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "ItemPickup";
     };
     template <> struct EventSpec<Event::ContainerOpen> {
@@ -3193,7 +3193,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "ContainerOpen";
     };
     template <> struct EventSpec<Event::DimensionChange> {
@@ -3202,7 +3202,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "DimensionChange";
     };
     template <> struct EventSpec<Event::ServerCommand> {
@@ -3211,7 +3211,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "ServerCommand";
     };
     template <> struct EventSpec<Event::PreLogin> {
@@ -3220,7 +3220,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = true;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 3;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "PreLogin";
     };
     template <> struct EventSpec<Event::SocketOpen> {
@@ -3229,7 +3229,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "SocketOpen";
     };
     template <> struct EventSpec<Event::SocketData> {
@@ -3238,7 +3238,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = true;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "SocketData";
     };
     template <> struct EventSpec<Event::SocketClose> {
@@ -3247,7 +3247,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = false;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "SocketClose";
     };
     template <> struct EventSpec<Event::MicData> {
@@ -3256,7 +3256,7 @@ namespace perlin::abi {
         static constexpr bool kMethod = true;
         static constexpr bool kCancellable = false;
         static constexpr bool kHot = true;
-        static constexpr uint32_t kSince = 4;
+        static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "MicData";
     };
 

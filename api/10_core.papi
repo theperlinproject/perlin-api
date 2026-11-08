@@ -1,6 +1,6 @@
 const ApiVersion: u32 = 1 @doc("Major generation of the wire contract (the wasm import module is `perlin`); a breaking redesign would be 2, served next to 1");
-const ApiRevision: u32 = 4 @since(4) @doc("Revision of this schema: it grows with every addition and must equal the `api perlin version` line");
-const ApiOldestRevision: u32 = 1 @since(4) @doc("Oldest revision hosts still serve; plugins built for it keep working");
+const ApiRevision: u32 = 1 @doc("Revision of this schema: it grows with every addition and must equal the `api perlin version` line");
+const ApiOldestRevision: u32 = 1 @doc("Oldest revision hosts still serve; plugins built for it keep working");
 const NeedMoreBase: i32 = 16 @doc("perlin.call results below -NeedMoreBase mean the output buffer was too small: -(NeedMoreBase + needed)");
 const EventCancel: u32 = 1 @doc("Bit 0 of a perlin_event result cancels the event");
 const GfxIndex32: u32 = 1;
@@ -11,9 +11,9 @@ const GfxScreenZ: i32 = 100;
 const GfxMaxTextures: u32 = 64;
 const GfxMaxTextureSide: u32 = 4096;
 const GfxMaxTextureBytes: u64 = 134217728;
-const SocketMaxOpen: u32 = 8 @since(4) @doc("Open sockets per plugin");
-const SocketMaxMessage: u32 = 4194304 @since(4) @doc("Largest single send or received message in bytes");
-const AudioStreamMax: u32 = 16 @since(4) @doc("Open audio streams per plugin");
+const SocketMaxOpen: u32 = 8 @doc("Open sockets per plugin");
+const SocketMaxMessage: u32 = 4194304 @doc("Largest single send or received message in bytes");
+const AudioStreamMax: u32 = 16 @doc("Open audio streams per plugin");
 
 enum Status: i32 @doc("Result of every call; negative values are returned by perlin.call") {
     Ok = 0;
@@ -32,13 +32,13 @@ flags Permission: u32 @doc("Capabilities a plugin manifest requests") {
     Storage = 3;
     Files = 4;
     Native = 5;
-    World = 6 @doc("Server: change blocks, entities and the world") @since(3);
-    Players = 7 @doc("Server: change players, their inventories and stats") @since(3);
-    Admin = 8 @doc("Server: run commands, kick and ban, change game rules") @since(3);
-    Microphone = 9 @doc("Client: record from the microphone") @since(4);
-    Clipboard = 10 @doc("Client: read the system clipboard") @since(4);
-    Window = 11 @doc("Client: change the game window") @since(4);
-    Sockets = 12 @doc("Open raw TCP and WebSocket connections") @since(4);
+    World = 6 @doc("Server: change blocks, entities and the world");
+    Players = 7 @doc("Server: change players, their inventories and stats");
+    Admin = 8 @doc("Server: run commands, kick and ban, change game rules");
+    Microphone = 9 @doc("Client: record from the microphone");
+    Clipboard = 10 @doc("Client: read the system clipboard");
+    Window = 11 @doc("Client: change the game window");
+    Sockets = 12 @doc("Open raw TCP and WebSocket connections");
 }
 
 alias Permissions = flagset<Permission>;
@@ -121,40 +121,40 @@ enum Tool: u8 { None = 0; Pickaxe = 1; Axe = 2; Shovel = 3; Hoe = 4; Shears = 5;
 
 enum NameKind: u8 { Item = 0; Block = 1; Entity = 2; }
 
-enum DamageCause: i32 @since(3) @doc("Why a player or mob took damage") {
+enum DamageCause: i32 @doc("Why a player or mob took damage") {
     Generic = 0; Mob = 1; Player = 2; Projectile = 3; Explosion = 4; Fall = 5; Void = 6; Lava = 7; Fire = 8;
     Burning = 9; Drowning = 10; Starving = 11; Suffocation = 12; Cactus = 13; Magma = 14; BerryBush = 15;
     Poison = 16; Wither = 17; Magic = 18; FallingBlock = 19; Kill = 20; Plugin = 21;
 }
 
-enum Weather: i32 @since(3) { Clear = 0; Rain = 1; Thunder = 2; }
+enum Weather: i32 { Clear = 0; Rain = 1; Thunder = 2; }
 
-enum FormKind: i32 @since(3) { Message = 0; Menu = 1; Custom = 2; }
+enum FormKind: i32 { Message = 0; Menu = 1; Custom = 2; }
 
-enum FormElement: i32 @since(3) { Label = 0; Toggle = 1; Slider = 2; StepSlider = 3; Dropdown = 4; Input = 5; Header = 6; Divider = 7; }
+enum FormElement: i32 { Label = 0; Toggle = 1; Slider = 2; StepSlider = 3; Dropdown = 4; Input = 5; Header = 6; Divider = 7; }
 
-enum LogLevel: i32 @since(3) { Debug = 0; Info = 1; Warn = 2; Error = 3; }
+enum LogLevel: i32 { Debug = 0; Info = 1; Warn = 2; Error = 3; }
 
-enum MeshAnchor: i32 @since(4) @doc("Where an entity mesh is attached and what it turns with") {
+enum MeshAnchor: i32 @doc("Where an entity mesh is attached and what it turns with") {
     Body = 0 @doc("origin at the feet, turns with the body");
     Head = 1 @doc("origin at the eyes, turns with the head (yaw and pitch)");
     Feet = 2 @doc("origin at the feet, never turns: world axes");
 }
 
-flags ViewModelField: u32 @since(4) @doc("Which values of ViewModelData are applied; the rest stay as the player set them") {
+flags ViewModelField: u32 @doc("Which values of ViewModelData are applied; the rest stay as the player set them") {
     SwingSpeed = 0; Scale = 1; Bob = 2; Arm = 3; Item = 4; Visible = 5; Sway = 6; Equip = 7; LeftHanded = 8;
 }
 alias ViewModelFields = flagset<ViewModelField>;
 
-enum SocketKind: i32 @since(4) { Tcp = 0; WebSocket = 1; }
+enum SocketKind: i32 { Tcp = 0; WebSocket = 1; }
 
-enum AudioCategory: i32 @since(4) @doc("Which volume slider scales a stream") {
+enum AudioCategory: i32 @doc("Which volume slider scales a stream") {
     Master = 0; Music = 1; Record = 2; Weather = 3; Block = 4; Hostile = 5; Neutral = 6; Player = 7; Ambient = 8; Voice = 9;
 }
 
-enum SlotCorner: i32 @since(4) { TopLeft = 0; TopRight = 1; BottomLeft = 2; BottomRight = 3; Center = 4; }
+enum SlotCorner: i32 { TopLeft = 0; TopRight = 1; BottomLeft = 2; BottomRight = 3; Center = 4; }
 
-flags WindowField: u32 @since(4) @doc("Which values of WindowControlData are applied") {
+flags WindowField: u32 @doc("Which values of WindowControlData are applied") {
     Fullscreen = 0; Title = 1;
 }
 alias WindowFields = flagset<WindowField>;

@@ -9,9 +9,9 @@
 #include "perlin/meta.hpp"
 
 namespace perlin::abi {
-    inline constexpr uint32_t kSchemaVersion = 4;
+    inline constexpr uint32_t kSchemaVersion = 1;
     inline constexpr uint32_t kApiVersion = 1;
-    inline constexpr uint32_t kApiRevision = 4;
+    inline constexpr uint32_t kApiRevision = 1;
     inline constexpr uint32_t kApiOldestRevision = 1;
     inline constexpr int32_t kNeedMoreBase = 16;
     inline constexpr uint32_t kEventCancel = 1;

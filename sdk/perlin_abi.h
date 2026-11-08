@@ -165,9 +165,9 @@ static inline int32_t perlin_invoke(uint32_t op, const perlin_writer* request, p
     return -6;
 }
 
-#define PERLIN_SCHEMA_VERSION 4
+#define PERLIN_SCHEMA_VERSION 1
 #define PERLIN_API_VERSION (1u)
-#define PERLIN_API_REVISION (4u)
+#define PERLIN_API_REVISION (1u)
 #define PERLIN_API_OLDEST_REVISION (1u)
 #define PERLIN_NEED_MORE_BASE (16)
 #define PERLIN_EVENT_CANCEL (1u)

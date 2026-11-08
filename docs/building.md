@@ -102,7 +102,3 @@ Configuring with a native compiler stops with a message that says to use Emscrip
 ## Installing and running
 
 Drop `name.wasm` (and optionally `name.json` and `name.png`) into `<data dir>/mods/`. Plugins hot-reload when the file changes (Options → Hot Reload On Save) and can be enabled, disabled and reloaded from **Pause → Mods**. A plugin that asks for dangerous permissions needs approval first, see [Manifest and permissions](manifest.md).
-
-## Testing a plugin natively
-
-The headers also compile for the host machine, which makes unit tests possible: define `perlin_host_call` to stand in for the game, as `tests/plugin_test.cpp` and `tests/sdk_test.cpp` in this repository do.

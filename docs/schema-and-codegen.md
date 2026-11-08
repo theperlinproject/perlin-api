@@ -2,11 +2,11 @@
 
 ## The schema (`api/*.papi`)
 
-This repository is the Perlin mod API, kept apart from the game (the Perlin game repository pins a commit of it and builds its host from it). Everything a plugin can call or receive, on the client and on the server, is declared once in the schema files in `api/`, and everything else is generated from them by `codegen/generate.py`:
+This repository is the Perlin mod API. Everything a plugin can call or receive, on the client and on the server, is declared once in the schema files in `api/`, and everything else is generated from them by `codegen/generate.py`:
 
 ```
 tag hot on event, op @doc("Raised or called many times per second");
-struct Form @since(3) { kind: FormKind = Message; title: string; body: string; buttons: list<FormButton>; controls: list<FormControl>; }
+struct Form { kind: FormKind = Message; title: string; body: string; buttons: list<FormButton>; controls: list<FormControl>; }
 op PlayerForm = 0x7023 @hosts(server) @category(ui) (player: u64, form: Form) -> u32;
 event PlayerDamage = 52 @hosts(server) @cancellable EventServerDamage;
 ```

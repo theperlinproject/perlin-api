@@ -14,7 +14,7 @@ The SDK leans on the compiler instead of strings:
 
 ## Plugins are classes
 
-`perlin::Plugin` is the only entry point (the old `PERLIN_PLUGIN(ctx)` function macro is gone). The manifest (name, description, permissions, settings) stays in `name.json`; the class is only the code.
+`perlin::Plugin` is the only entry point. The manifest (name, description, permissions, settings) stays in `name.json`; the class is only the code.
 
 ```cpp
 #include <perlin/perlin.hpp>
@@ -36,4 +36,4 @@ struct Hello : perlin::Plugin {
 PERLIN_REGISTER(Hello)
 ```
 
-`Context` (also spelled `PluginCtx`) has `on`, `after`, `every`, `command`, `bind`, `hud`, `on_change`, `on_press`, `config`, `print` and `raw()`; `command`, `bind` and `hud` also take an object and a member function, and `ctx()` reaches it from any method. The event methods are generated from the ABI table, one `onName` per event (`onTick`, `onFrame`, `onChatReceived`, ..., and on the server `onPlayerJoin`, `onPlayerQuit`, `onPlayerChat`, `onBlockBreak`, `onBlockPlace`); each takes the payload or nothing, and may return `Flow` to cancel. `tests/sdk_test.cpp` here and the plugins in the game repository (`plugins/waila`, `plugins/barrel_roll`, `plugins/minimap`) are complete examples.
+`Context` (also spelled `PluginCtx`) has `on`, `after`, `every`, `command`, `bind`, `hud`, `on_change`, `on_press`, `config`, `print` and `raw()`; `command`, `bind` and `hud` also take an object and a member function, and `ctx()` reaches it from any method. The event methods are generated from the ABI table, one `onName` per event (`onTick`, `onFrame`, `onChatReceived`, ..., and on the server `onPlayerJoin`, `onPlayerQuit`, `onPlayerChat`, `onBlockBreak`, `onBlockPlace`); each takes the payload or nothing, and may return `Flow` to cancel.

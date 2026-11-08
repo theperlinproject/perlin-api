@@ -58,10 +58,10 @@ struct EventPlayer { player: u64 = 0; name: string; }
 struct EventPlayerChat { player: u64 = 0; name: string; message: string; }
 struct EventPlayerBlock { player: u64 = 0; x: i32 = 0; y: i32 = 0; z: i32 = 0; block: string; }
 
-struct EventSocketOpen @since(4) { id: u32 = 0; protocol: string; }
-struct EventSocketData @since(4) { id: u32 = 0; binary: bool = true; data: bytes; }
-struct EventSocketClose @since(4) { id: u32 = 0; code: u32 = 0; reason: string; error: string; }
-struct EventMicData @since(4) { sampleRate: u32 = 0; level: f32 = 0; peak: f32 = 0; pcm: bytes @doc("signed 16-bit little-endian mono samples"); }
+struct EventSocketOpen { id: u32 = 0; protocol: string; }
+struct EventSocketData { id: u32 = 0; binary: bool = true; data: bytes; }
+struct EventSocketClose { id: u32 = 0; code: u32 = 0; reason: string; error: string; }
+struct EventMicData { sampleRate: u32 = 0; level: f32 = 0; peak: f32 = 0; pcm: bytes @doc("signed 16-bit little-endian mono samples"); }
 
 event Load = 1 @hosts(client, server) @internal;
 event Unload = 2 @hosts(client, server) @internal;
@@ -114,7 +114,7 @@ event PlayerQuit = 48 @hosts(server) EventPlayer;
 event PlayerChat = 49 @hosts(server) @cancellable EventPlayerChat;
 event BlockBreak = 50 @hosts(server) @cancellable EventPlayerBlock;
 event BlockPlace = 51 @hosts(server) @cancellable EventPlayerBlock;
-event SocketOpen = 71 @hosts(client, server) @category(network) @since(4) EventSocketOpen;
-event SocketData = 72 @hosts(client, server) @category(network) @since(4) @hot EventSocketData;
-event SocketClose = 73 @hosts(client, server) @category(network) @since(4) EventSocketClose;
-event MicData = 74 @hosts(client) @category(audio) @since(4) @hot EventMicData;
+event SocketOpen = 71 @hosts(client, server) @category(network) EventSocketOpen;
+event SocketData = 72 @hosts(client, server) @category(network) @hot EventSocketData;
+event SocketClose = 73 @hosts(client, server) @category(network) EventSocketClose;
+event MicData = 74 @hosts(client) @category(audio) @hot EventMicData;

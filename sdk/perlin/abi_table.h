@@ -1,7 +1,7 @@
 #ifndef PERLIN_ABI_TABLE_H
 #define PERLIN_ABI_TABLE_H
 
-#define PERLIN_ABI_VERSION 4
+#define PERLIN_ABI_VERSION 1
 
 #define PERLIN_ABI_OPS(X) \
     X(Log, 0x0001, LogRequest, Nothing, None, Both) \

@@ -60,7 +60,7 @@ namespace perlin::mods {
         uint64_t v = 0;
         std::string ignored;
         if (!w.HasExport("perlin_api_revision") || !w.Call("perlin_api_revision", {}, &v, ignored) || v == 0 || v > 0xFFFF)
-            return kLegacyApiRevision;
+            return kDefaultApiRevision;
         return static_cast<uint32_t>(v);
     }
 

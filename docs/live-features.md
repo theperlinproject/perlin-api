@@ -1,6 +1,6 @@
 # Network, audio and slots
 
-Everything here is in `perlin/live.hpp`, which `perlin/perlin.hpp` includes. The generated typed calls in `perlin/gen/calls.hpp` reach the same operations. All of it is revision 4.
+Everything here is in `perlin/live.hpp`, which `perlin/perlin.hpp` includes. The generated typed calls in `perlin/gen/calls.hpp` reach the same operations.
 
 ## Asking the host what it supports
 

@@ -1,6 +1,6 @@
 # Building real features
 
-What the API gives you for the kind of features a full client has. Each row names the calls to use; the exact signatures are in [Using the game API](game-api.md) and the [reference](API.md). Everything marked *rev 4* was added in revision 4, see [Versioning](versioning.md).
+What the API gives you for the kind of features a full client has. Each row names the calls to use; the exact signatures are in [Using the game API](game-api.md) and the [reference](API.md).
 
 ## HUD and information
 
@@ -12,7 +12,7 @@ What the API gives you for the kind of features a full client has. Each row name
 | Coordinates, speed, direction, health, hunger, air | `game::player()` (position, velocity, yaw, pitch, `hunger`, `air`) |
 | Armor and held item display | `game::inventory()` (armor, hotbar, offhand: `Item` has name, count, damage, enchantments) |
 | Potion effects | `game::effects()` |
-| Server scoreboard, boss bars | `game::scoreboard()`, `game::bossbars()` (*rev 4*) |
+| Server scoreboard, boss bars | `game::scoreboard()`, `game::bossbars()` |
 | Player list | `game::players()` |
 | Time, weather, dimension | `game::world()` |
 | Reach, target info | `game::aim()`, `game::raycast(...)`, `game::target()` |
@@ -27,19 +27,19 @@ What the API gives you for the kind of features a full client has. Each row name
 | --- | --- |
 | Zoom, FOV changes, free look, camera roll, shift the view | `game::camera({...})`, `game::set_look` |
 | Fullbright, render distance, other settings | `act::set_option<game::Option::...>(...)` |
-| Time changer (client only) | `hooks::client_time(ticks)` (*rev 4*) |
-| Weather changer (client only) | `hooks::client_weather(rain, thunder)` (*rev 4*) |
+| Time changer (client only) | `hooks::client_time(ticks)` |
+| Weather changer (client only) | `hooks::client_weather(rain, thunder)` |
 | Fog colour and distance | `hooks::fog(...)` |
 | Screen tint, vignette | `hooks::screen_tint(...)` |
-| Block outline colour or hidden | `hooks::block_outline(argb)` (*rev 4*) |
-| Old-style hand, held item position, swing speed, bobbing | `hooks::view_model({...})` (*rev 4*) |
+| Block outline colour or hidden | `hooks::block_outline(argb)` |
+| Hand, held item position, swing speed, bobbing | `hooks::view_model({...})` |
 | Hitboxes, ESP, schematics, chunk borders | `game::boxes(...)`, `game::lines(...)` |
 | Custom nametags, hide or scale mobs, tint | `hooks::entity_render({...})` |
-| Cosmetics: capes, wings, hats, halos | `hooks::entity_mesh(id, entity, triangles, anchor, texture)` (*rev 4*) with textures from `gfx::` |
+| Cosmetics: capes, wings, hats, halos | `hooks::entity_mesh(id, entity, triangles, anchor, texture)` with textures from `gfx::` |
 | Replace a player's skin | `hooks::skin(player, png)` |
 | Custom particles | `hooks::particle(...)` |
 | World-space labels and waypoints | `game::to_screen(x, y, z)` |
-| Minimap | `game::map_chunk(cx, cz)` |
+| Radar or map overlay | `game::map_chunk(cx, cz)` |
 
 ## Input and automation
 
