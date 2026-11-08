@@ -50,6 +50,7 @@ endfunction()
 
 function(perlin_api_add_plugin target)
     cmake_parse_arguments(PARSE_ARGV 1 PLUGIN "" "MANIFEST;OUTPUT_NAME" "SOURCES")
+    get_filename_component(api_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.." ABSOLUTE)
     if(NOT PLUGIN_SOURCES)
         message(FATAL_ERROR "perlin_api_add_plugin(${target}): pass SOURCES <file.cpp>...")
     endif()
@@ -88,8 +89,8 @@ function(perlin_api_add_plugin target)
         find_package(Python3 REQUIRED COMPONENTS Interpreter)
         add_custom_command(OUTPUT "${gen_header}"
             COMMAND ${CMAKE_COMMAND} -E make_directory "${gen_dir}"
-            COMMAND ${Python3_EXECUTABLE} "${PERLIN_API_DIR}/tools/perlin_settings.py" "${manifest}" "${gen_header}"
-            DEPENDS "${manifest}" "${PERLIN_API_DIR}/tools/perlin_settings.py"
+            COMMAND ${Python3_EXECUTABLE} "${api_dir}/tools/perlin_settings.py" "${manifest}" "${gen_header}"
+            DEPENDS "${manifest}" "${api_dir}/tools/perlin_settings.py"
             VERBATIM)
         add_custom_target(${target}_settings DEPENDS "${gen_header}")
         add_dependencies(${target} ${target}_settings)
