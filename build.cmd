@@ -38,6 +38,10 @@ if defined EMSDK if exist "%EMSDK%\upstream\emscripten\em++.bat" (
     set "emxx=%EMSDK%\upstream\emscripten\em++.bat"
     goto haveem
 )
+if defined EMSDK if exist "%EMSDK%\upstream\emscripten\em++.exe" (
+    set "emxx=%EMSDK%\upstream\emscripten\em++.exe"
+    goto haveem
+)
 echo em++ not found: run emsdk_env.bat first, or build with --wasm32 and wasi-sdk 1>&2
 exit /b 1
 :haveem

@@ -68,6 +68,7 @@ function(perlin_api_add_plugin target)
 
     set(exports perlin_api_revision perlin_alloc perlin_free perlin_event perlin_subscriptions perlin_subscriptions_hi)
     if(EMSCRIPTEN)
+        target_compile_options(${target} PRIVATE -sMEMORY64=1)
         list(JOIN exports ",_" joined)
         target_link_options(${target} PRIVATE
             -sMEMORY64=1 -sSTANDALONE_WASM=1 -sPURE_WASI=1 -sALLOW_MEMORY_GROWTH=1
