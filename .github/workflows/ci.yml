@@ -1,0 +1,48 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+      - name: build
+        run: cmake --build build --parallel
+      - name: test
+        run: ctest --test-dir build --output-on-failure
+
+  host:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DPERLIN_API_BUILD_HOST=ON
+      - run: cmake --build build --parallel
+      - run: ctest --test-dir build --output-on-failure
+
+  consumer:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: configure and build a plugin against perlin::api
+        run: |
+          mkdir consumer
+          cat > consumer/CMakeLists.txt <<'CMAKE'
+          cmake_minimum_required(VERSION 3.24)
+          project(consumer CXX)
+          include(FetchContent)
+          FetchContent_Declare(perlin_api SOURCE_DIR "${PERLIN_API_SRC}")
+          FetchContent_MakeAvailable(perlin_api)
+          add_library(consumer OBJECT main.cpp)
+          target_link_libraries(consumer PRIVATE perlin::api)
+          CMAKE
+          printf '#include <perlin/perlin.hpp>\nstruct P : perlin::Plugin {};\nPERLIN_REGISTER(P)\n' > consumer/main.cpp
+          cmake -S consumer -B consumer/build -DPERLIN_API_SRC="$GITHUB_WORKSPACE"
+          cmake --build consumer/build
