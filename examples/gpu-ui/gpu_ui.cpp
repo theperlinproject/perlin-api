@@ -21,6 +21,7 @@ public:
     // The renderer was recreated (graphics API switch, device lost): every id is gone.
     void onGpuReset() {
         ready_ = false;
+        failed_ = false;
         build();
     }
 
@@ -29,7 +30,8 @@ public:
         if (!info || !info->available)
             return;
         if (!ready_) {
-            build();
+            if (!failed_)
+                build();
             return;
         }
         if (info->width != width_ || info->height != height_)
@@ -40,6 +42,7 @@ private:
     static constexpr float kScale = 0.5f; // the blur runs at half resolution
 
     void build() {
+        failed_ = true; // report a problem once; a renderer reset gives it another try
         auto info = gpu::info();
         if (!info) {
             (void)act::message("gpu-ui: {}", info.error().message());
@@ -50,7 +53,7 @@ private:
 
         auto pack = gpu::load_pack(std::span<const uint8_t>(gpu_ui_pack, sizeof(gpu_ui_pack)));
         if (!pack) {
-            (void)act::message("gpu-ui: loading the shader pack failed: {}", pack.error().message());
+            (void)act::message("gpu-ui: the shader pack was rejected ({}). It is probably the empty placeholder: build the plugin with CONDUIT_DIR and SLANGC set.", pack.error().message());
             return;
         }
         pack_ = *pack;
@@ -83,6 +86,7 @@ private:
         vertices_ = *vertices;
         indices_ = *indices;
         ready_ = true;
+        failed_ = false;
         width_ = height_ = 0;
         layout(info->width, info->height);
     }
@@ -156,5 +160,6 @@ private:
     uint32_t sampler_ = 0, uiPipe_ = 0, blurPipe_ = 0, scene_ = 0, ping_ = 0, pong_ = 0, vertices_ = 0, indices_ = 0;
     uint32_t width_ = 0, height_ = 0;
     bool ready_ = false;
+    bool failed_ = false;
 };
 PERLIN_REGISTER(GpuUi)
