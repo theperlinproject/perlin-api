@@ -11,7 +11,7 @@
   "version": "1.0.0",
   "author": "You",
   "website": "https://example.com",
-  "permissions": ["network", "files", "packets", "control", "native", "sockets", "microphone", "clipboard", "window"]
+  "permissions": ["network", "files", "packets", "control", "native", "sockets", "microphone", "clipboard", "window", "gpu"]
 }
 ```
 
@@ -33,11 +33,12 @@ The API exposes everything the game knows and can do. Only the dangerous operati
 | `microphone` | `live::mic_start`: recording from the microphone |
 | `clipboard` | `live::clipboard()`: reading the system clipboard |
 | `window` | `live::window` and `live::window_title`: fullscreen and the window title |
+| `gpu` | The `gpu::` calls: running your own shaders on the game's graphics device and drawing under or over the HUD, see [Drawing with the GPU](gpu.md) |
 | `storage` | always granted; reads and writes under `<data dir>/mods/<name>.data/` only |
 
 An operation without its permission returns `Error::denied()` instead of running.
 
-**Approval.** A mod that asks for `network`, `files`, `control`, `packets`, `native`, `sockets`, `microphone`, `clipboard` or `window` is never enabled just because it was dropped into the folder. It shows as *Needs approval* in the Mods screen, with a plain-language list of what it asks to do, and starts only after you press **Allow & Enable**. The approval covers exactly the permissions it asked for; a later update that asks for more switches it off again until you approve it. Mods that only use the always-allowed operations start right away.
+**Approval.** A mod that asks for `network`, `files`, `control`, `packets`, `native`, `sockets`, `microphone`, `clipboard`, `window` or `gpu` is never enabled just because it was dropped into the folder. It shows as *Needs approval* in the Mods screen, with a plain-language list of what it asks to do, and starts only after you press **Allow & Enable**. The approval covers exactly the permissions it asked for; a later update that asks for more switches it off again until you approve it. Mods that only use the always-allowed operations start right away.
 
 ## Sandbox
 

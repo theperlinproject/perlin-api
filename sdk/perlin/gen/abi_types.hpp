@@ -26,6 +26,15 @@ namespace perlin::abi {
     inline constexpr uint32_t kSocketMaxOpen = 8;
     inline constexpr uint32_t kSocketMaxMessage = 4194304;
     inline constexpr uint32_t kAudioStreamMax = 16;
+    inline constexpr uint32_t kGpuMaxPacks = 8;
+    inline constexpr uint32_t kGpuMaxResources = 4096;
+    inline constexpr uint32_t kGpuMaxTextureSide = 8192;
+    inline constexpr uint64_t kGpuMaxBufferBytes = 268435456;
+    inline constexpr uint64_t kGpuMaxTotalBytes = 1073741824;
+    inline constexpr uint32_t kGpuMaxLayers = 16;
+    inline constexpr uint32_t kGpuMaxStreamBytes = 8388608;
+    inline constexpr uint32_t kGpuMaxUniformBytes = 4096;
+    inline constexpr uint32_t kGpuTextureSlots = 48;
 
     enum class Status : int32_t {
         Ok = 0,
@@ -52,6 +61,7 @@ namespace perlin::abi {
         Clipboard = uint32_t{1} << 10,
         Window = uint32_t{1} << 11,
         Sockets = uint32_t{1} << 12,
+        Gpu = uint32_t{1} << 13,
     };
 
     enum class Draw : uint8_t {
@@ -441,6 +451,140 @@ namespace perlin::abi {
         Title = uint32_t{1} << 1,
     };
 
+    enum class GpuFormat : uint8_t {
+        None = 0,
+        Screen = 1,
+        R8 = 2,
+        Rg8 = 3,
+        Rgba8 = 4,
+        Rgba8Srgb = 5,
+        Bgra8 = 6,
+        R16f = 7,
+        Rg16f = 8,
+        Rgba16f = 9,
+        R32f = 10,
+        Rg32f = 11,
+        Rgb32f = 12,
+        Rgba32f = 13,
+        R32u = 14,
+        Rgb10a2 = 15,
+        R11G11B10f = 16,
+        D16 = 17,
+        D32f = 18,
+        D24S8 = 19,
+        D32fS8 = 20,
+    };
+
+    enum class GpuBufferUsage : uint32_t {
+        None = 0,
+        Vertex = uint32_t{1} << 0,
+        Index = uint32_t{1} << 1,
+        Storage = uint32_t{1} << 2,
+        Indirect = uint32_t{1} << 3,
+        CopySrc = uint32_t{1} << 4,
+        CopyDst = uint32_t{1} << 5,
+    };
+
+    enum class GpuTextureUsage : uint32_t {
+        None = 0,
+        Sampled = uint32_t{1} << 0,
+        Storage = uint32_t{1} << 1,
+        ColorTarget = uint32_t{1} << 2,
+        DepthTarget = uint32_t{1} << 3,
+        CopySrc = uint32_t{1} << 4,
+        CopyDst = uint32_t{1} << 5,
+    };
+
+    enum class GpuTextureDim : uint8_t {
+        Tex2d = 0,
+        Array = 1,
+        Cube = 2,
+        Tex3d = 3,
+    };
+
+    enum class GpuFilter : uint8_t {
+        Nearest = 0,
+        Linear = 1,
+    };
+
+    enum class GpuAddress : uint8_t {
+        Repeat = 0,
+        Mirror = 1,
+        Clamp = 2,
+        Border = 3,
+    };
+
+    enum class GpuCompare : uint8_t {
+        Never = 0,
+        Less = 1,
+        Equal = 2,
+        LessEqual = 3,
+        Greater = 4,
+        NotEqual = 5,
+        GreaterEqual = 6,
+        Always = 7,
+    };
+
+    enum class GpuBlendFactor : uint8_t {
+        Zero = 0,
+        One = 1,
+        SrcColor = 2,
+        InvSrcColor = 3,
+        SrcAlpha = 4,
+        InvSrcAlpha = 5,
+        DstColor = 6,
+        InvDstColor = 7,
+        DstAlpha = 8,
+        InvDstAlpha = 9,
+        SrcAlphaSaturate = 10,
+    };
+
+    enum class GpuBlendOp : uint8_t {
+        Add = 0,
+        Subtract = 1,
+        ReverseSubtract = 2,
+        Min = 3,
+        Max = 4,
+    };
+
+    enum class GpuCull : uint8_t {
+        None = 0,
+        Back = 1,
+        Front = 2,
+    };
+
+    enum class GpuFrontFace : uint8_t {
+        CounterClockwise = 0,
+        Clockwise = 1,
+    };
+
+    enum class GpuTopology : uint8_t {
+        TriangleList = 0,
+        TriangleStrip = 1,
+        LineList = 2,
+        PointList = 3,
+    };
+
+    enum class GpuStorageKind : uint8_t {
+        Buffer = 0,
+        BufferRw = 1,
+        TextureRw = 2,
+    };
+
+    enum class GpuResource : uint8_t {
+        Pack = 0,
+        Buffer = 1,
+        Texture = 2,
+        Sampler = 3,
+        Pipeline = 4,
+    };
+
+    enum class GpuStage : uint8_t {
+        Pre = 0,
+        UnderHud = 1,
+        Overlay = 2,
+    };
+
 }
 
 template <> struct perlin::meta::enable_flags<perlin::abi::Permission> : std::true_type {};
@@ -454,6 +598,8 @@ template <> struct perlin::meta::enum_range<perlin::abi::EntityFlag> {
 };
 template <> struct perlin::meta::enable_flags<perlin::abi::ViewModelField> : std::true_type {};
 template <> struct perlin::meta::enable_flags<perlin::abi::WindowField> : std::true_type {};
+template <> struct perlin::meta::enable_flags<perlin::abi::GpuBufferUsage> : std::true_type {};
+template <> struct perlin::meta::enable_flags<perlin::abi::GpuTextureUsage> : std::true_type {};
 
 namespace perlin::abi {
     template <class E>
@@ -2129,6 +2275,212 @@ namespace perlin::abi {
 
     struct ServerConnectRequest {
         std::string address;
+    };
+
+    struct GpuInfoData {
+        bool available = false;
+        std::string api;
+        std::string adapter;
+        std::string vendor;
+        bool discrete = false;
+        GpuFormat targetFormat = GpuFormat::Bgra8;
+        uint32_t width = 0;
+        uint32_t height = 0;
+        uint32_t maxTexture2d = 0;
+        uint32_t maxTextureLayers = 0;
+        uint32_t maxMsaaSamples = 1;
+        uint64_t maxBufferBytes = 0;
+        uint32_t maxColorTargets = 1;
+        bool compute = false;
+        bool multiDrawIndirect = false;
+        bool float16 = false;
+        bool int64 = false;
+        bool subgroups = false;
+        bool sceneCopy = false;
+        std::string shaderTarget;
+    };
+
+    struct GpuUniformMember {
+        std::string name;
+        uint32_t offset = 0;
+        uint32_t bytes = 0;
+        uint32_t elements = 1;
+    };
+
+    struct GpuProgramInfo {
+        std::string name;
+        uint32_t uniformBytes = 0;
+        std::vector<GpuUniformMember> uniforms;
+        bool vertex = false;
+        bool fragment = false;
+        bool compute = false;
+    };
+
+    struct GpuTextureSlot {
+        std::string name;
+        uint32_t slot = 0;
+        bool array = false;
+        bool unfilterable = false;
+    };
+
+    struct GpuPackInfo {
+        uint32_t pack = 0;
+        std::vector<GpuProgramInfo> programs;
+        std::vector<GpuTextureSlot> slots;
+    };
+
+    struct GpuBufferRequest {
+        uint64_t size = 0;
+        meta::Flags<GpuBufferUsage> usage;
+        std::vector<uint8_t> data;
+        std::string name;
+    };
+
+    struct GpuBufferWriteRequest {
+        uint32_t id = 0;
+        uint64_t offset = 0;
+        std::vector<uint8_t> data;
+    };
+
+    struct GpuBufferReadRequest {
+        uint32_t id = 0;
+        uint64_t offset = 0;
+        uint64_t size = 0;
+        uint32_t tag = 0;
+    };
+
+    struct GpuTextureRequest {
+        uint32_t width = 1;
+        uint32_t height = 1;
+        uint32_t layers = 1;
+        uint32_t mips = 1;
+        GpuFormat format = GpuFormat::Rgba8;
+        meta::Flags<GpuTextureUsage> usage;
+        GpuTextureDim dim = GpuTextureDim::Tex2d;
+        uint32_t samples = 1;
+        bool screenSized = false;
+        float scale = 1.0f;
+        std::vector<uint8_t> data;
+        std::string name;
+    };
+
+    struct GpuTextureWriteRequest {
+        uint32_t id = 0;
+        uint32_t layer = 0;
+        uint32_t mip = 0;
+        uint32_t x = 0;
+        uint32_t y = 0;
+        uint32_t width = 0;
+        uint32_t height = 0;
+        std::vector<uint8_t> data;
+    };
+
+    struct GpuSamplerRequest {
+        GpuFilter min = GpuFilter::Linear;
+        GpuFilter mag = GpuFilter::Linear;
+        GpuFilter mip = GpuFilter::Linear;
+        GpuAddress u = GpuAddress::Clamp;
+        GpuAddress v = GpuAddress::Clamp;
+        GpuAddress w = GpuAddress::Clamp;
+        float anisotropy = 1.0f;
+        float lodBias = 0.0f;
+        float minLod = 0.0f;
+        float maxLod = 1000.0f;
+        bool compare = false;
+        GpuCompare compareOp = GpuCompare::LessEqual;
+        uint32_t border = 0;
+    };
+
+    struct GpuStreamDesc {
+        uint32_t stride = 0;
+        bool instance = false;
+    };
+
+    struct GpuAttributeDesc {
+        uint32_t location = 0;
+        uint32_t stream = 0;
+        GpuFormat format = GpuFormat::Rgba32f;
+        uint32_t offset = 0;
+    };
+
+    struct GpuStorageBinding {
+        uint32_t binding = 0;
+        GpuStorageKind kind = GpuStorageKind::Buffer;
+    };
+
+    struct GpuBlendDesc {
+        bool enabled = false;
+        GpuBlendFactor srcColor = GpuBlendFactor::One;
+        GpuBlendFactor dstColor = GpuBlendFactor::Zero;
+        GpuBlendOp colorOp = GpuBlendOp::Add;
+        GpuBlendFactor srcAlpha = GpuBlendFactor::One;
+        GpuBlendFactor dstAlpha = GpuBlendFactor::Zero;
+        GpuBlendOp alphaOp = GpuBlendOp::Add;
+        uint32_t writeMask = 15;
+    };
+
+    struct GpuPipelineRequest {
+        uint32_t pack = 0;
+        std::string program;
+        std::vector<GpuStreamDesc> streams;
+        std::vector<GpuAttributeDesc> attributes;
+        GpuTopology topology = GpuTopology::TriangleList;
+        GpuCull cull = GpuCull::None;
+        GpuFrontFace frontFace = GpuFrontFace::CounterClockwise;
+        float depthBiasConstant = 0.0f;
+        float depthBiasSlope = 0.0f;
+        bool depthTest = false;
+        bool depthWrite = false;
+        GpuCompare depthCompare = GpuCompare::LessEqual;
+        std::vector<GpuBlendDesc> blend;
+        std::vector<GpuFormat> colorFormats;
+        GpuFormat depthFormat = GpuFormat::None;
+        uint32_t samples = 1;
+        std::vector<GpuStorageBinding> storage;
+        std::string name;
+    };
+
+    struct GpuComputePipelineRequest {
+        uint32_t pack = 0;
+        std::string program;
+        std::vector<GpuStorageBinding> storage;
+        std::string name;
+    };
+
+    struct GpuSubmitRequest {
+        std::string layer;
+        GpuStage stage = GpuStage::Overlay;
+        int32_t z = 0;
+        bool once = false;
+        std::vector<uint8_t> stream;
+    };
+
+    struct EventGpuReadback {
+        uint32_t tag = 0;
+        uint32_t id = 0;
+        bool ok = false;
+        std::vector<uint8_t> data;
+    };
+
+    struct EventGpuReset {
+        uint32_t generation = 0;
+    };
+
+    struct GpuPackLoadRequest {
+        std::vector<uint8_t> data;
+    };
+
+    struct GpuDestroyRequest {
+        GpuResource kind{};
+        uint32_t id{};
+    };
+
+    struct GpuLayerClearRequest {
+        std::string layer;
+    };
+
+    struct GpuErrorsResponse {
+        std::vector<std::string> messages;
     };
 
     struct ServerItem {

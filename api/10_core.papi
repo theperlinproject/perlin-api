@@ -39,6 +39,7 @@ flags Permission: u32 @doc("Capabilities a plugin manifest requests") {
     Clipboard = 10 @doc("Client: read the system clipboard");
     Window = 11 @doc("Client: change the game window");
     Sockets = 12 @doc("Open raw TCP and WebSocket connections");
+    Gpu = 13 @doc("Client: run shaders and draw with the game's graphics device");
 }
 
 alias Permissions = flagset<Permission>;

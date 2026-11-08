@@ -80,6 +80,7 @@ What the API gives you for the kind of features a full client has. Each row name
 | Fullscreen and window title | `live::window(...)`, `live::window_title(...)` (`window`) |
 | Ask the host what it supports | `live::capabilities()`, `live::supports(Op::X)` |
 | Save config and data | `io::Config`, `fs::` (`storage` is always granted) |
+| Draw with your own shaders, fonts, blur or post effects (`gpu` permission) | `gpu::load_pack`, `gpu::create_pipeline`, `gpu::Commands`, see [Drawing with the GPU](gpu.md) |
 | Install a resource pack, switch shader pack | `hooks::register_pack(...)`, `hooks::shader_pack(...)` |
 | Record and replay packets | `Event::Packet` with `packets` permission, `game::inject_packet(...)` |
 | Talk to other mods | `hooks::send(...)` and `Event::ModMessage` |

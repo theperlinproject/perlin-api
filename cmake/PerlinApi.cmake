@@ -102,3 +102,66 @@ function(perlin_api_add_plugin target)
             VERBATIM)
     endif()
 endfunction()
+
+# Builds a conduit shader pack from Slang programs and embeds it in a header.
+#
+#   perlin_api_add_shader_pack(my_pack
+#       PROGRAMS shaders/ui.slang shaders/blur.slang
+#       SLOTS shaders/slots.json
+#       HEADER ${CMAKE_CURRENT_BINARY_DIR}/my_pack.hpp SYMBOL my_pack
+#       [INCLUDE dir...] [TARGETS spirv,dxil,hlsl,msl,wgsl] [CONDUIT_DIR path] [SLANGC path])
+#
+# CONDUIT_DIR is a conduit checkout (it provides tools/pack_shaders.py); SLANGC is the Slang compiler
+# (the Vulkan SDK ships one). Both can also come from the CONDUIT_DIR and SLANGC environment variables.
+# Build the target `my_pack` before the plugin and include the header.
+function(perlin_api_add_shader_pack target)
+    cmake_parse_arguments(PARSE_ARGV 1 PACK "" "SLOTS;HEADER;SYMBOL;TARGETS;CONDUIT_DIR;SLANGC" "PROGRAMS;INCLUDE")
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
+    get_filename_component(api_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.." ABSOLUTE)
+    if(NOT PACK_PROGRAMS OR NOT PACK_SLOTS OR NOT PACK_HEADER OR NOT PACK_SYMBOL)
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): pass PROGRAMS, SLOTS, HEADER and SYMBOL")
+    endif()
+    if(NOT PACK_CONDUIT_DIR AND DEFINED ENV{CONDUIT_DIR})
+        set(PACK_CONDUIT_DIR "$ENV{CONDUIT_DIR}")
+    endif()
+    if(NOT PACK_CONDUIT_DIR OR NOT EXISTS "${PACK_CONDUIT_DIR}/tools/pack_shaders.py")
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): set CONDUIT_DIR to a conduit checkout (tools/pack_shaders.py)")
+    endif()
+    if(NOT PACK_SLANGC AND DEFINED ENV{SLANGC})
+        set(PACK_SLANGC "$ENV{SLANGC}")
+    endif()
+    if(NOT PACK_SLANGC)
+        find_program(PACK_SLANGC slangc HINTS ENV VULKAN_SDK PATH_SUFFIXES bin Bin)
+    endif()
+    if(NOT PACK_SLANGC)
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): slangc not found; pass SLANGC or install the Vulkan SDK")
+    endif()
+    if(NOT PACK_TARGETS)
+        set(PACK_TARGETS "spirv,dxil,hlsl,msl,wgsl")
+    endif()
+
+    set(programs "")
+    foreach(p IN LISTS PACK_PROGRAMS)
+        get_filename_component(abs "${p}" ABSOLUTE)
+        list(APPEND programs "${abs}")
+    endforeach()
+    get_filename_component(slots "${PACK_SLOTS}" ABSOLUTE)
+    set(include_args "")
+    foreach(dir IN LISTS PACK_INCLUDE)
+        get_filename_component(abs "${dir}" ABSOLUTE)
+        list(APPEND include_args -I "${abs}")
+    endforeach()
+
+    set(pack_file "${PACK_HEADER}.pack")
+    file(GLOB_RECURSE included CONFIGURE_DEPENDS ${PACK_INCLUDE})
+    add_custom_command(
+        OUTPUT "${PACK_HEADER}"
+        COMMAND ${Python3_EXECUTABLE} "${PACK_CONDUIT_DIR}/tools/pack_shaders.py"
+                --slangc "${PACK_SLANGC}" --slots "${slots}" --targets "${PACK_TARGETS}" ${include_args}
+                -o "${pack_file}" ${programs}
+        COMMAND ${Python3_EXECUTABLE} "${api_dir}/tools/embed_file.py" "${pack_file}" "${PACK_HEADER}" "${PACK_SYMBOL}"
+        DEPENDS ${programs} "${slots}" "${PACK_CONDUIT_DIR}/tools/pack_shaders.py" "${api_dir}/tools/embed_file.py"
+        COMMENT "Packing shaders for ${target}"
+        VERBATIM)
+    add_custom_target(${target} DEPENDS "${PACK_HEADER}")
+endfunction()

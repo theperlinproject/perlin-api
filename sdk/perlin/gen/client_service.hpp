@@ -173,6 +173,20 @@ namespace perlin::abi::host {
         virtual Result<void> OpMicStop(Ctx&) { return std::unexpected(Status::Unavailable); }
         virtual Result<MicStateData> OpMicState(Ctx&) { return std::unexpected(Status::Unavailable); }
         virtual Result<void> OpPostEffect(Ctx&, const PostEffectData&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<GpuInfoData> OpGpuInfo(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<GpuPackInfo> OpGpuPackLoad(Ctx&, const GpuPackLoadRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<uint32_t> OpGpuBufferCreate(Ctx&, const GpuBufferRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuBufferWrite(Ctx&, const GpuBufferWriteRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuBufferRead(Ctx&, const GpuBufferReadRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<uint32_t> OpGpuTextureCreate(Ctx&, const GpuTextureRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuTextureWrite(Ctx&, const GpuTextureWriteRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<uint32_t> OpGpuSamplerCreate(Ctx&, const GpuSamplerRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<uint32_t> OpGpuPipelineCreate(Ctx&, const GpuPipelineRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<uint32_t> OpGpuComputePipelineCreate(Ctx&, const GpuComputePipelineRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuDestroy(Ctx&, const GpuDestroyRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuSubmit(Ctx&, const GpuSubmitRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpGpuLayerClear(Ctx&, const GpuLayerClearRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<GpuErrorsResponse> OpGpuErrors(Ctx&) { return std::unexpected(Status::Unavailable); }
 
         void Bind(OpTable<Ctx>& table) {
             table.template Handle<Op::Log>([this](Ctx& c, const LogRequest& r) { return OpLog(c, r); });
@@ -342,6 +356,20 @@ namespace perlin::abi::host {
             table.template Handle<Op::MicStop>([this](Ctx& c) { return OpMicStop(c); });
             table.template Handle<Op::MicState>([this](Ctx& c) { return OpMicState(c); });
             table.template Handle<Op::PostEffect>([this](Ctx& c, const PostEffectData& r) { return OpPostEffect(c, r); });
+            table.template Handle<Op::GpuInfo>([this](Ctx& c) { return OpGpuInfo(c); });
+            table.template Handle<Op::GpuPackLoad>([this](Ctx& c, const GpuPackLoadRequest& r) { return OpGpuPackLoad(c, r); });
+            table.template Handle<Op::GpuBufferCreate>([this](Ctx& c, const GpuBufferRequest& r) { return OpGpuBufferCreate(c, r); });
+            table.template Handle<Op::GpuBufferWrite>([this](Ctx& c, const GpuBufferWriteRequest& r) { return OpGpuBufferWrite(c, r); });
+            table.template Handle<Op::GpuBufferRead>([this](Ctx& c, const GpuBufferReadRequest& r) { return OpGpuBufferRead(c, r); });
+            table.template Handle<Op::GpuTextureCreate>([this](Ctx& c, const GpuTextureRequest& r) { return OpGpuTextureCreate(c, r); });
+            table.template Handle<Op::GpuTextureWrite>([this](Ctx& c, const GpuTextureWriteRequest& r) { return OpGpuTextureWrite(c, r); });
+            table.template Handle<Op::GpuSamplerCreate>([this](Ctx& c, const GpuSamplerRequest& r) { return OpGpuSamplerCreate(c, r); });
+            table.template Handle<Op::GpuPipelineCreate>([this](Ctx& c, const GpuPipelineRequest& r) { return OpGpuPipelineCreate(c, r); });
+            table.template Handle<Op::GpuComputePipelineCreate>([this](Ctx& c, const GpuComputePipelineRequest& r) { return OpGpuComputePipelineCreate(c, r); });
+            table.template Handle<Op::GpuDestroy>([this](Ctx& c, const GpuDestroyRequest& r) { return OpGpuDestroy(c, r); });
+            table.template Handle<Op::GpuSubmit>([this](Ctx& c, const GpuSubmitRequest& r) { return OpGpuSubmit(c, r); });
+            table.template Handle<Op::GpuLayerClear>([this](Ctx& c, const GpuLayerClearRequest& r) { return OpGpuLayerClear(c, r); });
+            table.template Handle<Op::GpuErrors>([this](Ctx& c) { return OpGpuErrors(c); });
         }
     };
 }

@@ -503,6 +503,48 @@ namespace perlin::api {
     inline ::perlin::Result<void> post_effect(const ::perlin::abi::PostEffectData& request) {
         return ::perlin::call<::perlin::abi::Op::PostEffect>(request);
     }
+    inline ::perlin::Result<::perlin::abi::GpuInfoData> gpu_info() {
+        return ::perlin::call<::perlin::abi::Op::GpuInfo>();
+    }
+    inline ::perlin::Result<::perlin::abi::GpuPackInfo> gpu_pack_load(std::vector<uint8_t> data) {
+        return ::perlin::call<::perlin::abi::Op::GpuPackLoad>(::perlin::abi::GpuPackLoadRequest{std::move(data)});
+    }
+    inline ::perlin::Result<uint32_t> gpu_buffer_create(const ::perlin::abi::GpuBufferRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuBufferCreate>(request);
+    }
+    inline ::perlin::Result<void> gpu_buffer_write(const ::perlin::abi::GpuBufferWriteRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuBufferWrite>(request);
+    }
+    inline ::perlin::Result<void> gpu_buffer_read(const ::perlin::abi::GpuBufferReadRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuBufferRead>(request);
+    }
+    inline ::perlin::Result<uint32_t> gpu_texture_create(const ::perlin::abi::GpuTextureRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuTextureCreate>(request);
+    }
+    inline ::perlin::Result<void> gpu_texture_write(const ::perlin::abi::GpuTextureWriteRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuTextureWrite>(request);
+    }
+    inline ::perlin::Result<uint32_t> gpu_sampler_create(const ::perlin::abi::GpuSamplerRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuSamplerCreate>(request);
+    }
+    inline ::perlin::Result<uint32_t> gpu_pipeline_create(const ::perlin::abi::GpuPipelineRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuPipelineCreate>(request);
+    }
+    inline ::perlin::Result<uint32_t> gpu_compute_pipeline_create(const ::perlin::abi::GpuComputePipelineRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuComputePipelineCreate>(request);
+    }
+    inline ::perlin::Result<void> gpu_destroy(::perlin::abi::GpuResource kind, uint32_t id) {
+        return ::perlin::call<::perlin::abi::Op::GpuDestroy>(::perlin::abi::GpuDestroyRequest{kind, id});
+    }
+    inline ::perlin::Result<void> gpu_submit(const ::perlin::abi::GpuSubmitRequest& request) {
+        return ::perlin::call<::perlin::abi::Op::GpuSubmit>(request);
+    }
+    inline ::perlin::Result<void> gpu_layer_clear(std::string layer) {
+        return ::perlin::call<::perlin::abi::Op::GpuLayerClear>(::perlin::abi::GpuLayerClearRequest{std::move(layer)});
+    }
+    inline ::perlin::Result<::perlin::abi::GpuErrorsResponse> gpu_errors() {
+        return ::perlin::call<::perlin::abi::Op::GpuErrors>();
+    }
     inline ::perlin::Result<void> broadcast(const ::perlin::abi::TextMessage& request) {
         return ::perlin::call<::perlin::abi::Op::Broadcast>(request);
     }

@@ -1,0 +1,185 @@
+enum GpuFormat: u8 {
+    None = 0; Screen = 1; R8 = 2; Rg8 = 3; Rgba8 = 4; Rgba8Srgb = 5; Bgra8 = 6; R16f = 7; Rg16f = 8; Rgba16f = 9;
+    R32f = 10; Rg32f = 11; Rgb32f = 12; Rgba32f = 13; R32u = 14; Rgb10a2 = 15; R11G11B10f = 16;
+    D16 = 17; D32f = 18; D24S8 = 19; D32fS8 = 20;
+}
+
+flags GpuBufferUsage: u32 {
+    Vertex = 0; Index = 1; Storage = 2; Indirect = 3; CopySrc = 4; CopyDst = 5;
+}
+
+flags GpuTextureUsage: u32 {
+    Sampled = 0; Storage = 1; ColorTarget = 2; DepthTarget = 3; CopySrc = 4; CopyDst = 5;
+}
+
+enum GpuTextureDim: u8 { Tex2d = 0; Array = 1; Cube = 2; Tex3d = 3; }
+enum GpuFilter: u8 { Nearest = 0; Linear = 1; }
+enum GpuAddress: u8 { Repeat = 0; Mirror = 1; Clamp = 2; Border = 3; }
+enum GpuCompare: u8 { Never = 0; Less = 1; Equal = 2; LessEqual = 3; Greater = 4; NotEqual = 5; GreaterEqual = 6; Always = 7; }
+enum GpuBlendFactor: u8 {
+    Zero = 0; One = 1; SrcColor = 2; InvSrcColor = 3; SrcAlpha = 4; InvSrcAlpha = 5; DstColor = 6;
+    InvDstColor = 7; DstAlpha = 8; InvDstAlpha = 9; SrcAlphaSaturate = 10;
+}
+enum GpuBlendOp: u8 { Add = 0; Subtract = 1; ReverseSubtract = 2; Min = 3; Max = 4; }
+enum GpuCull: u8 { None = 0; Back = 1; Front = 2; }
+enum GpuFrontFace: u8 { CounterClockwise = 0; Clockwise = 1; }
+enum GpuTopology: u8 { TriangleList = 0; TriangleStrip = 1; LineList = 2; PointList = 3; }
+enum GpuStorageKind: u8 { Buffer = 0; BufferRw = 1; TextureRw = 2; }
+enum GpuResource: u8 { Pack = 0; Buffer = 1; Texture = 2; Sampler = 3; Pipeline = 4; }
+
+enum GpuStage: u8 {
+    Pre = 0 @doc("start of the frame, before the game draws: offscreen targets and compute");
+    UnderHud = 1 @doc("on the screen after the world and before the hand and the HUD");
+    Overlay = 2 @doc("on the screen after everything, including the HUD and menus");
+}
+
+const GpuMaxPacks: u32 = 8 @doc("Shader packs per plugin");
+const GpuMaxResources: u32 = 4096 @doc("Buffers, textures, samplers and pipelines per plugin, each");
+const GpuMaxTextureSide: u32 = 8192;
+const GpuMaxBufferBytes: u64 = 268435456;
+const GpuMaxTotalBytes: u64 = 1073741824 @doc("Buffer and texture memory per plugin");
+const GpuMaxLayers: u32 = 16 @doc("Submitted command layers per plugin");
+const GpuMaxStreamBytes: u32 = 8388608 @doc("Largest command stream");
+const GpuMaxUniformBytes: u32 = 4096 @doc("Largest uniform block of a program");
+const GpuTextureSlots: u32 = 48;
+
+struct GpuInfoData {
+    available: bool = false @doc("false when the renderer cannot run plugin GPU work (for example the null renderer)");
+    api: string @doc("vulkan, d3d12, d3d11, metal or webgpu");
+    adapter: string;
+    vendor: string;
+    discrete: bool = false;
+    targetFormat: GpuFormat = Bgra8 @doc("what GpuFormat.Screen resolves to");
+    width: u32 = 0 @unit(pixels);
+    height: u32 = 0 @unit(pixels);
+    maxTexture2d: u32 = 0;
+    maxTextureLayers: u32 = 0;
+    maxMsaaSamples: u32 = 1;
+    maxBufferBytes: u64 = 0;
+    maxColorTargets: u32 = 1;
+    compute: bool = false;
+    multiDrawIndirect: bool = false;
+    float16: bool = false;
+    int64: bool = false;
+    subgroups: bool = false;
+    sceneCopy: bool = false @doc("the CopyScreen command works");
+    shaderTarget: string @doc("spirv, dxil, hlsl, msl or wgsl: the shader pack target this device reads");
+}
+
+struct GpuUniformMember { name: string; offset: u32 = 0; bytes: u32 = 0; elements: u32 = 1; }
+struct GpuProgramInfo {
+    name: string;
+    uniformBytes: u32 = 0;
+    uniforms: list<GpuUniformMember>;
+    vertex: bool = false;
+    fragment: bool = false;
+    compute: bool = false;
+}
+struct GpuTextureSlot { name: string; slot: u32 = 0; array: bool = false; unfilterable: bool = false; }
+struct GpuPackInfo {
+    pack: u32 = 0;
+    programs: list<GpuProgramInfo>;
+    slots: list<GpuTextureSlot>;
+}
+
+struct GpuBufferRequest {
+    size: u64 = 0 @doc("bytes; at least the length of data");
+    usage: flagset<GpuBufferUsage>;
+    data: bytes @doc("initial contents, may be empty");
+    name: string;
+}
+struct GpuBufferWriteRequest { id: u32 = 0; offset: u64 = 0; data: bytes; }
+struct GpuBufferReadRequest {
+    id: u32 = 0; offset: u64 = 0; size: u64 = 0;
+    tag: u32 = 0 @doc("returned in the GpuReadback event");
+}
+
+struct GpuTextureRequest {
+    width: u32 = 1; height: u32 = 1;
+    layers: u32 = 1 @doc("array layers, cube faces or depth");
+    mips: u32 = 1;
+    format: GpuFormat = Rgba8;
+    usage: flagset<GpuTextureUsage>;
+    dim: GpuTextureDim = Tex2d;
+    samples: u32 = 1;
+    screenSized: bool = false @doc("width and height follow the game window (scaled by scale) and the texture is recreated when it changes");
+    scale: f32 = 1 @doc("with screenSized: fraction of the window size");
+    data: bytes @doc("first layer of mip 0, tightly packed, may be empty");
+    name: string;
+}
+struct GpuTextureWriteRequest {
+    id: u32 = 0; layer: u32 = 0; mip: u32 = 0;
+    x: u32 = 0; y: u32 = 0; width: u32 = 0; height: u32 = 0;
+    data: bytes @doc("tightly packed rows");
+}
+
+struct GpuSamplerRequest {
+    min: GpuFilter = Linear; mag: GpuFilter = Linear; mip: GpuFilter = Linear;
+    u: GpuAddress = Clamp; v: GpuAddress = Clamp; w: GpuAddress = Clamp;
+    anisotropy: f32 = 1; lodBias: f32 = 0; minLod: f32 = 0; maxLod: f32 = 1000;
+    compare: bool = false; compareOp: GpuCompare = LessEqual;
+    border: u32 = 0 @doc("ARGB, for the border address mode");
+}
+
+struct GpuStreamDesc { stride: u32 = 0; instance: bool = false; }
+struct GpuAttributeDesc { location: u32 = 0; stream: u32 = 0; format: GpuFormat = Rgba32f; offset: u32 = 0; }
+struct GpuStorageBinding { binding: u32 = 0; kind: GpuStorageKind = Buffer; }
+struct GpuBlendDesc {
+    enabled: bool = false;
+    srcColor: GpuBlendFactor = One; dstColor: GpuBlendFactor = Zero; colorOp: GpuBlendOp = Add;
+    srcAlpha: GpuBlendFactor = One; dstAlpha: GpuBlendFactor = Zero; alphaOp: GpuBlendOp = Add;
+    writeMask: u32 = 15 @doc("bit 0 red, 1 green, 2 blue, 3 alpha");
+}
+
+struct GpuPipelineRequest {
+    pack: u32 = 0;
+    program: string;
+    streams: list<GpuStreamDesc> @max(8);
+    attributes: list<GpuAttributeDesc> @max(16);
+    topology: GpuTopology = TriangleList;
+    cull: GpuCull = None;
+    frontFace: GpuFrontFace = CounterClockwise;
+    depthBiasConstant: f32 = 0; depthBiasSlope: f32 = 0;
+    depthTest: bool = false; depthWrite: bool = false; depthCompare: GpuCompare = LessEqual;
+    blend: list<GpuBlendDesc> @max(8) @doc("one entry per color target; missing entries do not blend");
+    colorFormats: list<GpuFormat> @max(8) @doc("one entry per color target; empty means one Screen target");
+    depthFormat: GpuFormat = None;
+    samples: u32 = 1;
+    storage: list<GpuStorageBinding> @doc("resources the shader reads at set 2, binding = binding");
+    name: string;
+}
+struct GpuComputePipelineRequest {
+    pack: u32 = 0;
+    program: string;
+    storage: list<GpuStorageBinding>;
+    name: string;
+}
+
+struct GpuSubmitRequest {
+    layer: string @doc("a layer with the same name is replaced");
+    stage: GpuStage = Overlay;
+    z: i32 = 0 @doc("layers of one stage run in ascending z");
+    once: bool = false @doc("run for one frame and drop it (compute, uploads, one-off copies)");
+    stream: bytes @doc("a command stream, see docs/gpu.md");
+}
+
+struct EventGpuReadback { tag: u32 = 0; id: u32 = 0; ok: bool = false; data: bytes; }
+struct EventGpuReset { generation: u32 = 0; }
+
+op GpuInfo = 0x1500 @hosts(client) @category(gpu) -> GpuInfoData;
+op GpuPackLoad = 0x1501 @hosts(client) @permission(Gpu) @category(gpu) (data: bytes @doc("a conduit shader pack")) -> GpuPackInfo;
+op GpuBufferCreate = 0x1510 @hosts(client) @permission(Gpu) @category(gpu) GpuBufferRequest -> u32;
+op GpuBufferWrite = 0x1511 @hosts(client) @permission(Gpu) @category(gpu) @hot GpuBufferWriteRequest;
+op GpuBufferRead = 0x1512 @hosts(client) @permission(Gpu) @category(gpu) GpuBufferReadRequest @doc("the contents arrive as a GpuReadback event");
+op GpuTextureCreate = 0x1520 @hosts(client) @permission(Gpu) @category(gpu) GpuTextureRequest -> u32;
+op GpuTextureWrite = 0x1521 @hosts(client) @permission(Gpu) @category(gpu) @hot GpuTextureWriteRequest;
+op GpuSamplerCreate = 0x1530 @hosts(client) @permission(Gpu) @category(gpu) GpuSamplerRequest -> u32;
+op GpuPipelineCreate = 0x1540 @hosts(client) @permission(Gpu) @category(gpu) GpuPipelineRequest -> u32;
+op GpuComputePipelineCreate = 0x1541 @hosts(client) @permission(Gpu) @category(gpu) GpuComputePipelineRequest -> u32;
+op GpuDestroy = 0x1550 @hosts(client) @permission(Gpu) @category(gpu) (kind: GpuResource, id: u32);
+op GpuSubmit = 0x1560 @hosts(client) @permission(Gpu) @category(gpu) @hot GpuSubmitRequest;
+op GpuLayerClear = 0x1561 @hosts(client) @permission(Gpu) @category(gpu) (layer: string);
+op GpuErrors = 0x1570 @hosts(client) @permission(Gpu) @category(gpu) -> (messages: list<string>) @doc("problems the renderer found in this plugin's resources and streams, oldest first; reading clears them");
+
+event GpuReadback = 75 @hosts(client) @category(gpu) EventGpuReadback;
+event GpuReset = 76 @hosts(client) @category(gpu) EventGpuReset @doc("the renderer was recreated; every pack, buffer, texture, sampler and pipeline id is void");

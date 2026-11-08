@@ -174,6 +174,20 @@ namespace perlin::abi {
         MicStop = 0x1212,
         MicState = 0x1213,
         PostEffect = 0x1400,
+        GpuInfo = 0x1500,
+        GpuPackLoad = 0x1501,
+        GpuBufferCreate = 0x1510,
+        GpuBufferWrite = 0x1511,
+        GpuBufferRead = 0x1512,
+        GpuTextureCreate = 0x1520,
+        GpuTextureWrite = 0x1521,
+        GpuSamplerCreate = 0x1530,
+        GpuPipelineCreate = 0x1540,
+        GpuComputePipelineCreate = 0x1541,
+        GpuDestroy = 0x1550,
+        GpuSubmit = 0x1560,
+        GpuLayerClear = 0x1561,
+        GpuErrors = 0x1570,
         Broadcast = 0x7000,
         PlayerMessage = 0x7001,
         Kick = 0x7002,
@@ -311,13 +325,15 @@ namespace perlin::abi {
         SocketData = 72,
         SocketClose = 73,
         MicData = 74,
+        GpuReadback = 75,
+        GpuReset = 76,
     };
 
     enum class Hosts : uint8_t { Client = 1, Server = 2, Both = 3 };
     struct Raw {};
     using Nothing = EventNothing;
 
-    inline constexpr uint32_t kEventCount = 75;
+    inline constexpr uint32_t kEventCount = 77;
     inline constexpr uint32_t kSubscriptionWords = (kEventCount + 31) / 32;
 
     template <Op O> struct OpSpec;
@@ -1991,6 +2007,146 @@ namespace perlin::abi {
         static constexpr std::string_view kName = "PostEffect";
         static constexpr std::string_view kCategory = "render";
     };
+    template <> struct OpSpec<Op::GpuInfo> {
+        using Request = Nothing;
+        using Response = GpuInfoData;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuInfo";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuPackLoad> {
+        using Request = GpuPackLoadRequest;
+        using Response = GpuPackInfo;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuPackLoad";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuBufferCreate> {
+        using Request = GpuBufferRequest;
+        using Response = uint32_t;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuBufferCreate";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuBufferWrite> {
+        using Request = GpuBufferWriteRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = true;
+        static constexpr std::string_view kName = "GpuBufferWrite";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuBufferRead> {
+        using Request = GpuBufferReadRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuBufferRead";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuTextureCreate> {
+        using Request = GpuTextureRequest;
+        using Response = uint32_t;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuTextureCreate";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuTextureWrite> {
+        using Request = GpuTextureWriteRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = true;
+        static constexpr std::string_view kName = "GpuTextureWrite";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuSamplerCreate> {
+        using Request = GpuSamplerRequest;
+        using Response = uint32_t;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuSamplerCreate";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuPipelineCreate> {
+        using Request = GpuPipelineRequest;
+        using Response = uint32_t;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuPipelineCreate";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuComputePipelineCreate> {
+        using Request = GpuComputePipelineRequest;
+        using Response = uint32_t;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuComputePipelineCreate";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuDestroy> {
+        using Request = GpuDestroyRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuDestroy";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuSubmit> {
+        using Request = GpuSubmitRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = true;
+        static constexpr std::string_view kName = "GpuSubmit";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuLayerClear> {
+        using Request = GpuLayerClearRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuLayerClear";
+        static constexpr std::string_view kCategory = "gpu";
+    };
+    template <> struct OpSpec<Op::GpuErrors> {
+        using Request = Nothing;
+        using Response = GpuErrorsResponse;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Gpu);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 1;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "GpuErrors";
+        static constexpr std::string_view kCategory = "gpu";
+    };
     template <> struct OpSpec<Op::Broadcast> {
         using Request = TextMessage;
         using Response = Nothing;
@@ -3259,6 +3415,24 @@ namespace perlin::abi {
         static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "MicData";
     };
+    template <> struct EventSpec<Event::GpuReadback> {
+        using Payload = EventGpuReadback;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr bool kMethod = true;
+        static constexpr bool kCancellable = false;
+        static constexpr bool kHot = false;
+        static constexpr uint32_t kSince = 1;
+        static constexpr std::string_view kName = "GpuReadback";
+    };
+    template <> struct EventSpec<Event::GpuReset> {
+        using Payload = EventGpuReset;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr bool kMethod = true;
+        static constexpr bool kCancellable = false;
+        static constexpr bool kHot = false;
+        static constexpr uint32_t kSince = 1;
+        static constexpr std::string_view kName = "GpuReset";
+    };
 
     template <Event E> using payload_t = typename EventSpec<E>::Payload;
 
@@ -3431,6 +3605,20 @@ namespace perlin::abi {
         case Op::MicStop: return OpSpec<Op::MicStop>::kPermission;
         case Op::MicState: return OpSpec<Op::MicState>::kPermission;
         case Op::PostEffect: return OpSpec<Op::PostEffect>::kPermission;
+        case Op::GpuInfo: return OpSpec<Op::GpuInfo>::kPermission;
+        case Op::GpuPackLoad: return OpSpec<Op::GpuPackLoad>::kPermission;
+        case Op::GpuBufferCreate: return OpSpec<Op::GpuBufferCreate>::kPermission;
+        case Op::GpuBufferWrite: return OpSpec<Op::GpuBufferWrite>::kPermission;
+        case Op::GpuBufferRead: return OpSpec<Op::GpuBufferRead>::kPermission;
+        case Op::GpuTextureCreate: return OpSpec<Op::GpuTextureCreate>::kPermission;
+        case Op::GpuTextureWrite: return OpSpec<Op::GpuTextureWrite>::kPermission;
+        case Op::GpuSamplerCreate: return OpSpec<Op::GpuSamplerCreate>::kPermission;
+        case Op::GpuPipelineCreate: return OpSpec<Op::GpuPipelineCreate>::kPermission;
+        case Op::GpuComputePipelineCreate: return OpSpec<Op::GpuComputePipelineCreate>::kPermission;
+        case Op::GpuDestroy: return OpSpec<Op::GpuDestroy>::kPermission;
+        case Op::GpuSubmit: return OpSpec<Op::GpuSubmit>::kPermission;
+        case Op::GpuLayerClear: return OpSpec<Op::GpuLayerClear>::kPermission;
+        case Op::GpuErrors: return OpSpec<Op::GpuErrors>::kPermission;
         case Op::Broadcast: return OpSpec<Op::Broadcast>::kPermission;
         case Op::PlayerMessage: return OpSpec<Op::PlayerMessage>::kPermission;
         case Op::Kick: return OpSpec<Op::Kick>::kPermission;
@@ -3664,6 +3852,20 @@ namespace perlin::abi {
         case Op::MicStop: return Hosts::Client;
         case Op::MicState: return Hosts::Client;
         case Op::PostEffect: return Hosts::Client;
+        case Op::GpuInfo: return Hosts::Client;
+        case Op::GpuPackLoad: return Hosts::Client;
+        case Op::GpuBufferCreate: return Hosts::Client;
+        case Op::GpuBufferWrite: return Hosts::Client;
+        case Op::GpuBufferRead: return Hosts::Client;
+        case Op::GpuTextureCreate: return Hosts::Client;
+        case Op::GpuTextureWrite: return Hosts::Client;
+        case Op::GpuSamplerCreate: return Hosts::Client;
+        case Op::GpuPipelineCreate: return Hosts::Client;
+        case Op::GpuComputePipelineCreate: return Hosts::Client;
+        case Op::GpuDestroy: return Hosts::Client;
+        case Op::GpuSubmit: return Hosts::Client;
+        case Op::GpuLayerClear: return Hosts::Client;
+        case Op::GpuErrors: return Hosts::Client;
         case Op::Broadcast: return Hosts::Server;
         case Op::PlayerMessage: return Hosts::Server;
         case Op::Kick: return Hosts::Server;
@@ -3804,6 +4006,8 @@ namespace perlin::abi {
         case Event::SocketData: return Hosts::Both;
         case Event::SocketClose: return Hosts::Both;
         case Event::MicData: return Hosts::Client;
+        case Event::GpuReadback: return Hosts::Client;
+        case Event::GpuReset: return Hosts::Client;
         }
         return Hosts::Both;
     }
@@ -3977,6 +4181,20 @@ namespace perlin::abi {
         case Op::MicStop: return "MicStop";
         case Op::MicState: return "MicState";
         case Op::PostEffect: return "PostEffect";
+        case Op::GpuInfo: return "GpuInfo";
+        case Op::GpuPackLoad: return "GpuPackLoad";
+        case Op::GpuBufferCreate: return "GpuBufferCreate";
+        case Op::GpuBufferWrite: return "GpuBufferWrite";
+        case Op::GpuBufferRead: return "GpuBufferRead";
+        case Op::GpuTextureCreate: return "GpuTextureCreate";
+        case Op::GpuTextureWrite: return "GpuTextureWrite";
+        case Op::GpuSamplerCreate: return "GpuSamplerCreate";
+        case Op::GpuPipelineCreate: return "GpuPipelineCreate";
+        case Op::GpuComputePipelineCreate: return "GpuComputePipelineCreate";
+        case Op::GpuDestroy: return "GpuDestroy";
+        case Op::GpuSubmit: return "GpuSubmit";
+        case Op::GpuLayerClear: return "GpuLayerClear";
+        case Op::GpuErrors: return "GpuErrors";
         case Op::Broadcast: return "Broadcast";
         case Op::PlayerMessage: return "PlayerMessage";
         case Op::Kick: return "Kick";
@@ -4117,6 +4335,8 @@ namespace perlin::abi {
         case Event::SocketData: return "SocketData";
         case Event::SocketClose: return "SocketClose";
         case Event::MicData: return "MicData";
+        case Event::GpuReadback: return "GpuReadback";
+        case Event::GpuReset: return "GpuReset";
         }
         return "?";
     }
@@ -4197,6 +4417,8 @@ namespace perlin::abi {
         case Event::SocketData: return "socket_data";
         case Event::SocketClose: return "socket_close";
         case Event::MicData: return "mic_data";
+        case Event::GpuReadback: return "gpu_readback";
+        case Event::GpuReset: return "gpu_reset";
         }
         return {};
     }
@@ -4370,6 +4592,20 @@ namespace perlin::abi {
         case Op::MicStop: return "mic_stop";
         case Op::MicState: return "mic_state";
         case Op::PostEffect: return "post_effect";
+        case Op::GpuInfo: return "gpu_info";
+        case Op::GpuPackLoad: return "gpu_pack_load";
+        case Op::GpuBufferCreate: return "gpu_buffer_create";
+        case Op::GpuBufferWrite: return "gpu_buffer_write";
+        case Op::GpuBufferRead: return "gpu_buffer_read";
+        case Op::GpuTextureCreate: return "gpu_texture_create";
+        case Op::GpuTextureWrite: return "gpu_texture_write";
+        case Op::GpuSamplerCreate: return "gpu_sampler_create";
+        case Op::GpuPipelineCreate: return "gpu_pipeline_create";
+        case Op::GpuComputePipelineCreate: return "gpu_compute_pipeline_create";
+        case Op::GpuDestroy: return "gpu_destroy";
+        case Op::GpuSubmit: return "gpu_submit";
+        case Op::GpuLayerClear: return "gpu_layer_clear";
+        case Op::GpuErrors: return "gpu_errors";
         case Op::Broadcast: return "broadcast";
         case Op::PlayerMessage: return "player_message";
         case Op::Kick: return "kick";
@@ -4510,11 +4746,13 @@ namespace perlin::abi {
         case Event::SocketData: return false;
         case Event::SocketClose: return false;
         case Event::MicData: return false;
+        case Event::GpuReadback: return false;
+        case Event::GpuReset: return false;
         }
         return false;
     }
 
-    inline constexpr std::array<Op, 227> kAllOps = {
+    inline constexpr std::array<Op, 241> kAllOps = {
         Op::Log,
         Op::Meta,
         Op::Clock,
@@ -4682,6 +4920,20 @@ namespace perlin::abi {
         Op::MicStop,
         Op::MicState,
         Op::PostEffect,
+        Op::GpuInfo,
+        Op::GpuPackLoad,
+        Op::GpuBufferCreate,
+        Op::GpuBufferWrite,
+        Op::GpuBufferRead,
+        Op::GpuTextureCreate,
+        Op::GpuTextureWrite,
+        Op::GpuSamplerCreate,
+        Op::GpuPipelineCreate,
+        Op::GpuComputePipelineCreate,
+        Op::GpuDestroy,
+        Op::GpuSubmit,
+        Op::GpuLayerClear,
+        Op::GpuErrors,
         Op::Broadcast,
         Op::PlayerMessage,
         Op::Kick,
@@ -4743,7 +4995,7 @@ namespace perlin::abi {
         Op::LootTableGet,
         Op::EventAmend,
     };
-    inline constexpr std::array<Event, 74> kAllEvents = {
+    inline constexpr std::array<Event, 76> kAllEvents = {
         Event::Load,
         Event::Unload,
         Event::Tick,
@@ -4818,5 +5070,7 @@ namespace perlin::abi {
         Event::SocketData,
         Event::SocketClose,
         Event::MicData,
+        Event::GpuReadback,
+        Event::GpuReset,
     };
 }

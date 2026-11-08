@@ -193,6 +193,20 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x1212 | MicStop | `perlin_mic_stop` | - | - | client | Microphone | `@category(audio)` |
 | 0x1213 | MicState | `perlin_mic_state` | - | [MicStateData](#micstatedata) | client | Microphone | `@category(audio)` |
 | 0x1400 | PostEffect | `perlin_post_effect` | [PostEffectData](#posteffectdata) | - | client | - | `@category(render)` |
+| 0x1500 | GpuInfo | `perlin_gpu_info` | - | [GpuInfoData](#gpuinfodata) | client | - | `@category(gpu)` |
+| 0x1501 | GpuPackLoad | `perlin_gpu_pack_load` | [GpuPackLoadRequest](#gpupackloadrequest) | [GpuPackInfo](#gpupackinfo) | client | Gpu | `@category(gpu)` |
+| 0x1510 | GpuBufferCreate | `perlin_gpu_buffer_create` | [GpuBufferRequest](#gpubufferrequest) | `u32` | client | Gpu | `@category(gpu)` |
+| 0x1511 | GpuBufferWrite | `perlin_gpu_buffer_write` | [GpuBufferWriteRequest](#gpubufferwriterequest) | - | client | Gpu | `@category(gpu)` `@hot` |
+| 0x1512 | GpuBufferRead | `perlin_gpu_buffer_read` | [GpuBufferReadRequest](#gpubufferreadrequest) | - | client | Gpu | the contents arrive as a GpuReadback event `@category(gpu)` |
+| 0x1520 | GpuTextureCreate | `perlin_gpu_texture_create` | [GpuTextureRequest](#gputexturerequest) | `u32` | client | Gpu | `@category(gpu)` |
+| 0x1521 | GpuTextureWrite | `perlin_gpu_texture_write` | [GpuTextureWriteRequest](#gputexturewriterequest) | - | client | Gpu | `@category(gpu)` `@hot` |
+| 0x1530 | GpuSamplerCreate | `perlin_gpu_sampler_create` | [GpuSamplerRequest](#gpusamplerrequest) | `u32` | client | Gpu | `@category(gpu)` |
+| 0x1540 | GpuPipelineCreate | `perlin_gpu_pipeline_create` | [GpuPipelineRequest](#gpupipelinerequest) | `u32` | client | Gpu | `@category(gpu)` |
+| 0x1541 | GpuComputePipelineCreate | `perlin_gpu_compute_pipeline_create` | [GpuComputePipelineRequest](#gpucomputepipelinerequest) | `u32` | client | Gpu | `@category(gpu)` |
+| 0x1550 | GpuDestroy | `perlin_gpu_destroy` | [GpuDestroyRequest](#gpudestroyrequest) | - | client | Gpu | `@category(gpu)` |
+| 0x1560 | GpuSubmit | `perlin_gpu_submit` | [GpuSubmitRequest](#gpusubmitrequest) | - | client | Gpu | `@category(gpu)` `@hot` |
+| 0x1561 | GpuLayerClear | `perlin_gpu_layer_clear` | [GpuLayerClearRequest](#gpulayerclearrequest) | - | client | Gpu | `@category(gpu)` |
+| 0x1570 | GpuErrors | `perlin_gpu_errors` | - | [GpuErrorsResponse](#gpuerrorsresponse) | client | Gpu | problems the renderer found in this plugin's resources and streams, oldest first; reading clears them `@category(gpu)` |
 | 0x7000 | Broadcast | `perlin_broadcast` | [TextMessage](#textmessage) | - | server | - | `@category(server)` |
 | 0x7001 | PlayerMessage | `perlin_player_message` | [PlayerText](#playertext) | - | server | - | `@category(server)` |
 | 0x7002 | Kick | `perlin_kick` | [PlayerText](#playertext) | - | server | Admin | `@category(server)` |
@@ -332,6 +346,8 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 72 | SocketData | [EventSocketData](#eventsocketdata) | client, server | `@category(network)` `@hot` |
 | 73 | SocketClose | [EventSocketClose](#eventsocketclose) | client, server | `@category(network)` |
 | 74 | MicData | [EventMicData](#eventmicdata) | client | `@category(audio)` `@hot` |
+| 75 | GpuReadback | [EventGpuReadback](#eventgpureadback) | client | `@category(gpu)` |
+| 76 | GpuReset | [EventGpuReset](#eventgpureset) | client | the renderer was recreated; every pack, buffer, texture, sampler and pipeline id is void `@category(gpu)` |
 
 ## Enums
 
@@ -345,7 +361,7 @@ Result of every call; negative values are returned by perlin.call (enum over `i3
 
 Capabilities a plugin manifest requests (flags over `u32`)
 
-`Network`=1<<0, `Packets`=1<<1, `Control`=1<<2, `Storage`=1<<3, `Files`=1<<4, `Native`=1<<5, `World`=1<<6, `Players`=1<<7, `Admin`=1<<8, `Microphone`=1<<9, `Clipboard`=1<<10, `Window`=1<<11, `Sockets`=1<<12
+`Network`=1<<0, `Packets`=1<<1, `Control`=1<<2, `Storage`=1<<3, `Files`=1<<4, `Native`=1<<5, `World`=1<<6, `Players`=1<<7, `Admin`=1<<8, `Microphone`=1<<9, `Clipboard`=1<<10, `Window`=1<<11, `Sockets`=1<<12, `Gpu`=1<<13
 
 ### Draw
 
@@ -538,6 +554,96 @@ Which volume slider scales a stream (enum over `i32`)
 Which values of WindowControlData are applied (flags over `u32`)
 
 `Fullscreen`=1<<0, `Title`=1<<1
+
+### GpuFormat
+
+(enum over `u8`)
+
+`None`=0, `Screen`=1, `R8`=2, `Rg8`=3, `Rgba8`=4, `Rgba8Srgb`=5, `Bgra8`=6, `R16f`=7, `Rg16f`=8, `Rgba16f`=9, `R32f`=10, `Rg32f`=11, `Rgb32f`=12, `Rgba32f`=13, `R32u`=14, `Rgb10a2`=15, `R11G11B10f`=16, `D16`=17, `D32f`=18, `D24S8`=19, `D32fS8`=20
+
+### GpuBufferUsage
+
+(flags over `u32`)
+
+`Vertex`=1<<0, `Index`=1<<1, `Storage`=1<<2, `Indirect`=1<<3, `CopySrc`=1<<4, `CopyDst`=1<<5
+
+### GpuTextureUsage
+
+(flags over `u32`)
+
+`Sampled`=1<<0, `Storage`=1<<1, `ColorTarget`=1<<2, `DepthTarget`=1<<3, `CopySrc`=1<<4, `CopyDst`=1<<5
+
+### GpuTextureDim
+
+(enum over `u8`)
+
+`Tex2d`=0, `Array`=1, `Cube`=2, `Tex3d`=3
+
+### GpuFilter
+
+(enum over `u8`)
+
+`Nearest`=0, `Linear`=1
+
+### GpuAddress
+
+(enum over `u8`)
+
+`Repeat`=0, `Mirror`=1, `Clamp`=2, `Border`=3
+
+### GpuCompare
+
+(enum over `u8`)
+
+`Never`=0, `Less`=1, `Equal`=2, `LessEqual`=3, `Greater`=4, `NotEqual`=5, `GreaterEqual`=6, `Always`=7
+
+### GpuBlendFactor
+
+(enum over `u8`)
+
+`Zero`=0, `One`=1, `SrcColor`=2, `InvSrcColor`=3, `SrcAlpha`=4, `InvSrcAlpha`=5, `DstColor`=6, `InvDstColor`=7, `DstAlpha`=8, `InvDstAlpha`=9, `SrcAlphaSaturate`=10
+
+### GpuBlendOp
+
+(enum over `u8`)
+
+`Add`=0, `Subtract`=1, `ReverseSubtract`=2, `Min`=3, `Max`=4
+
+### GpuCull
+
+(enum over `u8`)
+
+`None`=0, `Back`=1, `Front`=2
+
+### GpuFrontFace
+
+(enum over `u8`)
+
+`CounterClockwise`=0, `Clockwise`=1
+
+### GpuTopology
+
+(enum over `u8`)
+
+`TriangleList`=0, `TriangleStrip`=1, `LineList`=2, `PointList`=3
+
+### GpuStorageKind
+
+(enum over `u8`)
+
+`Buffer`=0, `BufferRw`=1, `TextureRw`=2
+
+### GpuResource
+
+(enum over `u8`)
+
+`Pack`=0, `Buffer`=1, `Texture`=2, `Sampler`=3, `Pipeline`=4
+
+### GpuStage
+
+(enum over `u8`)
+
+`Pre`=0, `UnderHud`=1, `Overlay`=2
 
 ## Aliases
 
@@ -2680,6 +2786,260 @@ Full-screen colour adjustments applied after the world and before the hud
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | address | `string` |  |  |
+
+### GpuInfoData
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| available | `bool` | false | false when the renderer cannot run plugin GPU work (for example the null renderer) |
+| api | `string` |  | vulkan, d3d12, d3d11, metal or webgpu |
+| adapter | `string` |  |  |
+| vendor | `string` |  |  |
+| discrete | `bool` | false |  |
+| targetFormat | [GpuFormat](#gpuformat) | Bgra8 | what GpuFormat.Screen resolves to |
+| width | `u32` | 0 | `@unit(pixels)` |
+| height | `u32` | 0 | `@unit(pixels)` |
+| maxTexture2d | `u32` | 0 |  |
+| maxTextureLayers | `u32` | 0 |  |
+| maxMsaaSamples | `u32` | 1 |  |
+| maxBufferBytes | `u64` | 0 |  |
+| maxColorTargets | `u32` | 1 |  |
+| compute | `bool` | false |  |
+| multiDrawIndirect | `bool` | false |  |
+| float16 | `bool` | false |  |
+| int64 | `bool` | false |  |
+| subgroups | `bool` | false |  |
+| sceneCopy | `bool` | false | the CopyScreen command works |
+| shaderTarget | `string` |  | spirv, dxil, hlsl, msl or wgsl: the shader pack target this device reads |
+
+### GpuUniformMember
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| name | `string` |  |  |
+| offset | `u32` | 0 |  |
+| bytes | `u32` | 0 |  |
+| elements | `u32` | 1 |  |
+
+### GpuProgramInfo
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| name | `string` |  |  |
+| uniformBytes | `u32` | 0 |  |
+| uniforms | list&lt;[GpuUniformMember](#gpuuniformmember)&gt; |  |  |
+| vertex | `bool` | false |  |
+| fragment | `bool` | false |  |
+| compute | `bool` | false |  |
+
+### GpuTextureSlot
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| name | `string` |  |  |
+| slot | `u32` | 0 |  |
+| array | `bool` | false |  |
+| unfilterable | `bool` | false |  |
+
+### GpuPackInfo
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| pack | `u32` | 0 |  |
+| programs | list&lt;[GpuProgramInfo](#gpuprograminfo)&gt; |  |  |
+| slots | list&lt;[GpuTextureSlot](#gputextureslot)&gt; |  |  |
+
+### GpuBufferRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| size | `u64` | 0 | bytes; at least the length of data |
+| usage | flagset&lt;[GpuBufferUsage](#gpubufferusage)&gt; |  |  |
+| data | `bytes` |  | initial contents, may be empty |
+| name | `string` |  |  |
+
+### GpuBufferWriteRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `u32` | 0 |  |
+| offset | `u64` | 0 |  |
+| data | `bytes` |  |  |
+
+### GpuBufferReadRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `u32` | 0 |  |
+| offset | `u64` | 0 |  |
+| size | `u64` | 0 |  |
+| tag | `u32` | 0 | returned in the GpuReadback event |
+
+### GpuTextureRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| width | `u32` | 1 |  |
+| height | `u32` | 1 |  |
+| layers | `u32` | 1 | array layers, cube faces or depth |
+| mips | `u32` | 1 |  |
+| format | [GpuFormat](#gpuformat) | Rgba8 |  |
+| usage | flagset&lt;[GpuTextureUsage](#gputextureusage)&gt; |  |  |
+| dim | [GpuTextureDim](#gputexturedim) | Tex2d |  |
+| samples | `u32` | 1 |  |
+| screenSized | `bool` | false | width and height follow the game window (scaled by scale) and the texture is recreated when it changes |
+| scale | `f32` | 1 | with screenSized: fraction of the window size |
+| data | `bytes` |  | first layer of mip 0, tightly packed, may be empty |
+| name | `string` |  |  |
+
+### GpuTextureWriteRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `u32` | 0 |  |
+| layer | `u32` | 0 |  |
+| mip | `u32` | 0 |  |
+| x | `u32` | 0 |  |
+| y | `u32` | 0 |  |
+| width | `u32` | 0 |  |
+| height | `u32` | 0 |  |
+| data | `bytes` |  | tightly packed rows |
+
+### GpuSamplerRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| min | [GpuFilter](#gpufilter) | Linear |  |
+| mag | [GpuFilter](#gpufilter) | Linear |  |
+| mip | [GpuFilter](#gpufilter) | Linear |  |
+| u | [GpuAddress](#gpuaddress) | Clamp |  |
+| v | [GpuAddress](#gpuaddress) | Clamp |  |
+| w | [GpuAddress](#gpuaddress) | Clamp |  |
+| anisotropy | `f32` | 1 |  |
+| lodBias | `f32` | 0 |  |
+| minLod | `f32` | 0 |  |
+| maxLod | `f32` | 1000 |  |
+| compare | `bool` | false |  |
+| compareOp | [GpuCompare](#gpucompare) | LessEqual |  |
+| border | `u32` | 0 | ARGB, for the border address mode |
+
+### GpuStreamDesc
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| stride | `u32` | 0 |  |
+| instance | `bool` | false |  |
+
+### GpuAttributeDesc
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| location | `u32` | 0 |  |
+| stream | `u32` | 0 |  |
+| format | [GpuFormat](#gpuformat) | Rgba32f |  |
+| offset | `u32` | 0 |  |
+
+### GpuStorageBinding
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| binding | `u32` | 0 |  |
+| kind | [GpuStorageKind](#gpustoragekind) | Buffer |  |
+
+### GpuBlendDesc
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| enabled | `bool` | false |  |
+| srcColor | [GpuBlendFactor](#gpublendfactor) | One |  |
+| dstColor | [GpuBlendFactor](#gpublendfactor) | Zero |  |
+| colorOp | [GpuBlendOp](#gpublendop) | Add |  |
+| srcAlpha | [GpuBlendFactor](#gpublendfactor) | One |  |
+| dstAlpha | [GpuBlendFactor](#gpublendfactor) | Zero |  |
+| alphaOp | [GpuBlendOp](#gpublendop) | Add |  |
+| writeMask | `u32` | 15 | bit 0 red, 1 green, 2 blue, 3 alpha |
+
+### GpuPipelineRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| pack | `u32` | 0 |  |
+| program | `string` |  |  |
+| streams | list&lt;[GpuStreamDesc](#gpustreamdesc)&gt; |  | `@max(8)` |
+| attributes | list&lt;[GpuAttributeDesc](#gpuattributedesc)&gt; |  | `@max(16)` |
+| topology | [GpuTopology](#gputopology) | TriangleList |  |
+| cull | [GpuCull](#gpucull) | None |  |
+| frontFace | [GpuFrontFace](#gpufrontface) | CounterClockwise |  |
+| depthBiasConstant | `f32` | 0 |  |
+| depthBiasSlope | `f32` | 0 |  |
+| depthTest | `bool` | false |  |
+| depthWrite | `bool` | false |  |
+| depthCompare | [GpuCompare](#gpucompare) | LessEqual |  |
+| blend | list&lt;[GpuBlendDesc](#gpublenddesc)&gt; |  | `@max(8)` one entry per color target; missing entries do not blend |
+| colorFormats | list&lt;[GpuFormat](#gpuformat)&gt; |  | `@max(8)` one entry per color target; empty means one Screen target |
+| depthFormat | [GpuFormat](#gpuformat) | None |  |
+| samples | `u32` | 1 |  |
+| storage | list&lt;[GpuStorageBinding](#gpustoragebinding)&gt; |  | resources the shader reads at set 2, binding = binding |
+| name | `string` |  |  |
+
+### GpuComputePipelineRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| pack | `u32` | 0 |  |
+| program | `string` |  |  |
+| storage | list&lt;[GpuStorageBinding](#gpustoragebinding)&gt; |  |  |
+| name | `string` |  |  |
+
+### GpuSubmitRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| layer | `string` |  | a layer with the same name is replaced |
+| stage | [GpuStage](#gpustage) | Overlay |  |
+| z | `i32` | 0 | layers of one stage run in ascending z |
+| once | `bool` | false | run for one frame and drop it (compute, uploads, one-off copies) |
+| stream | `bytes` |  | a command stream, see docs/gpu.md |
+
+### EventGpuReadback
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| tag | `u32` | 0 |  |
+| id | `u32` | 0 |  |
+| ok | `bool` | false |  |
+| data | `bytes` |  |  |
+
+### EventGpuReset
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| generation | `u32` | 0 |  |
+
+### GpuPackLoadRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| data | `bytes` |  | a conduit shader pack |
+
+### GpuDestroyRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| kind | [GpuResource](#gpuresource) |  |  |
+| id | `u32` |  |  |
+
+### GpuLayerClearRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| layer | `string` |  |  |
+
+### GpuErrorsResponse
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| messages | list&lt;`string`&gt; |  |  |
 
 ### ServerItem
 

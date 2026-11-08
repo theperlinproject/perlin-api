@@ -367,6 +367,138 @@
      ]
     }
    ]
+  },
+  {
+   "name": "GpuMaxPacks",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 8,
+    "text": "8"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Shader packs per plugin"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuMaxResources",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 4096,
+    "text": "4096"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Buffers, textures, samplers and pipelines per plugin, each"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuMaxTextureSide",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 8192,
+    "text": "8192"
+   },
+   "tags": []
+  },
+  {
+   "name": "GpuMaxBufferBytes",
+   "type": "u64",
+   "value": {
+    "kind": "int",
+    "value": 268435456,
+    "text": "268435456"
+   },
+   "tags": []
+  },
+  {
+   "name": "GpuMaxTotalBytes",
+   "type": "u64",
+   "value": {
+    "kind": "int",
+    "value": 1073741824,
+    "text": "1073741824"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Buffer and texture memory per plugin"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuMaxLayers",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 16,
+    "text": "16"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Submitted command layers per plugin"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuMaxStreamBytes",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 8388608,
+    "text": "8388608"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Largest command stream"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuMaxUniformBytes",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 4096,
+    "text": "4096"
+   },
+   "tags": [
+    {
+     "name": "doc",
+     "args": [
+      "Largest uniform block of a program"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureSlots",
+   "type": "u32",
+   "value": {
+    "kind": "int",
+    "value": 48,
+    "text": "48"
+   },
+   "tags": []
   }
  ],
  "enums": [
@@ -564,6 +696,18 @@
        "name": "doc",
        "args": [
         "Open raw TCP and WebSocket connections"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Gpu",
+     "value": 13,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Client: run shaders and draw with the game's graphics device"
        ]
       }
      ]
@@ -2340,6 +2484,582 @@
      "name": "Title",
      "value": 1,
      "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuFormat",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "None",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Screen",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "R8",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Rg8",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "Rgba8",
+     "value": 4,
+     "tags": []
+    },
+    {
+     "name": "Rgba8Srgb",
+     "value": 5,
+     "tags": []
+    },
+    {
+     "name": "Bgra8",
+     "value": 6,
+     "tags": []
+    },
+    {
+     "name": "R16f",
+     "value": 7,
+     "tags": []
+    },
+    {
+     "name": "Rg16f",
+     "value": 8,
+     "tags": []
+    },
+    {
+     "name": "Rgba16f",
+     "value": 9,
+     "tags": []
+    },
+    {
+     "name": "R32f",
+     "value": 10,
+     "tags": []
+    },
+    {
+     "name": "Rg32f",
+     "value": 11,
+     "tags": []
+    },
+    {
+     "name": "Rgb32f",
+     "value": 12,
+     "tags": []
+    },
+    {
+     "name": "Rgba32f",
+     "value": 13,
+     "tags": []
+    },
+    {
+     "name": "R32u",
+     "value": 14,
+     "tags": []
+    },
+    {
+     "name": "Rgb10a2",
+     "value": 15,
+     "tags": []
+    },
+    {
+     "name": "R11G11B10f",
+     "value": 16,
+     "tags": []
+    },
+    {
+     "name": "D16",
+     "value": 17,
+     "tags": []
+    },
+    {
+     "name": "D32f",
+     "value": 18,
+     "tags": []
+    },
+    {
+     "name": "D24S8",
+     "value": 19,
+     "tags": []
+    },
+    {
+     "name": "D32fS8",
+     "value": 20,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferUsage",
+   "base": "u32",
+   "flags": true,
+   "tags": [],
+   "members": [
+    {
+     "name": "Vertex",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Index",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Storage",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Indirect",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "CopySrc",
+     "value": 4,
+     "tags": []
+    },
+    {
+     "name": "CopyDst",
+     "value": 5,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureUsage",
+   "base": "u32",
+   "flags": true,
+   "tags": [],
+   "members": [
+    {
+     "name": "Sampled",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Storage",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "ColorTarget",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "DepthTarget",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "CopySrc",
+     "value": 4,
+     "tags": []
+    },
+    {
+     "name": "CopyDst",
+     "value": 5,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureDim",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Tex2d",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Array",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Cube",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Tex3d",
+     "value": 3,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuFilter",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Nearest",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Linear",
+     "value": 1,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuAddress",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Repeat",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Mirror",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Clamp",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Border",
+     "value": 3,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuCompare",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Never",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Less",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Equal",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "LessEqual",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "Greater",
+     "value": 4,
+     "tags": []
+    },
+    {
+     "name": "NotEqual",
+     "value": 5,
+     "tags": []
+    },
+    {
+     "name": "GreaterEqual",
+     "value": 6,
+     "tags": []
+    },
+    {
+     "name": "Always",
+     "value": 7,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBlendFactor",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Zero",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "One",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "SrcColor",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "InvSrcColor",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "SrcAlpha",
+     "value": 4,
+     "tags": []
+    },
+    {
+     "name": "InvSrcAlpha",
+     "value": 5,
+     "tags": []
+    },
+    {
+     "name": "DstColor",
+     "value": 6,
+     "tags": []
+    },
+    {
+     "name": "InvDstColor",
+     "value": 7,
+     "tags": []
+    },
+    {
+     "name": "DstAlpha",
+     "value": 8,
+     "tags": []
+    },
+    {
+     "name": "InvDstAlpha",
+     "value": 9,
+     "tags": []
+    },
+    {
+     "name": "SrcAlphaSaturate",
+     "value": 10,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBlendOp",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Add",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Subtract",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "ReverseSubtract",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Min",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "Max",
+     "value": 4,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuCull",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "None",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Back",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Front",
+     "value": 2,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuFrontFace",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "CounterClockwise",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Clockwise",
+     "value": 1,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuTopology",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "TriangleList",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "TriangleStrip",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "LineList",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "PointList",
+     "value": 3,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuStorageKind",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Buffer",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "BufferRw",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "TextureRw",
+     "value": 2,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuResource",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Pack",
+     "value": 0,
+     "tags": []
+    },
+    {
+     "name": "Buffer",
+     "value": 1,
+     "tags": []
+    },
+    {
+     "name": "Texture",
+     "value": 2,
+     "tags": []
+    },
+    {
+     "name": "Sampler",
+     "value": 3,
+     "tags": []
+    },
+    {
+     "name": "Pipeline",
+     "value": 4,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuStage",
+   "base": "u8",
+   "flags": false,
+   "tags": [],
+   "members": [
+    {
+     "name": "Pre",
+     "value": 0,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "start of the frame, before the game draws: offscreen targets and compute"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "UnderHud",
+     "value": 1,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "on the screen after the world and before the hand and the HUD"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Overlay",
+     "value": 2,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "on the screen after everything, including the HUD and menus"
+       ]
+      }
+     ]
     }
    ]
   }
@@ -12846,6 +13566,1631 @@
    ]
   },
   {
+   "name": "GpuInfoData",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "available",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "false when the renderer cannot run plugin GPU work (for example the null renderer)"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "api",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vulkan, d3d12, d3d11, metal or webgpu"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "adapter",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "vendor",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "discrete",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "targetFormat",
+     "type": "GpuFormat",
+     "default": {
+      "kind": "ident",
+      "value": "Bgra8",
+      "text": "Bgra8"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "what GpuFormat.Screen resolves to"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "width",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "pixels"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "height",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "pixels"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "maxTexture2d",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxTextureLayers",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxMsaaSamples",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxBufferBytes",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxColorTargets",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "compute",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "multiDrawIndirect",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "float16",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "int64",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "subgroups",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "sceneCopy",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the CopyScreen command works"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "shaderTarget",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "spirv, dxil, hlsl, msl or wgsl: the shader pack target this device reads"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuUniformMember",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "offset",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "bytes",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "elements",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuProgramInfo",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "uniformBytes",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "uniforms",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuUniformMember"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "vertex",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "fragment",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "compute",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureSlot",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "slot",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "array",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "unfilterable",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuPackInfo",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "pack",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "programs",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuProgramInfo"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "slots",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuTextureSlot"
+      ]
+     },
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "size",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "bytes; at least the length of data"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "usage",
+     "type": {
+      "generic": "flagset",
+      "args": [
+       "GpuBufferUsage"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "initial contents, may be empty"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferWriteRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "id",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "offset",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferReadRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "id",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "offset",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "size",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "tag",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "returned in the GpuReadback event"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "width",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "height",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "layers",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "array layers, cube faces or depth"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "mips",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "format",
+     "type": "GpuFormat",
+     "default": {
+      "kind": "ident",
+      "value": "Rgba8",
+      "text": "Rgba8"
+     },
+     "tags": []
+    },
+    {
+     "name": "usage",
+     "type": {
+      "generic": "flagset",
+      "args": [
+       "GpuTextureUsage"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "dim",
+     "type": "GpuTextureDim",
+     "default": {
+      "kind": "ident",
+      "value": "Tex2d",
+      "text": "Tex2d"
+     },
+     "tags": []
+    },
+    {
+     "name": "samples",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "screenSized",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "width and height follow the game window (scaled by scale) and the texture is recreated when it changes"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "scale",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "with screenSized: fraction of the window size"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "first layer of mip 0, tightly packed, may be empty"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureWriteRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "id",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "layer",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "mip",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "x",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "y",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "width",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "height",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "tightly packed rows"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuSamplerRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "min",
+     "type": "GpuFilter",
+     "default": {
+      "kind": "ident",
+      "value": "Linear",
+      "text": "Linear"
+     },
+     "tags": []
+    },
+    {
+     "name": "mag",
+     "type": "GpuFilter",
+     "default": {
+      "kind": "ident",
+      "value": "Linear",
+      "text": "Linear"
+     },
+     "tags": []
+    },
+    {
+     "name": "mip",
+     "type": "GpuFilter",
+     "default": {
+      "kind": "ident",
+      "value": "Linear",
+      "text": "Linear"
+     },
+     "tags": []
+    },
+    {
+     "name": "u",
+     "type": "GpuAddress",
+     "default": {
+      "kind": "ident",
+      "value": "Clamp",
+      "text": "Clamp"
+     },
+     "tags": []
+    },
+    {
+     "name": "v",
+     "type": "GpuAddress",
+     "default": {
+      "kind": "ident",
+      "value": "Clamp",
+      "text": "Clamp"
+     },
+     "tags": []
+    },
+    {
+     "name": "w",
+     "type": "GpuAddress",
+     "default": {
+      "kind": "ident",
+      "value": "Clamp",
+      "text": "Clamp"
+     },
+     "tags": []
+    },
+    {
+     "name": "anisotropy",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "lodBias",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "minLod",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxLod",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1000,
+      "text": "1000"
+     },
+     "tags": []
+    },
+    {
+     "name": "compare",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "compareOp",
+     "type": "GpuCompare",
+     "default": {
+      "kind": "ident",
+      "value": "LessEqual",
+      "text": "LessEqual"
+     },
+     "tags": []
+    },
+    {
+     "name": "border",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "ARGB, for the border address mode"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuStreamDesc",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "stride",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "instance",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuAttributeDesc",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "location",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "stream",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "format",
+     "type": "GpuFormat",
+     "default": {
+      "kind": "ident",
+      "value": "Rgba32f",
+      "text": "Rgba32f"
+     },
+     "tags": []
+    },
+    {
+     "name": "offset",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuStorageBinding",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "binding",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "kind",
+     "type": "GpuStorageKind",
+     "default": {
+      "kind": "ident",
+      "value": "Buffer",
+      "text": "Buffer"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBlendDesc",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "enabled",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "srcColor",
+     "type": "GpuBlendFactor",
+     "default": {
+      "kind": "ident",
+      "value": "One",
+      "text": "One"
+     },
+     "tags": []
+    },
+    {
+     "name": "dstColor",
+     "type": "GpuBlendFactor",
+     "default": {
+      "kind": "ident",
+      "value": "Zero",
+      "text": "Zero"
+     },
+     "tags": []
+    },
+    {
+     "name": "colorOp",
+     "type": "GpuBlendOp",
+     "default": {
+      "kind": "ident",
+      "value": "Add",
+      "text": "Add"
+     },
+     "tags": []
+    },
+    {
+     "name": "srcAlpha",
+     "type": "GpuBlendFactor",
+     "default": {
+      "kind": "ident",
+      "value": "One",
+      "text": "One"
+     },
+     "tags": []
+    },
+    {
+     "name": "dstAlpha",
+     "type": "GpuBlendFactor",
+     "default": {
+      "kind": "ident",
+      "value": "Zero",
+      "text": "Zero"
+     },
+     "tags": []
+    },
+    {
+     "name": "alphaOp",
+     "type": "GpuBlendOp",
+     "default": {
+      "kind": "ident",
+      "value": "Add",
+      "text": "Add"
+     },
+     "tags": []
+    },
+    {
+     "name": "writeMask",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 15,
+      "text": "15"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "bit 0 red, 1 green, 2 blue, 3 alpha"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuPipelineRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "pack",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "program",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "streams",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuStreamDesc"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        8
+       ]
+      }
+     ]
+    },
+    {
+     "name": "attributes",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuAttributeDesc"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        16
+       ]
+      }
+     ]
+    },
+    {
+     "name": "topology",
+     "type": "GpuTopology",
+     "default": {
+      "kind": "ident",
+      "value": "TriangleList",
+      "text": "TriangleList"
+     },
+     "tags": []
+    },
+    {
+     "name": "cull",
+     "type": "GpuCull",
+     "default": {
+      "kind": "ident",
+      "value": "None",
+      "text": "None"
+     },
+     "tags": []
+    },
+    {
+     "name": "frontFace",
+     "type": "GpuFrontFace",
+     "default": {
+      "kind": "ident",
+      "value": "CounterClockwise",
+      "text": "CounterClockwise"
+     },
+     "tags": []
+    },
+    {
+     "name": "depthBiasConstant",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "depthBiasSlope",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "depthTest",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "depthWrite",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "depthCompare",
+     "type": "GpuCompare",
+     "default": {
+      "kind": "ident",
+      "value": "LessEqual",
+      "text": "LessEqual"
+     },
+     "tags": []
+    },
+    {
+     "name": "blend",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuBlendDesc"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        8
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "one entry per color target; missing entries do not blend"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "colorFormats",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuFormat"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        8
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "one entry per color target; empty means one Screen target"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "depthFormat",
+     "type": "GpuFormat",
+     "default": {
+      "kind": "ident",
+      "value": "None",
+      "text": "None"
+     },
+     "tags": []
+    },
+    {
+     "name": "samples",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "storage",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuStorageBinding"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "resources the shader reads at set 2, binding = binding"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuComputePipelineRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "pack",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "program",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "storage",
+     "type": {
+      "generic": "list",
+      "args": [
+       "GpuStorageBinding"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "name",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuSubmitRequest",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "layer",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "a layer with the same name is replaced"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "stage",
+     "type": "GpuStage",
+     "default": {
+      "kind": "ident",
+      "value": "Overlay",
+      "text": "Overlay"
+     },
+     "tags": []
+    },
+    {
+     "name": "z",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "layers of one stage run in ascending z"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "once",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "run for one frame and drop it (compute, uploads, one-off copies)"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "stream",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "a command stream, see docs/gpu.md"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "EventGpuReadback",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "tag",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "id",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "ok",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "EventGpuReset",
+   "synthetic": false,
+   "tags": [],
+   "fields": [
+    {
+     "name": "generation",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuPackLoadRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "data",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "a conduit shader pack"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuDestroyRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "kind",
+     "type": "GpuResource",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "id",
+     "type": "u32",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuLayerClearRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "layer",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "GpuErrorsResponse",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "messages",
+     "type": {
+      "generic": "list",
+      "args": [
+       "string"
+      ]
+     },
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
    "name": "ServerItem",
    "synthetic": false,
    "tags": [],
@@ -20158,6 +22503,470 @@
    ]
   },
   {
+   "name": "GpuInfo",
+   "id": 5376,
+   "request": null,
+   "response": "GpuInfoData",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuPackLoad",
+   "id": 5377,
+   "request": "GpuPackLoadRequest",
+   "response": "GpuPackInfo",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferCreate",
+   "id": 5392,
+   "request": "GpuBufferRequest",
+   "response": "u32",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferWrite",
+   "id": 5393,
+   "request": "GpuBufferWriteRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "hot",
+     "args": []
+    }
+   ]
+  },
+  {
+   "name": "GpuBufferRead",
+   "id": 5394,
+   "request": "GpuBufferReadRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "the contents arrive as a GpuReadback event"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureCreate",
+   "id": 5408,
+   "request": "GpuTextureRequest",
+   "response": "u32",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuTextureWrite",
+   "id": 5409,
+   "request": "GpuTextureWriteRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "hot",
+     "args": []
+    }
+   ]
+  },
+  {
+   "name": "GpuSamplerCreate",
+   "id": 5424,
+   "request": "GpuSamplerRequest",
+   "response": "u32",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuPipelineCreate",
+   "id": 5440,
+   "request": "GpuPipelineRequest",
+   "response": "u32",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuComputePipelineCreate",
+   "id": 5441,
+   "request": "GpuComputePipelineRequest",
+   "response": "u32",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuDestroy",
+   "id": 5456,
+   "request": "GpuDestroyRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuSubmit",
+   "id": 5472,
+   "request": "GpuSubmitRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "hot",
+     "args": []
+    }
+   ]
+  },
+  {
+   "name": "GpuLayerClear",
+   "id": 5473,
+   "request": "GpuLayerClearRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuErrors",
+   "id": 5488,
+   "request": null,
+   "response": "GpuErrorsResponse",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Gpu"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Gpu"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "problems the renderer found in this plugin's resources and streams, oldest first; reading clears them"
+     ]
+    }
+   ]
+  },
+  {
    "name": "Broadcast",
    "id": 28672,
    "request": "TextMessage",
@@ -23306,6 +26115,56 @@
     {
      "name": "hot",
      "args": []
+    }
+   ]
+  },
+  {
+   "name": "GpuReadback",
+   "id": 75,
+   "payload": "EventGpuReadback",
+   "hosts": [
+    "client"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "GpuReset",
+   "id": 76,
+   "payload": "EventGpuReset",
+   "hosts": [
+    "client"
+   ],
+   "tags": [
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "gpu"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "the renderer was recreated; every pack, buffer, texture, sampler and pipeline id is void"
+     ]
     }
    ]
   }

@@ -281,4 +281,12 @@ template <class T> void wire_events(T& self, Context& ctx) {
         ctx.on<event::MicData>([&self](const typename event::MicData::Payload& p) { return self.onMicData(p); });
     else if constexpr (requires(T& t) { t.onMicData(); })
         ctx.on<event::MicData>([&self]() { return self.onMicData(); });
+    if constexpr (requires(T& t, const typename event::GpuReadback::Payload& p) { t.onGpuReadback(p); })
+        ctx.on<event::GpuReadback>([&self](const typename event::GpuReadback::Payload& p) { return self.onGpuReadback(p); });
+    else if constexpr (requires(T& t) { t.onGpuReadback(); })
+        ctx.on<event::GpuReadback>([&self]() { return self.onGpuReadback(); });
+    if constexpr (requires(T& t, const typename event::GpuReset::Payload& p) { t.onGpuReset(p); })
+        ctx.on<event::GpuReset>([&self](const typename event::GpuReset::Payload& p) { return self.onGpuReset(p); });
+    else if constexpr (requires(T& t) { t.onGpuReset(); })
+        ctx.on<event::GpuReset>([&self]() { return self.onGpuReset(); });
 }

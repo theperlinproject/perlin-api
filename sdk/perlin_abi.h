@@ -182,6 +182,15 @@ static inline int32_t perlin_invoke(uint32_t op, const perlin_writer* request, p
 #define PERLIN_SOCKET_MAX_OPEN (8u)
 #define PERLIN_SOCKET_MAX_MESSAGE (4194304u)
 #define PERLIN_AUDIO_STREAM_MAX (16u)
+#define PERLIN_GPU_MAX_PACKS (8u)
+#define PERLIN_GPU_MAX_RESOURCES (4096u)
+#define PERLIN_GPU_MAX_TEXTURE_SIDE (8192u)
+#define PERLIN_GPU_MAX_BUFFER_BYTES (268435456ull)
+#define PERLIN_GPU_MAX_TOTAL_BYTES (1073741824ull)
+#define PERLIN_GPU_MAX_LAYERS (16u)
+#define PERLIN_GPU_MAX_STREAM_BYTES (8388608u)
+#define PERLIN_GPU_MAX_UNIFORM_BYTES (4096u)
+#define PERLIN_GPU_TEXTURE_SLOTS (48u)
 
 typedef int32_t PerlinStatus;
 enum {
@@ -209,6 +218,7 @@ enum {
     PERLIN_PERMISSION_CLIPBOARD = (1u << 10),
     PERLIN_PERMISSION_WINDOW = (1u << 11),
     PERLIN_PERMISSION_SOCKETS = (1u << 12),
+    PERLIN_PERMISSION_GPU = (1u << 13),
 };
 typedef uint8_t PerlinDraw;
 enum {
@@ -597,6 +607,140 @@ enum {
     PERLIN_WINDOW_FIELD_FULLSCREEN = (1u << 0),
     PERLIN_WINDOW_FIELD_TITLE = (1u << 1),
 };
+typedef uint8_t PerlinGpuFormat;
+enum {
+    PERLIN_GPU_FORMAT_NONE = 0,
+    PERLIN_GPU_FORMAT_SCREEN = 1,
+    PERLIN_GPU_FORMAT_R8 = 2,
+    PERLIN_GPU_FORMAT_RG8 = 3,
+    PERLIN_GPU_FORMAT_RGBA8 = 4,
+    PERLIN_GPU_FORMAT_RGBA8_SRGB = 5,
+    PERLIN_GPU_FORMAT_BGRA8 = 6,
+    PERLIN_GPU_FORMAT_R16F = 7,
+    PERLIN_GPU_FORMAT_RG16F = 8,
+    PERLIN_GPU_FORMAT_RGBA16F = 9,
+    PERLIN_GPU_FORMAT_R32F = 10,
+    PERLIN_GPU_FORMAT_RG32F = 11,
+    PERLIN_GPU_FORMAT_RGB32F = 12,
+    PERLIN_GPU_FORMAT_RGBA32F = 13,
+    PERLIN_GPU_FORMAT_R32U = 14,
+    PERLIN_GPU_FORMAT_RGB10A2 = 15,
+    PERLIN_GPU_FORMAT_R11_G11_B10F = 16,
+    PERLIN_GPU_FORMAT_D16 = 17,
+    PERLIN_GPU_FORMAT_D32F = 18,
+    PERLIN_GPU_FORMAT_D24_S8 = 19,
+    PERLIN_GPU_FORMAT_D32F_S8 = 20,
+};
+typedef uint32_t PerlinGpuBufferUsage;
+enum {
+    PERLIN_GPU_BUFFER_USAGE_NONE = 0,
+    PERLIN_GPU_BUFFER_USAGE_VERTEX = (1u << 0),
+    PERLIN_GPU_BUFFER_USAGE_INDEX = (1u << 1),
+    PERLIN_GPU_BUFFER_USAGE_STORAGE = (1u << 2),
+    PERLIN_GPU_BUFFER_USAGE_INDIRECT = (1u << 3),
+    PERLIN_GPU_BUFFER_USAGE_COPY_SRC = (1u << 4),
+    PERLIN_GPU_BUFFER_USAGE_COPY_DST = (1u << 5),
+};
+typedef uint32_t PerlinGpuTextureUsage;
+enum {
+    PERLIN_GPU_TEXTURE_USAGE_NONE = 0,
+    PERLIN_GPU_TEXTURE_USAGE_SAMPLED = (1u << 0),
+    PERLIN_GPU_TEXTURE_USAGE_STORAGE = (1u << 1),
+    PERLIN_GPU_TEXTURE_USAGE_COLOR_TARGET = (1u << 2),
+    PERLIN_GPU_TEXTURE_USAGE_DEPTH_TARGET = (1u << 3),
+    PERLIN_GPU_TEXTURE_USAGE_COPY_SRC = (1u << 4),
+    PERLIN_GPU_TEXTURE_USAGE_COPY_DST = (1u << 5),
+};
+typedef uint8_t PerlinGpuTextureDim;
+enum {
+    PERLIN_GPU_TEXTURE_DIM_TEX2D = 0,
+    PERLIN_GPU_TEXTURE_DIM_ARRAY = 1,
+    PERLIN_GPU_TEXTURE_DIM_CUBE = 2,
+    PERLIN_GPU_TEXTURE_DIM_TEX3D = 3,
+};
+typedef uint8_t PerlinGpuFilter;
+enum {
+    PERLIN_GPU_FILTER_NEAREST = 0,
+    PERLIN_GPU_FILTER_LINEAR = 1,
+};
+typedef uint8_t PerlinGpuAddress;
+enum {
+    PERLIN_GPU_ADDRESS_REPEAT = 0,
+    PERLIN_GPU_ADDRESS_MIRROR = 1,
+    PERLIN_GPU_ADDRESS_CLAMP = 2,
+    PERLIN_GPU_ADDRESS_BORDER = 3,
+};
+typedef uint8_t PerlinGpuCompare;
+enum {
+    PERLIN_GPU_COMPARE_NEVER = 0,
+    PERLIN_GPU_COMPARE_LESS = 1,
+    PERLIN_GPU_COMPARE_EQUAL = 2,
+    PERLIN_GPU_COMPARE_LESS_EQUAL = 3,
+    PERLIN_GPU_COMPARE_GREATER = 4,
+    PERLIN_GPU_COMPARE_NOT_EQUAL = 5,
+    PERLIN_GPU_COMPARE_GREATER_EQUAL = 6,
+    PERLIN_GPU_COMPARE_ALWAYS = 7,
+};
+typedef uint8_t PerlinGpuBlendFactor;
+enum {
+    PERLIN_GPU_BLEND_FACTOR_ZERO = 0,
+    PERLIN_GPU_BLEND_FACTOR_ONE = 1,
+    PERLIN_GPU_BLEND_FACTOR_SRC_COLOR = 2,
+    PERLIN_GPU_BLEND_FACTOR_INV_SRC_COLOR = 3,
+    PERLIN_GPU_BLEND_FACTOR_SRC_ALPHA = 4,
+    PERLIN_GPU_BLEND_FACTOR_INV_SRC_ALPHA = 5,
+    PERLIN_GPU_BLEND_FACTOR_DST_COLOR = 6,
+    PERLIN_GPU_BLEND_FACTOR_INV_DST_COLOR = 7,
+    PERLIN_GPU_BLEND_FACTOR_DST_ALPHA = 8,
+    PERLIN_GPU_BLEND_FACTOR_INV_DST_ALPHA = 9,
+    PERLIN_GPU_BLEND_FACTOR_SRC_ALPHA_SATURATE = 10,
+};
+typedef uint8_t PerlinGpuBlendOp;
+enum {
+    PERLIN_GPU_BLEND_OP_ADD = 0,
+    PERLIN_GPU_BLEND_OP_SUBTRACT = 1,
+    PERLIN_GPU_BLEND_OP_REVERSE_SUBTRACT = 2,
+    PERLIN_GPU_BLEND_OP_MIN = 3,
+    PERLIN_GPU_BLEND_OP_MAX = 4,
+};
+typedef uint8_t PerlinGpuCull;
+enum {
+    PERLIN_GPU_CULL_NONE = 0,
+    PERLIN_GPU_CULL_BACK = 1,
+    PERLIN_GPU_CULL_FRONT = 2,
+};
+typedef uint8_t PerlinGpuFrontFace;
+enum {
+    PERLIN_GPU_FRONT_FACE_COUNTER_CLOCKWISE = 0,
+    PERLIN_GPU_FRONT_FACE_CLOCKWISE = 1,
+};
+typedef uint8_t PerlinGpuTopology;
+enum {
+    PERLIN_GPU_TOPOLOGY_TRIANGLE_LIST = 0,
+    PERLIN_GPU_TOPOLOGY_TRIANGLE_STRIP = 1,
+    PERLIN_GPU_TOPOLOGY_LINE_LIST = 2,
+    PERLIN_GPU_TOPOLOGY_POINT_LIST = 3,
+};
+typedef uint8_t PerlinGpuStorageKind;
+enum {
+    PERLIN_GPU_STORAGE_KIND_BUFFER = 0,
+    PERLIN_GPU_STORAGE_KIND_BUFFER_RW = 1,
+    PERLIN_GPU_STORAGE_KIND_TEXTURE_RW = 2,
+};
+typedef uint8_t PerlinGpuResource;
+enum {
+    PERLIN_GPU_RESOURCE_PACK = 0,
+    PERLIN_GPU_RESOURCE_BUFFER = 1,
+    PERLIN_GPU_RESOURCE_TEXTURE = 2,
+    PERLIN_GPU_RESOURCE_SAMPLER = 3,
+    PERLIN_GPU_RESOURCE_PIPELINE = 4,
+};
+typedef uint8_t PerlinGpuStage;
+enum {
+    PERLIN_GPU_STAGE_PRE = 0,
+    PERLIN_GPU_STAGE_UNDER_HUD = 1,
+    PERLIN_GPU_STAGE_OVERLAY = 2,
+};
 
 enum PerlinOpId {
     PERLIN_OP_LOG = 0x0001,
@@ -766,6 +910,20 @@ enum PerlinOpId {
     PERLIN_OP_MIC_STOP = 0x1212,
     PERLIN_OP_MIC_STATE = 0x1213,
     PERLIN_OP_POST_EFFECT = 0x1400,
+    PERLIN_OP_GPU_INFO = 0x1500,
+    PERLIN_OP_GPU_PACK_LOAD = 0x1501,
+    PERLIN_OP_GPU_BUFFER_CREATE = 0x1510,
+    PERLIN_OP_GPU_BUFFER_WRITE = 0x1511,
+    PERLIN_OP_GPU_BUFFER_READ = 0x1512,
+    PERLIN_OP_GPU_TEXTURE_CREATE = 0x1520,
+    PERLIN_OP_GPU_TEXTURE_WRITE = 0x1521,
+    PERLIN_OP_GPU_SAMPLER_CREATE = 0x1530,
+    PERLIN_OP_GPU_PIPELINE_CREATE = 0x1540,
+    PERLIN_OP_GPU_COMPUTE_PIPELINE_CREATE = 0x1541,
+    PERLIN_OP_GPU_DESTROY = 0x1550,
+    PERLIN_OP_GPU_SUBMIT = 0x1560,
+    PERLIN_OP_GPU_LAYER_CLEAR = 0x1561,
+    PERLIN_OP_GPU_ERRORS = 0x1570,
     PERLIN_OP_BROADCAST = 0x7000,
     PERLIN_OP_PLAYER_MESSAGE = 0x7001,
     PERLIN_OP_KICK = 0x7002,
@@ -902,8 +1060,10 @@ enum PerlinEventId {
     PERLIN_EVENT_SOCKET_DATA = 72,
     PERLIN_EVENT_SOCKET_CLOSE = 73,
     PERLIN_EVENT_MIC_DATA = 74,
+    PERLIN_EVENT_GPU_READBACK = 75,
+    PERLIN_EVENT_GPU_RESET = 76,
 };
-#define PERLIN_EVENT_COUNT 75
+#define PERLIN_EVENT_COUNT 77
 #define PERLIN_SUBSCRIPTION_WORDS 3
 #define PERLIN_SUBSCRIBE(words, event) ((words)[(event) / 32] |= (1u << ((event) % 32)))
 
@@ -1146,6 +1306,30 @@ typedef struct PerlinAudioStreamCloseRequest PerlinAudioStreamCloseRequest;
 typedef struct PerlinSoundStopRequest PerlinSoundStopRequest;
 typedef struct PerlinMicListResponse PerlinMicListResponse;
 typedef struct PerlinServerConnectRequest PerlinServerConnectRequest;
+typedef struct PerlinGpuInfoData PerlinGpuInfoData;
+typedef struct PerlinGpuUniformMember PerlinGpuUniformMember;
+typedef struct PerlinGpuProgramInfo PerlinGpuProgramInfo;
+typedef struct PerlinGpuTextureSlot PerlinGpuTextureSlot;
+typedef struct PerlinGpuPackInfo PerlinGpuPackInfo;
+typedef struct PerlinGpuBufferRequest PerlinGpuBufferRequest;
+typedef struct PerlinGpuBufferWriteRequest PerlinGpuBufferWriteRequest;
+typedef struct PerlinGpuBufferReadRequest PerlinGpuBufferReadRequest;
+typedef struct PerlinGpuTextureRequest PerlinGpuTextureRequest;
+typedef struct PerlinGpuTextureWriteRequest PerlinGpuTextureWriteRequest;
+typedef struct PerlinGpuSamplerRequest PerlinGpuSamplerRequest;
+typedef struct PerlinGpuStreamDesc PerlinGpuStreamDesc;
+typedef struct PerlinGpuAttributeDesc PerlinGpuAttributeDesc;
+typedef struct PerlinGpuStorageBinding PerlinGpuStorageBinding;
+typedef struct PerlinGpuBlendDesc PerlinGpuBlendDesc;
+typedef struct PerlinGpuPipelineRequest PerlinGpuPipelineRequest;
+typedef struct PerlinGpuComputePipelineRequest PerlinGpuComputePipelineRequest;
+typedef struct PerlinGpuSubmitRequest PerlinGpuSubmitRequest;
+typedef struct PerlinEventGpuReadback PerlinEventGpuReadback;
+typedef struct PerlinEventGpuReset PerlinEventGpuReset;
+typedef struct PerlinGpuPackLoadRequest PerlinGpuPackLoadRequest;
+typedef struct PerlinGpuDestroyRequest PerlinGpuDestroyRequest;
+typedef struct PerlinGpuLayerClearRequest PerlinGpuLayerClearRequest;
+typedef struct PerlinGpuErrorsResponse PerlinGpuErrorsResponse;
 typedef struct PerlinServerItem PerlinServerItem;
 typedef struct PerlinServerInventory PerlinServerInventory;
 typedef struct PerlinPlayerDetails PerlinPlayerDetails;
@@ -1248,6 +1432,14 @@ typedef struct PerlinList_SettingEntry { PerlinSettingEntry* data; uint32_t len;
 typedef struct PerlinList_ModEntry { PerlinModEntry* data; uint32_t len; } PerlinList_ModEntry;
 typedef struct PerlinList_PacketCount { PerlinPacketCount* data; uint32_t len; } PerlinList_PacketCount;
 typedef struct PerlinList_Bossbar { PerlinBossbar* data; uint32_t len; } PerlinList_Bossbar;
+typedef struct PerlinList_GpuUniformMember { PerlinGpuUniformMember* data; uint32_t len; } PerlinList_GpuUniformMember;
+typedef struct PerlinList_GpuProgramInfo { PerlinGpuProgramInfo* data; uint32_t len; } PerlinList_GpuProgramInfo;
+typedef struct PerlinList_GpuTextureSlot { PerlinGpuTextureSlot* data; uint32_t len; } PerlinList_GpuTextureSlot;
+typedef struct PerlinList_GpuStreamDesc { PerlinGpuStreamDesc* data; uint32_t len; } PerlinList_GpuStreamDesc;
+typedef struct PerlinList_GpuAttributeDesc { PerlinGpuAttributeDesc* data; uint32_t len; } PerlinList_GpuAttributeDesc;
+typedef struct PerlinList_GpuBlendDesc { PerlinGpuBlendDesc* data; uint32_t len; } PerlinList_GpuBlendDesc;
+typedef struct PerlinList_GpuFormat { PerlinGpuFormat* data; uint32_t len; } PerlinList_GpuFormat;
+typedef struct PerlinList_GpuStorageBinding { PerlinGpuStorageBinding* data; uint32_t len; } PerlinList_GpuStorageBinding;
 typedef struct PerlinList_ServerItem { PerlinServerItem* data; uint32_t len; } PerlinList_ServerItem;
 typedef struct PerlinList_FormButton { PerlinFormButton* data; uint32_t len; } PerlinList_FormButton;
 typedef struct PerlinList_FormControl { PerlinFormControl* data; uint32_t len; } PerlinList_FormControl;
@@ -2653,6 +2845,188 @@ struct PerlinMicListResponse {
 struct PerlinServerConnectRequest {
     perlin_str address;
 };
+struct PerlinGpuInfoData {
+    uint8_t available;
+    perlin_str api;
+    perlin_str adapter;
+    perlin_str vendor;
+    uint8_t discrete;
+    PerlinGpuFormat targetFormat;
+    uint32_t width;
+    uint32_t height;
+    uint32_t maxTexture2d;
+    uint32_t maxTextureLayers;
+    uint32_t maxMsaaSamples;
+    uint64_t maxBufferBytes;
+    uint32_t maxColorTargets;
+    uint8_t compute;
+    uint8_t multiDrawIndirect;
+    uint8_t float16;
+    uint8_t int64;
+    uint8_t subgroups;
+    uint8_t sceneCopy;
+    perlin_str shaderTarget;
+};
+struct PerlinGpuUniformMember {
+    perlin_str name;
+    uint32_t offset;
+    uint32_t bytes;
+    uint32_t elements;
+};
+struct PerlinGpuProgramInfo {
+    perlin_str name;
+    uint32_t uniformBytes;
+    PerlinList_GpuUniformMember uniforms;
+    uint8_t vertex;
+    uint8_t fragment;
+    uint8_t compute;
+};
+struct PerlinGpuTextureSlot {
+    perlin_str name;
+    uint32_t slot;
+    uint8_t array;
+    uint8_t unfilterable;
+};
+struct PerlinGpuPackInfo {
+    uint32_t pack;
+    PerlinList_GpuProgramInfo programs;
+    PerlinList_GpuTextureSlot slots;
+};
+struct PerlinGpuBufferRequest {
+    uint64_t size;
+    uint32_t usage;
+    perlin_bytes data;
+    perlin_str name;
+};
+struct PerlinGpuBufferWriteRequest {
+    uint32_t id;
+    uint64_t offset;
+    perlin_bytes data;
+};
+struct PerlinGpuBufferReadRequest {
+    uint32_t id;
+    uint64_t offset;
+    uint64_t size;
+    uint32_t tag;
+};
+struct PerlinGpuTextureRequest {
+    uint32_t width;
+    uint32_t height;
+    uint32_t layers;
+    uint32_t mips;
+    PerlinGpuFormat format;
+    uint32_t usage;
+    PerlinGpuTextureDim dim;
+    uint32_t samples;
+    uint8_t screenSized;
+    float scale;
+    perlin_bytes data;
+    perlin_str name;
+};
+struct PerlinGpuTextureWriteRequest {
+    uint32_t id;
+    uint32_t layer;
+    uint32_t mip;
+    uint32_t x;
+    uint32_t y;
+    uint32_t width;
+    uint32_t height;
+    perlin_bytes data;
+};
+struct PerlinGpuSamplerRequest {
+    PerlinGpuFilter min;
+    PerlinGpuFilter mag;
+    PerlinGpuFilter mip;
+    PerlinGpuAddress u;
+    PerlinGpuAddress v;
+    PerlinGpuAddress w;
+    float anisotropy;
+    float lodBias;
+    float minLod;
+    float maxLod;
+    uint8_t compare;
+    PerlinGpuCompare compareOp;
+    uint32_t border;
+};
+struct PerlinGpuStreamDesc {
+    uint32_t stride;
+    uint8_t instance;
+};
+struct PerlinGpuAttributeDesc {
+    uint32_t location;
+    uint32_t stream;
+    PerlinGpuFormat format;
+    uint32_t offset;
+};
+struct PerlinGpuStorageBinding {
+    uint32_t binding;
+    PerlinGpuStorageKind kind;
+};
+struct PerlinGpuBlendDesc {
+    uint8_t enabled;
+    PerlinGpuBlendFactor srcColor;
+    PerlinGpuBlendFactor dstColor;
+    PerlinGpuBlendOp colorOp;
+    PerlinGpuBlendFactor srcAlpha;
+    PerlinGpuBlendFactor dstAlpha;
+    PerlinGpuBlendOp alphaOp;
+    uint32_t writeMask;
+};
+struct PerlinGpuPipelineRequest {
+    uint32_t pack;
+    perlin_str program;
+    PerlinList_GpuStreamDesc streams;
+    PerlinList_GpuAttributeDesc attributes;
+    PerlinGpuTopology topology;
+    PerlinGpuCull cull;
+    PerlinGpuFrontFace frontFace;
+    float depthBiasConstant;
+    float depthBiasSlope;
+    uint8_t depthTest;
+    uint8_t depthWrite;
+    PerlinGpuCompare depthCompare;
+    PerlinList_GpuBlendDesc blend;
+    PerlinList_GpuFormat colorFormats;
+    PerlinGpuFormat depthFormat;
+    uint32_t samples;
+    PerlinList_GpuStorageBinding storage;
+    perlin_str name;
+};
+struct PerlinGpuComputePipelineRequest {
+    uint32_t pack;
+    perlin_str program;
+    PerlinList_GpuStorageBinding storage;
+    perlin_str name;
+};
+struct PerlinGpuSubmitRequest {
+    perlin_str layer;
+    PerlinGpuStage stage;
+    int32_t z;
+    uint8_t once;
+    perlin_bytes stream;
+};
+struct PerlinEventGpuReadback {
+    uint32_t tag;
+    uint32_t id;
+    uint8_t ok;
+    perlin_bytes data;
+};
+struct PerlinEventGpuReset {
+    uint32_t generation;
+};
+struct PerlinGpuPackLoadRequest {
+    perlin_bytes data;
+};
+struct PerlinGpuDestroyRequest {
+    PerlinGpuResource kind;
+    uint32_t id;
+};
+struct PerlinGpuLayerClearRequest {
+    perlin_str layer;
+};
+struct PerlinGpuErrorsResponse {
+    PerlinList_Str messages;
+};
 struct PerlinServerItem {
     perlin_str name;
     uint32_t count;
@@ -3557,6 +3931,54 @@ static inline void perlin_write_MicListResponse(perlin_writer* w, const PerlinMi
 static inline void perlin_read_MicListResponse(perlin_reader* r, PerlinMicListResponse* v, perlin_arena* a);
 static inline void perlin_write_ServerConnectRequest(perlin_writer* w, const PerlinServerConnectRequest* v);
 static inline void perlin_read_ServerConnectRequest(perlin_reader* r, PerlinServerConnectRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuInfoData(perlin_writer* w, const PerlinGpuInfoData* v);
+static inline void perlin_read_GpuInfoData(perlin_reader* r, PerlinGpuInfoData* v, perlin_arena* a);
+static inline void perlin_write_GpuUniformMember(perlin_writer* w, const PerlinGpuUniformMember* v);
+static inline void perlin_read_GpuUniformMember(perlin_reader* r, PerlinGpuUniformMember* v, perlin_arena* a);
+static inline void perlin_write_GpuProgramInfo(perlin_writer* w, const PerlinGpuProgramInfo* v);
+static inline void perlin_read_GpuProgramInfo(perlin_reader* r, PerlinGpuProgramInfo* v, perlin_arena* a);
+static inline void perlin_write_GpuTextureSlot(perlin_writer* w, const PerlinGpuTextureSlot* v);
+static inline void perlin_read_GpuTextureSlot(perlin_reader* r, PerlinGpuTextureSlot* v, perlin_arena* a);
+static inline void perlin_write_GpuPackInfo(perlin_writer* w, const PerlinGpuPackInfo* v);
+static inline void perlin_read_GpuPackInfo(perlin_reader* r, PerlinGpuPackInfo* v, perlin_arena* a);
+static inline void perlin_write_GpuBufferRequest(perlin_writer* w, const PerlinGpuBufferRequest* v);
+static inline void perlin_read_GpuBufferRequest(perlin_reader* r, PerlinGpuBufferRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuBufferWriteRequest(perlin_writer* w, const PerlinGpuBufferWriteRequest* v);
+static inline void perlin_read_GpuBufferWriteRequest(perlin_reader* r, PerlinGpuBufferWriteRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuBufferReadRequest(perlin_writer* w, const PerlinGpuBufferReadRequest* v);
+static inline void perlin_read_GpuBufferReadRequest(perlin_reader* r, PerlinGpuBufferReadRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuTextureRequest(perlin_writer* w, const PerlinGpuTextureRequest* v);
+static inline void perlin_read_GpuTextureRequest(perlin_reader* r, PerlinGpuTextureRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuTextureWriteRequest(perlin_writer* w, const PerlinGpuTextureWriteRequest* v);
+static inline void perlin_read_GpuTextureWriteRequest(perlin_reader* r, PerlinGpuTextureWriteRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuSamplerRequest(perlin_writer* w, const PerlinGpuSamplerRequest* v);
+static inline void perlin_read_GpuSamplerRequest(perlin_reader* r, PerlinGpuSamplerRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuStreamDesc(perlin_writer* w, const PerlinGpuStreamDesc* v);
+static inline void perlin_read_GpuStreamDesc(perlin_reader* r, PerlinGpuStreamDesc* v, perlin_arena* a);
+static inline void perlin_write_GpuAttributeDesc(perlin_writer* w, const PerlinGpuAttributeDesc* v);
+static inline void perlin_read_GpuAttributeDesc(perlin_reader* r, PerlinGpuAttributeDesc* v, perlin_arena* a);
+static inline void perlin_write_GpuStorageBinding(perlin_writer* w, const PerlinGpuStorageBinding* v);
+static inline void perlin_read_GpuStorageBinding(perlin_reader* r, PerlinGpuStorageBinding* v, perlin_arena* a);
+static inline void perlin_write_GpuBlendDesc(perlin_writer* w, const PerlinGpuBlendDesc* v);
+static inline void perlin_read_GpuBlendDesc(perlin_reader* r, PerlinGpuBlendDesc* v, perlin_arena* a);
+static inline void perlin_write_GpuPipelineRequest(perlin_writer* w, const PerlinGpuPipelineRequest* v);
+static inline void perlin_read_GpuPipelineRequest(perlin_reader* r, PerlinGpuPipelineRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuComputePipelineRequest(perlin_writer* w, const PerlinGpuComputePipelineRequest* v);
+static inline void perlin_read_GpuComputePipelineRequest(perlin_reader* r, PerlinGpuComputePipelineRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuSubmitRequest(perlin_writer* w, const PerlinGpuSubmitRequest* v);
+static inline void perlin_read_GpuSubmitRequest(perlin_reader* r, PerlinGpuSubmitRequest* v, perlin_arena* a);
+static inline void perlin_write_EventGpuReadback(perlin_writer* w, const PerlinEventGpuReadback* v);
+static inline void perlin_read_EventGpuReadback(perlin_reader* r, PerlinEventGpuReadback* v, perlin_arena* a);
+static inline void perlin_write_EventGpuReset(perlin_writer* w, const PerlinEventGpuReset* v);
+static inline void perlin_read_EventGpuReset(perlin_reader* r, PerlinEventGpuReset* v, perlin_arena* a);
+static inline void perlin_write_GpuPackLoadRequest(perlin_writer* w, const PerlinGpuPackLoadRequest* v);
+static inline void perlin_read_GpuPackLoadRequest(perlin_reader* r, PerlinGpuPackLoadRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuDestroyRequest(perlin_writer* w, const PerlinGpuDestroyRequest* v);
+static inline void perlin_read_GpuDestroyRequest(perlin_reader* r, PerlinGpuDestroyRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuLayerClearRequest(perlin_writer* w, const PerlinGpuLayerClearRequest* v);
+static inline void perlin_read_GpuLayerClearRequest(perlin_reader* r, PerlinGpuLayerClearRequest* v, perlin_arena* a);
+static inline void perlin_write_GpuErrorsResponse(perlin_writer* w, const PerlinGpuErrorsResponse* v);
+static inline void perlin_read_GpuErrorsResponse(perlin_reader* r, PerlinGpuErrorsResponse* v, perlin_arena* a);
 static inline void perlin_write_ServerItem(perlin_writer* w, const PerlinServerItem* v);
 static inline void perlin_read_ServerItem(perlin_reader* r, PerlinServerItem* v, perlin_arena* a);
 static inline void perlin_write_ServerInventory(perlin_writer* w, const PerlinServerInventory* v);
@@ -3759,6 +4181,22 @@ static inline void perlin_write_List_PacketCount(perlin_writer* w, const PerlinL
 static inline void perlin_read_List_PacketCount(perlin_reader* r, PerlinList_PacketCount* v, perlin_arena* a);
 static inline void perlin_write_List_Bossbar(perlin_writer* w, const PerlinList_Bossbar* v);
 static inline void perlin_read_List_Bossbar(perlin_reader* r, PerlinList_Bossbar* v, perlin_arena* a);
+static inline void perlin_write_List_GpuUniformMember(perlin_writer* w, const PerlinList_GpuUniformMember* v);
+static inline void perlin_read_List_GpuUniformMember(perlin_reader* r, PerlinList_GpuUniformMember* v, perlin_arena* a);
+static inline void perlin_write_List_GpuProgramInfo(perlin_writer* w, const PerlinList_GpuProgramInfo* v);
+static inline void perlin_read_List_GpuProgramInfo(perlin_reader* r, PerlinList_GpuProgramInfo* v, perlin_arena* a);
+static inline void perlin_write_List_GpuTextureSlot(perlin_writer* w, const PerlinList_GpuTextureSlot* v);
+static inline void perlin_read_List_GpuTextureSlot(perlin_reader* r, PerlinList_GpuTextureSlot* v, perlin_arena* a);
+static inline void perlin_write_List_GpuStreamDesc(perlin_writer* w, const PerlinList_GpuStreamDesc* v);
+static inline void perlin_read_List_GpuStreamDesc(perlin_reader* r, PerlinList_GpuStreamDesc* v, perlin_arena* a);
+static inline void perlin_write_List_GpuAttributeDesc(perlin_writer* w, const PerlinList_GpuAttributeDesc* v);
+static inline void perlin_read_List_GpuAttributeDesc(perlin_reader* r, PerlinList_GpuAttributeDesc* v, perlin_arena* a);
+static inline void perlin_write_List_GpuBlendDesc(perlin_writer* w, const PerlinList_GpuBlendDesc* v);
+static inline void perlin_read_List_GpuBlendDesc(perlin_reader* r, PerlinList_GpuBlendDesc* v, perlin_arena* a);
+static inline void perlin_write_List_GpuFormat(perlin_writer* w, const PerlinList_GpuFormat* v);
+static inline void perlin_read_List_GpuFormat(perlin_reader* r, PerlinList_GpuFormat* v, perlin_arena* a);
+static inline void perlin_write_List_GpuStorageBinding(perlin_writer* w, const PerlinList_GpuStorageBinding* v);
+static inline void perlin_read_List_GpuStorageBinding(perlin_reader* r, PerlinList_GpuStorageBinding* v, perlin_arena* a);
 static inline void perlin_write_List_ServerItem(perlin_writer* w, const PerlinList_ServerItem* v);
 static inline void perlin_read_List_ServerItem(perlin_reader* r, PerlinList_ServerItem* v, perlin_arena* a);
 static inline void perlin_write_List_FormButton(perlin_writer* w, const PerlinList_FormButton* v);
@@ -7783,6 +8221,490 @@ static inline void perlin_read_ServerConnectRequest(perlin_reader* r, PerlinServ
     __builtin_memset(v, 0, sizeof *v);
     v->address = perlin_r_str(r);
 }
+static inline void perlin_write_GpuInfoData(perlin_writer* w, const PerlinGpuInfoData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u8(w, (uint8_t)(v->available));
+    perlin_w_str(w, v->api);
+    perlin_w_str(w, v->adapter);
+    perlin_w_str(w, v->vendor);
+    perlin_w_u8(w, (uint8_t)(v->discrete));
+    perlin_w_u8(w, (uint8_t)(v->targetFormat));
+    perlin_w_u32(w, (uint32_t)(v->width));
+    perlin_w_u32(w, (uint32_t)(v->height));
+    perlin_w_u32(w, (uint32_t)(v->maxTexture2d));
+    perlin_w_u32(w, (uint32_t)(v->maxTextureLayers));
+    perlin_w_u32(w, (uint32_t)(v->maxMsaaSamples));
+    perlin_w_u64(w, (uint64_t)(v->maxBufferBytes));
+    perlin_w_u32(w, (uint32_t)(v->maxColorTargets));
+    perlin_w_u8(w, (uint8_t)(v->compute));
+    perlin_w_u8(w, (uint8_t)(v->multiDrawIndirect));
+    perlin_w_u8(w, (uint8_t)(v->float16));
+    perlin_w_u8(w, (uint8_t)(v->int64));
+    perlin_w_u8(w, (uint8_t)(v->subgroups));
+    perlin_w_u8(w, (uint8_t)(v->sceneCopy));
+    perlin_w_str(w, v->shaderTarget);
+}
+static inline void perlin_read_GpuInfoData(perlin_reader* r, PerlinGpuInfoData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->available = (uint8_t)perlin_r_u8(r);
+    v->api = perlin_r_str(r);
+    v->adapter = perlin_r_str(r);
+    v->vendor = perlin_r_str(r);
+    v->discrete = (uint8_t)perlin_r_u8(r);
+    v->targetFormat = (PerlinGpuFormat)perlin_r_u8(r);
+    v->width = (uint32_t)perlin_r_u32(r);
+    v->height = (uint32_t)perlin_r_u32(r);
+    v->maxTexture2d = (uint32_t)perlin_r_u32(r);
+    v->maxTextureLayers = (uint32_t)perlin_r_u32(r);
+    v->maxMsaaSamples = (uint32_t)perlin_r_u32(r);
+    v->maxBufferBytes = (uint64_t)perlin_r_u64(r);
+    v->maxColorTargets = (uint32_t)perlin_r_u32(r);
+    v->compute = (uint8_t)perlin_r_u8(r);
+    v->multiDrawIndirect = (uint8_t)perlin_r_u8(r);
+    v->float16 = (uint8_t)perlin_r_u8(r);
+    v->int64 = (uint8_t)perlin_r_u8(r);
+    v->subgroups = (uint8_t)perlin_r_u8(r);
+    v->sceneCopy = (uint8_t)perlin_r_u8(r);
+    v->shaderTarget = perlin_r_str(r);
+}
+static inline void perlin_write_GpuUniformMember(perlin_writer* w, const PerlinGpuUniformMember* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->name);
+    perlin_w_u32(w, (uint32_t)(v->offset));
+    perlin_w_u32(w, (uint32_t)(v->bytes));
+    perlin_w_u32(w, (uint32_t)(v->elements));
+}
+static inline void perlin_read_GpuUniformMember(perlin_reader* r, PerlinGpuUniformMember* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->name = perlin_r_str(r);
+    v->offset = (uint32_t)perlin_r_u32(r);
+    v->bytes = (uint32_t)perlin_r_u32(r);
+    v->elements = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuProgramInfo(perlin_writer* w, const PerlinGpuProgramInfo* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->name);
+    perlin_w_u32(w, (uint32_t)(v->uniformBytes));
+    perlin_write_List_GpuUniformMember(w, &v->uniforms);
+    perlin_w_u8(w, (uint8_t)(v->vertex));
+    perlin_w_u8(w, (uint8_t)(v->fragment));
+    perlin_w_u8(w, (uint8_t)(v->compute));
+}
+static inline void perlin_read_GpuProgramInfo(perlin_reader* r, PerlinGpuProgramInfo* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->name = perlin_r_str(r);
+    v->uniformBytes = (uint32_t)perlin_r_u32(r);
+    perlin_read_List_GpuUniformMember(r, &v->uniforms, a);
+    v->vertex = (uint8_t)perlin_r_u8(r);
+    v->fragment = (uint8_t)perlin_r_u8(r);
+    v->compute = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_GpuTextureSlot(perlin_writer* w, const PerlinGpuTextureSlot* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->name);
+    perlin_w_u32(w, (uint32_t)(v->slot));
+    perlin_w_u8(w, (uint8_t)(v->array));
+    perlin_w_u8(w, (uint8_t)(v->unfilterable));
+}
+static inline void perlin_read_GpuTextureSlot(perlin_reader* r, PerlinGpuTextureSlot* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->name = perlin_r_str(r);
+    v->slot = (uint32_t)perlin_r_u32(r);
+    v->array = (uint8_t)perlin_r_u8(r);
+    v->unfilterable = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_GpuPackInfo(perlin_writer* w, const PerlinGpuPackInfo* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->pack));
+    perlin_write_List_GpuProgramInfo(w, &v->programs);
+    perlin_write_List_GpuTextureSlot(w, &v->slots);
+}
+static inline void perlin_read_GpuPackInfo(perlin_reader* r, PerlinGpuPackInfo* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->pack = (uint32_t)perlin_r_u32(r);
+    perlin_read_List_GpuProgramInfo(r, &v->programs, a);
+    perlin_read_List_GpuTextureSlot(r, &v->slots, a);
+}
+static inline void perlin_write_GpuBufferRequest(perlin_writer* w, const PerlinGpuBufferRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u64(w, (uint64_t)(v->size));
+    perlin_w_u32(w, (uint32_t)(v->usage));
+    perlin_w_bytes(w, v->data);
+    perlin_w_str(w, v->name);
+}
+static inline void perlin_read_GpuBufferRequest(perlin_reader* r, PerlinGpuBufferRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->size = (uint64_t)perlin_r_u64(r);
+    v->usage = (uint32_t)perlin_r_u32(r);
+    v->data = perlin_r_bytes(r);
+    v->name = perlin_r_str(r);
+}
+static inline void perlin_write_GpuBufferWriteRequest(perlin_writer* w, const PerlinGpuBufferWriteRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->id));
+    perlin_w_u64(w, (uint64_t)(v->offset));
+    perlin_w_bytes(w, v->data);
+}
+static inline void perlin_read_GpuBufferWriteRequest(perlin_reader* r, PerlinGpuBufferWriteRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = (uint32_t)perlin_r_u32(r);
+    v->offset = (uint64_t)perlin_r_u64(r);
+    v->data = perlin_r_bytes(r);
+}
+static inline void perlin_write_GpuBufferReadRequest(perlin_writer* w, const PerlinGpuBufferReadRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->id));
+    perlin_w_u64(w, (uint64_t)(v->offset));
+    perlin_w_u64(w, (uint64_t)(v->size));
+    perlin_w_u32(w, (uint32_t)(v->tag));
+}
+static inline void perlin_read_GpuBufferReadRequest(perlin_reader* r, PerlinGpuBufferReadRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = (uint32_t)perlin_r_u32(r);
+    v->offset = (uint64_t)perlin_r_u64(r);
+    v->size = (uint64_t)perlin_r_u64(r);
+    v->tag = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuTextureRequest(perlin_writer* w, const PerlinGpuTextureRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->width));
+    perlin_w_u32(w, (uint32_t)(v->height));
+    perlin_w_u32(w, (uint32_t)(v->layers));
+    perlin_w_u32(w, (uint32_t)(v->mips));
+    perlin_w_u8(w, (uint8_t)(v->format));
+    perlin_w_u32(w, (uint32_t)(v->usage));
+    perlin_w_u8(w, (uint8_t)(v->dim));
+    perlin_w_u32(w, (uint32_t)(v->samples));
+    perlin_w_u8(w, (uint8_t)(v->screenSized));
+    perlin_w_f32(w, (float)(v->scale));
+    perlin_w_bytes(w, v->data);
+    perlin_w_str(w, v->name);
+}
+static inline void perlin_read_GpuTextureRequest(perlin_reader* r, PerlinGpuTextureRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->width = (uint32_t)perlin_r_u32(r);
+    v->height = (uint32_t)perlin_r_u32(r);
+    v->layers = (uint32_t)perlin_r_u32(r);
+    v->mips = (uint32_t)perlin_r_u32(r);
+    v->format = (PerlinGpuFormat)perlin_r_u8(r);
+    v->usage = (uint32_t)perlin_r_u32(r);
+    v->dim = (PerlinGpuTextureDim)perlin_r_u8(r);
+    v->samples = (uint32_t)perlin_r_u32(r);
+    v->screenSized = (uint8_t)perlin_r_u8(r);
+    v->scale = (float)perlin_r_f32(r);
+    v->data = perlin_r_bytes(r);
+    v->name = perlin_r_str(r);
+}
+static inline void perlin_write_GpuTextureWriteRequest(perlin_writer* w, const PerlinGpuTextureWriteRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->id));
+    perlin_w_u32(w, (uint32_t)(v->layer));
+    perlin_w_u32(w, (uint32_t)(v->mip));
+    perlin_w_u32(w, (uint32_t)(v->x));
+    perlin_w_u32(w, (uint32_t)(v->y));
+    perlin_w_u32(w, (uint32_t)(v->width));
+    perlin_w_u32(w, (uint32_t)(v->height));
+    perlin_w_bytes(w, v->data);
+}
+static inline void perlin_read_GpuTextureWriteRequest(perlin_reader* r, PerlinGpuTextureWriteRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = (uint32_t)perlin_r_u32(r);
+    v->layer = (uint32_t)perlin_r_u32(r);
+    v->mip = (uint32_t)perlin_r_u32(r);
+    v->x = (uint32_t)perlin_r_u32(r);
+    v->y = (uint32_t)perlin_r_u32(r);
+    v->width = (uint32_t)perlin_r_u32(r);
+    v->height = (uint32_t)perlin_r_u32(r);
+    v->data = perlin_r_bytes(r);
+}
+static inline void perlin_write_GpuSamplerRequest(perlin_writer* w, const PerlinGpuSamplerRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u8(w, (uint8_t)(v->min));
+    perlin_w_u8(w, (uint8_t)(v->mag));
+    perlin_w_u8(w, (uint8_t)(v->mip));
+    perlin_w_u8(w, (uint8_t)(v->u));
+    perlin_w_u8(w, (uint8_t)(v->v));
+    perlin_w_u8(w, (uint8_t)(v->w));
+    perlin_w_f32(w, (float)(v->anisotropy));
+    perlin_w_f32(w, (float)(v->lodBias));
+    perlin_w_f32(w, (float)(v->minLod));
+    perlin_w_f32(w, (float)(v->maxLod));
+    perlin_w_u8(w, (uint8_t)(v->compare));
+    perlin_w_u8(w, (uint8_t)(v->compareOp));
+    perlin_w_u32(w, (uint32_t)(v->border));
+}
+static inline void perlin_read_GpuSamplerRequest(perlin_reader* r, PerlinGpuSamplerRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->min = (PerlinGpuFilter)perlin_r_u8(r);
+    v->mag = (PerlinGpuFilter)perlin_r_u8(r);
+    v->mip = (PerlinGpuFilter)perlin_r_u8(r);
+    v->u = (PerlinGpuAddress)perlin_r_u8(r);
+    v->v = (PerlinGpuAddress)perlin_r_u8(r);
+    v->w = (PerlinGpuAddress)perlin_r_u8(r);
+    v->anisotropy = (float)perlin_r_f32(r);
+    v->lodBias = (float)perlin_r_f32(r);
+    v->minLod = (float)perlin_r_f32(r);
+    v->maxLod = (float)perlin_r_f32(r);
+    v->compare = (uint8_t)perlin_r_u8(r);
+    v->compareOp = (PerlinGpuCompare)perlin_r_u8(r);
+    v->border = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuStreamDesc(perlin_writer* w, const PerlinGpuStreamDesc* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->stride));
+    perlin_w_u8(w, (uint8_t)(v->instance));
+}
+static inline void perlin_read_GpuStreamDesc(perlin_reader* r, PerlinGpuStreamDesc* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->stride = (uint32_t)perlin_r_u32(r);
+    v->instance = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_GpuAttributeDesc(perlin_writer* w, const PerlinGpuAttributeDesc* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->location));
+    perlin_w_u32(w, (uint32_t)(v->stream));
+    perlin_w_u8(w, (uint8_t)(v->format));
+    perlin_w_u32(w, (uint32_t)(v->offset));
+}
+static inline void perlin_read_GpuAttributeDesc(perlin_reader* r, PerlinGpuAttributeDesc* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->location = (uint32_t)perlin_r_u32(r);
+    v->stream = (uint32_t)perlin_r_u32(r);
+    v->format = (PerlinGpuFormat)perlin_r_u8(r);
+    v->offset = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuStorageBinding(perlin_writer* w, const PerlinGpuStorageBinding* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->binding));
+    perlin_w_u8(w, (uint8_t)(v->kind));
+}
+static inline void perlin_read_GpuStorageBinding(perlin_reader* r, PerlinGpuStorageBinding* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->binding = (uint32_t)perlin_r_u32(r);
+    v->kind = (PerlinGpuStorageKind)perlin_r_u8(r);
+}
+static inline void perlin_write_GpuBlendDesc(perlin_writer* w, const PerlinGpuBlendDesc* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u8(w, (uint8_t)(v->enabled));
+    perlin_w_u8(w, (uint8_t)(v->srcColor));
+    perlin_w_u8(w, (uint8_t)(v->dstColor));
+    perlin_w_u8(w, (uint8_t)(v->colorOp));
+    perlin_w_u8(w, (uint8_t)(v->srcAlpha));
+    perlin_w_u8(w, (uint8_t)(v->dstAlpha));
+    perlin_w_u8(w, (uint8_t)(v->alphaOp));
+    perlin_w_u32(w, (uint32_t)(v->writeMask));
+}
+static inline void perlin_read_GpuBlendDesc(perlin_reader* r, PerlinGpuBlendDesc* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->enabled = (uint8_t)perlin_r_u8(r);
+    v->srcColor = (PerlinGpuBlendFactor)perlin_r_u8(r);
+    v->dstColor = (PerlinGpuBlendFactor)perlin_r_u8(r);
+    v->colorOp = (PerlinGpuBlendOp)perlin_r_u8(r);
+    v->srcAlpha = (PerlinGpuBlendFactor)perlin_r_u8(r);
+    v->dstAlpha = (PerlinGpuBlendFactor)perlin_r_u8(r);
+    v->alphaOp = (PerlinGpuBlendOp)perlin_r_u8(r);
+    v->writeMask = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuPipelineRequest(perlin_writer* w, const PerlinGpuPipelineRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->pack));
+    perlin_w_str(w, v->program);
+    perlin_write_List_GpuStreamDesc(w, &v->streams);
+    perlin_write_List_GpuAttributeDesc(w, &v->attributes);
+    perlin_w_u8(w, (uint8_t)(v->topology));
+    perlin_w_u8(w, (uint8_t)(v->cull));
+    perlin_w_u8(w, (uint8_t)(v->frontFace));
+    perlin_w_f32(w, (float)(v->depthBiasConstant));
+    perlin_w_f32(w, (float)(v->depthBiasSlope));
+    perlin_w_u8(w, (uint8_t)(v->depthTest));
+    perlin_w_u8(w, (uint8_t)(v->depthWrite));
+    perlin_w_u8(w, (uint8_t)(v->depthCompare));
+    perlin_write_List_GpuBlendDesc(w, &v->blend);
+    perlin_write_List_GpuFormat(w, &v->colorFormats);
+    perlin_w_u8(w, (uint8_t)(v->depthFormat));
+    perlin_w_u32(w, (uint32_t)(v->samples));
+    perlin_write_List_GpuStorageBinding(w, &v->storage);
+    perlin_w_str(w, v->name);
+}
+static inline void perlin_read_GpuPipelineRequest(perlin_reader* r, PerlinGpuPipelineRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->pack = (uint32_t)perlin_r_u32(r);
+    v->program = perlin_r_str(r);
+    perlin_read_List_GpuStreamDesc(r, &v->streams, a);
+    perlin_read_List_GpuAttributeDesc(r, &v->attributes, a);
+    v->topology = (PerlinGpuTopology)perlin_r_u8(r);
+    v->cull = (PerlinGpuCull)perlin_r_u8(r);
+    v->frontFace = (PerlinGpuFrontFace)perlin_r_u8(r);
+    v->depthBiasConstant = (float)perlin_r_f32(r);
+    v->depthBiasSlope = (float)perlin_r_f32(r);
+    v->depthTest = (uint8_t)perlin_r_u8(r);
+    v->depthWrite = (uint8_t)perlin_r_u8(r);
+    v->depthCompare = (PerlinGpuCompare)perlin_r_u8(r);
+    perlin_read_List_GpuBlendDesc(r, &v->blend, a);
+    perlin_read_List_GpuFormat(r, &v->colorFormats, a);
+    v->depthFormat = (PerlinGpuFormat)perlin_r_u8(r);
+    v->samples = (uint32_t)perlin_r_u32(r);
+    perlin_read_List_GpuStorageBinding(r, &v->storage, a);
+    v->name = perlin_r_str(r);
+}
+static inline void perlin_write_GpuComputePipelineRequest(perlin_writer* w, const PerlinGpuComputePipelineRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->pack));
+    perlin_w_str(w, v->program);
+    perlin_write_List_GpuStorageBinding(w, &v->storage);
+    perlin_w_str(w, v->name);
+}
+static inline void perlin_read_GpuComputePipelineRequest(perlin_reader* r, PerlinGpuComputePipelineRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->pack = (uint32_t)perlin_r_u32(r);
+    v->program = perlin_r_str(r);
+    perlin_read_List_GpuStorageBinding(r, &v->storage, a);
+    v->name = perlin_r_str(r);
+}
+static inline void perlin_write_GpuSubmitRequest(perlin_writer* w, const PerlinGpuSubmitRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->layer);
+    perlin_w_u8(w, (uint8_t)(v->stage));
+    perlin_w_i32(w, (int32_t)(v->z));
+    perlin_w_u8(w, (uint8_t)(v->once));
+    perlin_w_bytes(w, v->stream);
+}
+static inline void perlin_read_GpuSubmitRequest(perlin_reader* r, PerlinGpuSubmitRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->layer = perlin_r_str(r);
+    v->stage = (PerlinGpuStage)perlin_r_u8(r);
+    v->z = (int32_t)perlin_r_i32(r);
+    v->once = (uint8_t)perlin_r_u8(r);
+    v->stream = perlin_r_bytes(r);
+}
+static inline void perlin_write_EventGpuReadback(perlin_writer* w, const PerlinEventGpuReadback* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->tag));
+    perlin_w_u32(w, (uint32_t)(v->id));
+    perlin_w_u8(w, (uint8_t)(v->ok));
+    perlin_w_bytes(w, v->data);
+}
+static inline void perlin_read_EventGpuReadback(perlin_reader* r, PerlinEventGpuReadback* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->tag = (uint32_t)perlin_r_u32(r);
+    v->id = (uint32_t)perlin_r_u32(r);
+    v->ok = (uint8_t)perlin_r_u8(r);
+    v->data = perlin_r_bytes(r);
+}
+static inline void perlin_write_EventGpuReset(perlin_writer* w, const PerlinEventGpuReset* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->generation));
+}
+static inline void perlin_read_EventGpuReset(perlin_reader* r, PerlinEventGpuReset* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->generation = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuPackLoadRequest(perlin_writer* w, const PerlinGpuPackLoadRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_bytes(w, v->data);
+}
+static inline void perlin_read_GpuPackLoadRequest(perlin_reader* r, PerlinGpuPackLoadRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->data = perlin_r_bytes(r);
+}
+static inline void perlin_write_GpuDestroyRequest(perlin_writer* w, const PerlinGpuDestroyRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u8(w, (uint8_t)(v->kind));
+    perlin_w_u32(w, (uint32_t)(v->id));
+}
+static inline void perlin_read_GpuDestroyRequest(perlin_reader* r, PerlinGpuDestroyRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->kind = (PerlinGpuResource)perlin_r_u8(r);
+    v->id = (uint32_t)perlin_r_u32(r);
+}
+static inline void perlin_write_GpuLayerClearRequest(perlin_writer* w, const PerlinGpuLayerClearRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->layer);
+}
+static inline void perlin_read_GpuLayerClearRequest(perlin_reader* r, PerlinGpuLayerClearRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->layer = perlin_r_str(r);
+}
+static inline void perlin_write_GpuErrorsResponse(perlin_writer* w, const PerlinGpuErrorsResponse* v) {
+    (void)w;
+    (void)v;
+    perlin_write_List_Str(w, &v->messages);
+}
+static inline void perlin_read_GpuErrorsResponse(perlin_reader* r, PerlinGpuErrorsResponse* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    perlin_read_List_Str(r, &v->messages, a);
+}
 static inline void perlin_write_ServerItem(perlin_writer* w, const PerlinServerItem* v) {
     (void)w;
     (void)v;
@@ -9440,6 +10362,142 @@ static inline void perlin_read_List_Bossbar(perlin_reader* r, PerlinList_Bossbar
     if (!v->data) { r->failed = 1; v->len = 0; return; }
     for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
         perlin_read_Bossbar(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuUniformMember(perlin_writer* w, const PerlinList_GpuUniformMember* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuUniformMember(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuUniformMember(perlin_reader* r, PerlinList_GpuUniformMember* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuUniformMember*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuUniformMember(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuProgramInfo(perlin_writer* w, const PerlinList_GpuProgramInfo* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuProgramInfo(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuProgramInfo(perlin_reader* r, PerlinList_GpuProgramInfo* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuProgramInfo*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuProgramInfo(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuTextureSlot(perlin_writer* w, const PerlinList_GpuTextureSlot* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuTextureSlot(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuTextureSlot(perlin_reader* r, PerlinList_GpuTextureSlot* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuTextureSlot*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuTextureSlot(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuStreamDesc(perlin_writer* w, const PerlinList_GpuStreamDesc* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuStreamDesc(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuStreamDesc(perlin_reader* r, PerlinList_GpuStreamDesc* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuStreamDesc*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuStreamDesc(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuAttributeDesc(perlin_writer* w, const PerlinList_GpuAttributeDesc* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuAttributeDesc(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuAttributeDesc(perlin_reader* r, PerlinList_GpuAttributeDesc* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuAttributeDesc*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuAttributeDesc(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuBlendDesc(perlin_writer* w, const PerlinList_GpuBlendDesc* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuBlendDesc(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuBlendDesc(perlin_reader* r, PerlinList_GpuBlendDesc* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuBlendDesc*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuBlendDesc(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_GpuFormat(perlin_writer* w, const PerlinList_GpuFormat* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_w_u8(w, (uint8_t)(v->data[k_]));
+    }
+}
+static inline void perlin_read_List_GpuFormat(perlin_reader* r, PerlinList_GpuFormat* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuFormat*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        v->data[k_] = (PerlinGpuFormat)perlin_r_u8(r);
+    }
+}
+static inline void perlin_write_List_GpuStorageBinding(perlin_writer* w, const PerlinList_GpuStorageBinding* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_GpuStorageBinding(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_GpuStorageBinding(perlin_reader* r, PerlinList_GpuStorageBinding* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinGpuStorageBinding*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_GpuStorageBinding(r, &v->data[k_], a);
     }
 }
 static inline void perlin_write_List_ServerItem(perlin_writer* w, const PerlinList_ServerItem* v) {
@@ -11481,6 +12539,190 @@ static inline int32_t perlin_post_effect(const PerlinPostEffectData* in, perlin_
     if (rc_ < 0) return rc_;
     return 0;
 }
+static inline int32_t perlin_gpu_info(PerlinGpuInfoData* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_INFO, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_GpuInfoData(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_pack_load(const PerlinGpuPackLoadRequest* in, PerlinGpuPackInfo* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuPackLoadRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_PACK_LOAD, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_GpuPackInfo(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_buffer_create(const PerlinGpuBufferRequest* in, uint32_t* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuBufferRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_BUFFER_CREATE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    (*out) = (uint32_t)perlin_r_u32(r);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_buffer_write(const PerlinGpuBufferWriteRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuBufferWriteRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_BUFFER_WRITE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_buffer_read(const PerlinGpuBufferReadRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuBufferReadRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_BUFFER_READ, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_texture_create(const PerlinGpuTextureRequest* in, uint32_t* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuTextureRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_TEXTURE_CREATE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    (*out) = (uint32_t)perlin_r_u32(r);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_texture_write(const PerlinGpuTextureWriteRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuTextureWriteRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_TEXTURE_WRITE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_sampler_create(const PerlinGpuSamplerRequest* in, uint32_t* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuSamplerRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_SAMPLER_CREATE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    (*out) = (uint32_t)perlin_r_u32(r);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_pipeline_create(const PerlinGpuPipelineRequest* in, uint32_t* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuPipelineRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_PIPELINE_CREATE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    (*out) = (uint32_t)perlin_r_u32(r);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_compute_pipeline_create(const PerlinGpuComputePipelineRequest* in, uint32_t* out, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuComputePipelineRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_COMPUTE_PIPELINE_CREATE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    (*out) = (uint32_t)perlin_r_u32(r);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_gpu_destroy(const PerlinGpuDestroyRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuDestroyRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_DESTROY, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_submit(const PerlinGpuSubmitRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuSubmitRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_SUBMIT, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_layer_clear(const PerlinGpuLayerClearRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_GpuLayerClearRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_LAYER_CLEAR, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_gpu_errors(PerlinGpuErrorsResponse* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_GPU_ERRORS, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_GpuErrorsResponse(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
 static inline int32_t perlin_broadcast(const PerlinTextMessage* in, perlin_arena* a) {
     size_t mark_ = a->used;
     uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
@@ -12609,6 +13851,16 @@ static inline int perlin_decode_event_socket_close(const void* data, uint32_t le
 static inline int perlin_decode_event_mic_data(const void* data, uint32_t len, PerlinEventMicData* out, perlin_arena* a) {
     perlin_reader rb_ = perlin_reader_make(data, len);
     perlin_read_EventMicData(&rb_, out, a);
+    return rb_.failed ? -3 : 0;
+}
+static inline int perlin_decode_event_gpu_readback(const void* data, uint32_t len, PerlinEventGpuReadback* out, perlin_arena* a) {
+    perlin_reader rb_ = perlin_reader_make(data, len);
+    perlin_read_EventGpuReadback(&rb_, out, a);
+    return rb_.failed ? -3 : 0;
+}
+static inline int perlin_decode_event_gpu_reset(const void* data, uint32_t len, PerlinEventGpuReset* out, perlin_arena* a) {
+    perlin_reader rb_ = perlin_reader_make(data, len);
+    perlin_read_EventGpuReset(&rb_, out, a);
     return rb_.failed ? -3 : 0;
 }
 

@@ -4,6 +4,7 @@
 #include "perlin/act.hpp"
 #include "perlin/adv.hpp"
 #include "perlin/game.hpp"
+#include "perlin/gpu.hpp"
 #include "perlin/gfx.hpp"
 #include "perlin/hooks.hpp"
 #include "perlin/input.hpp"

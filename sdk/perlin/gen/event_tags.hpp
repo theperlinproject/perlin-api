@@ -75,4 +75,6 @@ namespace perlin::event {
     using SocketData = EventTag<abi::Event::SocketData>;
     using SocketClose = EventTag<abi::Event::SocketClose>;
     using MicData = EventTag<abi::Event::MicData>;
+    using GpuReadback = EventTag<abi::Event::GpuReadback>;
+    using GpuReset = EventTag<abi::Event::GpuReset>;
 }

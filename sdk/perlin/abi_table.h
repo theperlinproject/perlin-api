@@ -171,6 +171,20 @@
     X(MicStop, 0x1212, Nothing, Nothing, Microphone, Client) \
     X(MicState, 0x1213, Nothing, MicStateData, Microphone, Client) \
     X(PostEffect, 0x1400, PostEffectData, Nothing, None, Client) \
+    X(GpuInfo, 0x1500, Nothing, GpuInfoData, None, Client) \
+    X(GpuPackLoad, 0x1501, GpuPackLoadRequest, GpuPackInfo, Gpu, Client) \
+    X(GpuBufferCreate, 0x1510, GpuBufferRequest, uint32_t, Gpu, Client) \
+    X(GpuBufferWrite, 0x1511, GpuBufferWriteRequest, Nothing, Gpu, Client) \
+    X(GpuBufferRead, 0x1512, GpuBufferReadRequest, Nothing, Gpu, Client) \
+    X(GpuTextureCreate, 0x1520, GpuTextureRequest, uint32_t, Gpu, Client) \
+    X(GpuTextureWrite, 0x1521, GpuTextureWriteRequest, Nothing, Gpu, Client) \
+    X(GpuSamplerCreate, 0x1530, GpuSamplerRequest, uint32_t, Gpu, Client) \
+    X(GpuPipelineCreate, 0x1540, GpuPipelineRequest, uint32_t, Gpu, Client) \
+    X(GpuComputePipelineCreate, 0x1541, GpuComputePipelineRequest, uint32_t, Gpu, Client) \
+    X(GpuDestroy, 0x1550, GpuDestroyRequest, Nothing, Gpu, Client) \
+    X(GpuSubmit, 0x1560, GpuSubmitRequest, Nothing, Gpu, Client) \
+    X(GpuLayerClear, 0x1561, GpuLayerClearRequest, Nothing, Gpu, Client) \
+    X(GpuErrors, 0x1570, Nothing, GpuErrorsResponse, Gpu, Client) \
     X(Broadcast, 0x7000, TextMessage, Nothing, None, Server) \
     X(PlayerMessage, 0x7001, PlayerText, Nothing, None, Server) \
     X(Kick, 0x7002, PlayerText, Nothing, Admin, Server) \
@@ -306,6 +320,8 @@
     X(SocketOpen, 71, EventSocketOpen, Both, Method) \
     X(SocketData, 72, EventSocketData, Both, Method) \
     X(SocketClose, 73, EventSocketClose, Both, Method) \
-    X(MicData, 74, EventMicData, Client, Method)
+    X(MicData, 74, EventMicData, Client, Method) \
+    X(GpuReadback, 75, EventGpuReadback, Client, Method) \
+    X(GpuReset, 76, EventGpuReset, Client, Method)
 
 #endif

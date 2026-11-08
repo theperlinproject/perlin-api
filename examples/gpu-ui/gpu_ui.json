@@ -1,0 +1,6 @@
+{
+  "name": "GPU UI",
+  "description": "Draws a blurred glass panel behind the HUD and a label in front of it with its own shaders.",
+  "version": "1.0.0",
+  "permissions": ["gpu"]
+}
