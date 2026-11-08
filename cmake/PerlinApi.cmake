@@ -109,29 +109,63 @@ endfunction()
 #       PROGRAMS shaders/ui.slang shaders/blur.slang
 #       SLOTS shaders/slots.json
 #       HEADER ${CMAKE_CURRENT_BINARY_DIR}/my_pack.hpp SYMBOL my_pack
-#       [INCLUDE dir...] [TARGETS spirv,dxil,hlsl,msl,wgsl] [CONDUIT_DIR path] [SLANGC path])
+#       [INCLUDE dir...] [TARGETS spirv,dxil,hlsl,msl,wgsl] [CONDUIT_DIR path] [SLANGC path]
+#       [OPTIONAL])    with OPTIONAL a missing tool gives an empty placeholder pack and a warning instead of an error
+#
+# Or embed a pack someone else built: perlin_api_add_shader_pack(my_pack PREBUILT my.pack HEADER ... SYMBOL ...)
 #
 # CONDUIT_DIR is a conduit checkout (it provides tools/pack_shaders.py); SLANGC is the Slang compiler
 # (the Vulkan SDK ships one). Both can also come from the CONDUIT_DIR and SLANGC environment variables.
 # Build the target `my_pack` before the plugin and include the header.
+# Writes a header with an empty placeholder pack so a plugin still builds without the shader tools; at run time
+# gpu::load_pack rejects it and the plugin can say the shaders are missing.
+function(perlin_api_empty_pack target header symbol reason)
+    message(WARNING "${target}: ${reason}. Building with an EMPTY shader pack: the plugin will load but cannot draw. "
+                    "Pass PREBUILT <file.pack> (from someone who has slangc) or set CONDUIT_DIR and SLANGC.")
+    file(WRITE "${header}" "#pragma once\n#include <cstdint>\ninline constexpr uint8_t ${symbol}[] = {0};\n")
+    add_custom_target(${target})
+endfunction()
+
 function(perlin_api_add_shader_pack target)
-    cmake_parse_arguments(PARSE_ARGV 1 PACK "" "SLOTS;HEADER;SYMBOL;TARGETS;CONDUIT_DIR;SLANGC" "PROGRAMS;INCLUDE")
+    if(POLICY CMP0174)
+        cmake_policy(SET CMP0174 NEW)
+    endif()
+    cmake_parse_arguments(PARSE_ARGV 1 PACK "OPTIONAL" "SLOTS;HEADER;SYMBOL;TARGETS;CONDUIT_DIR;SLANGC;PREBUILT" "PROGRAMS;INCLUDE")
     find_package(Python3 REQUIRED COMPONENTS Interpreter)
     get_filename_component(api_dir "${CMAKE_CURRENT_FUNCTION_LIST_DIR}/.." ABSOLUTE)
-    if(NOT PACK_PROGRAMS OR NOT PACK_SLOTS OR NOT PACK_HEADER OR NOT PACK_SYMBOL)
-        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): pass PROGRAMS, SLOTS, HEADER and SYMBOL")
+    if(NOT PACK_HEADER OR NOT PACK_SYMBOL)
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): pass HEADER and SYMBOL")
+    endif()
+    if(PACK_PREBUILT)
+        get_filename_component(prebuilt "${PACK_PREBUILT}" ABSOLUTE)
+        add_custom_command(OUTPUT "${PACK_HEADER}"
+            COMMAND ${Python3_EXECUTABLE} "${api_dir}/tools/embed_file.py" "${prebuilt}" "${PACK_HEADER}" "${PACK_SYMBOL}"
+            DEPENDS "${prebuilt}" "${api_dir}/tools/embed_file.py" VERBATIM)
+        add_custom_target(${target} DEPENDS "${PACK_HEADER}")
+        return()
+    endif()
+    if(NOT PACK_PROGRAMS OR NOT PACK_SLOTS)
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): pass PROGRAMS and SLOTS (or PREBUILT <file.pack>)")
     endif()
     if(NOT PACK_CONDUIT_DIR AND DEFINED ENV{CONDUIT_DIR})
         set(PACK_CONDUIT_DIR "$ENV{CONDUIT_DIR}")
     endif()
+    if(PACK_OPTIONAL AND (NOT PACK_CONDUIT_DIR OR NOT EXISTS "${PACK_CONDUIT_DIR}/tools/pack_shaders.py"))
+        perlin_api_empty_pack(${target} "${PACK_HEADER}" "${PACK_SYMBOL}" "no conduit checkout (set CONDUIT_DIR)")
+        return()
+    endif()
     if(NOT PACK_CONDUIT_DIR OR NOT EXISTS "${PACK_CONDUIT_DIR}/tools/pack_shaders.py")
-        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): set CONDUIT_DIR to a conduit checkout (tools/pack_shaders.py)")
+        message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): the shader pack builder was not found. Clone conduit and pass its folder: -DCONDUIT_DIR=C:/path/to/conduit (the folder that contains tools/pack_shaders.py), or set the CONDUIT_DIR environment variable. Packing also needs slangc: -DSLANGC=C:/path/to/slangc.exe, or install the Vulkan SDK.")
     endif()
     if(NOT PACK_SLANGC AND DEFINED ENV{SLANGC})
         set(PACK_SLANGC "$ENV{SLANGC}")
     endif()
     if(NOT PACK_SLANGC)
         find_program(PACK_SLANGC slangc HINTS ENV VULKAN_SDK PATH_SUFFIXES bin Bin)
+    endif()
+    if(PACK_OPTIONAL AND NOT PACK_SLANGC)
+        perlin_api_empty_pack(${target} "${PACK_HEADER}" "${PACK_SYMBOL}" "slangc not found (set SLANGC or install the Vulkan SDK)")
+        return()
     endif()
     if(NOT PACK_SLANGC)
         message(FATAL_ERROR "perlin_api_add_shader_pack(${target}): slangc not found; pass SLANGC or install the Vulkan SDK")
