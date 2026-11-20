@@ -1,7 +1,7 @@
 #ifndef PERLIN_ABI_TABLE_H
 #define PERLIN_ABI_TABLE_H
 
-#define PERLIN_ABI_VERSION 1
+#define PERLIN_ABI_VERSION 2
 
 #define PERLIN_ABI_OPS(X) \
     X(Log, 0x0001, LogRequest, Nothing, None, Both) \
@@ -185,6 +185,15 @@
     X(GpuSubmit, 0x1560, GpuSubmitRequest, Nothing, Gpu, Client) \
     X(GpuLayerClear, 0x1561, GpuLayerClearRequest, Nothing, Gpu, Client) \
     X(GpuErrors, 0x1570, Nothing, GpuErrorsResponse, Gpu, Client) \
+    X(CameraDetach, 0x1600, CameraDetachState, Nothing, Control, Client) \
+    X(CameraDetachGet, 0x1601, Nothing, CameraDetachState, None, Client) \
+    X(BlockRemapSet, 0x1610, BlockRemapData, Nothing, None, Client) \
+    X(BlockRemapClear, 0x1611, BlockRemapClearRequest, Nothing, None, Client) \
+    X(BlockRemapState, 0x1612, Nothing, BlockRemapStateData, None, Client) \
+    X(EntityBonePose, 0x1620, BonePoseData, Nothing, None, Client) \
+    X(EntityBonePoseClear, 0x1621, EntityBonePoseClearRequest, Nothing, None, Client) \
+    X(AnimationStyleSet, 0x1622, AnimationStyleData, Nothing, None, Client) \
+    X(HandState, 0x1623, Nothing, HandStateData, None, Client) \
     X(Broadcast, 0x7000, TextMessage, Nothing, None, Server) \
     X(PlayerMessage, 0x7001, PlayerText, Nothing, None, Server) \
     X(Kick, 0x7002, PlayerText, Nothing, Admin, Server) \

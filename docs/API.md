@@ -1,4 +1,4 @@
-# Perlin mod API reference (schema v1)
+# Perlin mod API reference (schema v2)
 
 Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this file.
 
@@ -207,6 +207,15 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x1560 | GpuSubmit | `perlin_gpu_submit` | [GpuSubmitRequest](#gpusubmitrequest) | - | client | Gpu | `@category(gpu)` `@hot` |
 | 0x1561 | GpuLayerClear | `perlin_gpu_layer_clear` | [GpuLayerClearRequest](#gpulayerclearrequest) | - | client | Gpu | `@category(gpu)` |
 | 0x1570 | GpuErrors | `perlin_gpu_errors` | - | [GpuErrorsResponse](#gpuerrorsresponse) | client | Gpu | problems the renderer found in this plugin's resources and streams, oldest first; reading clears them `@category(gpu)` |
+| 0x1600 | CameraDetach | `perlin_camera_detach` | [CameraDetachState](#cameradetachstate) | - | client | Control | freelook and freecam `@since(2)` `@category(camera)` |
+| 0x1601 | CameraDetachGet | `perlin_camera_detach_get` | - | [CameraDetachState](#cameradetachstate) | client | - | the detach in effect, mode Attached when none `@since(2)` `@category(camera)` |
+| 0x1610 | BlockRemapSet | `perlin_block_remap_set` | [BlockRemapData](#blockremapdata) | - | client | - | `@since(2)` `@category(render)` |
+| 0x1611 | BlockRemapClear | `perlin_block_remap_clear` | [BlockRemapClearRequest](#blockremapclearrequest) | - | client | - | `@since(2)` `@category(render)` |
+| 0x1612 | BlockRemapState | `perlin_block_remap_state` | - | [BlockRemapStateData](#blockremapstatedata) | client | - | `@since(2)` `@category(render)` |
+| 0x1620 | EntityBonePose | `perlin_entity_bone_pose` | [BonePoseData](#boneposedata) | - | client | - | `@since(2)` `@category(render)` `@hot` |
+| 0x1621 | EntityBonePoseClear | `perlin_entity_bone_pose_clear` | [EntityBonePoseClearRequest](#entityboneposeclearrequest) | - | client | - | `@since(2)` `@category(render)` |
+| 0x1622 | AnimationStyleSet | `perlin_animation_style_set` | [AnimationStyleData](#animationstyledata) | - | client | - | `@since(2)` `@category(render)` |
+| 0x1623 | HandState | `perlin_hand_state` | - | [HandStateData](#handstatedata) | client | - | `@since(2)` `@category(render)` `@hot` |
 | 0x7000 | Broadcast | `perlin_broadcast` | [TextMessage](#textmessage) | - | server | - | `@category(server)` |
 | 0x7001 | PlayerMessage | `perlin_player_message` | [PlayerText](#playertext) | - | server | - | `@category(server)` |
 | 0x7002 | Kick | `perlin_kick` | [PlayerText](#playertext) | - | server | Admin | `@category(server)` |
@@ -644,6 +653,24 @@ Which values of WindowControlData are applied (flags over `u32`)
 (enum over `u8`)
 
 `Pre`=0, `UnderHud`=1, `Overlay`=2
+
+### CameraMode
+
+How the camera is attached to the player (enum over `i32`)
+
+`Attached`=0, `Freelook`=1, `Free`=2
+
+### AnimationStyle
+
+Which set of built-in animations the client plays (enum over `i32`)
+
+`Default`=0, `Java`=1, `Bedrock`=2
+
+### BoneBlend
+
+(enum over `i32`)
+
+`Add`=0, `Replace`=1
 
 ## Aliases
 
@@ -3684,4 +3711,124 @@ Full-screen colour adjustments applied after the world and before the hud
 | field | `string` |  |  |
 | number | `f64` |  |  |
 | text | `string` |  |  |
+
+### CameraDetachState
+
+Detach the camera from the player for freelook or freecam; ends by itself when not repeated within ticks
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| mode | [CameraMode](#cameramode) | Attached |  |
+| x | `f64` | 0 | `@unit(blocks)` Free: camera position |
+| y | `f64` | 0 | `@unit(blocks)` |
+| z | `f64` | 0 | `@unit(blocks)` |
+| yaw | `f32` | 0 | `@unit(degrees)` same convention as PlayerLook |
+| pitch | `f32` | 0 | `@unit(degrees)` |
+| roll | `f32` | 0 | `@unit(degrees)` |
+| distance | `f32` | 0 | `@unit(blocks)` Freelook: how far behind the head the camera orbits; 0 looks out of the eyes |
+| fov | `f32` | 0 | `@unit(degrees)` 0 keeps the current field of view |
+| showSelf | `bool` | true | draw the local player while the camera is away from the eyes |
+| freezeMovement | `bool` | false | stop the player walking, jumping and turning while detached, so the keys can steer the camera |
+| collide | `bool` | true | Freelook: pull the camera in front of blocks behind the player |
+| mouseLook | `bool` | true | the mouse turns the detached camera instead of the player; it starts from the player's view and yaw and pitch are ignored |
+| keyFly | `bool` | true | Free: the movement keys fly the camera (jump up, sneak down, sprint faster) and x, y, z only set where it starts |
+| speed | `f32` | 10 | Free with keyFly: blocks per second |
+| ticks | `i32` | 2 | `@unit(ticks)` |
+
+### BlockRemapRule
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| match | `string` |  | block name such as minecraft:diamond_ore or diamond_ore; *ore matches names ending in ore, deepslate* names starting with deepslate, *copper* names containing copper |
+| to | `string` |  | block drawn in its place, same states where they exist; empty hides the block; * keeps it as it is, for onlyListed |
+
+### BlockRemapData
+
+Change how blocks are drawn on this client only: x-ray, ore highlighting, swapped textures. The server never sees it
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  | sets with the same id replace each other; every plugin's sets are combined |
+| rules | list&lt;[BlockRemapRule](#blockremaprule)&gt; |  | `@max(4096)` |
+| onlyListed | `bool` | false | hide every block no rule matches: x-ray |
+| keepLiquids | `bool` | true | with onlyListed, still draw water and lava |
+| fullbright | `bool` | false | light every drawn block fully, so blocks inside dark caves are visible |
+
+### BonePoseEntry
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| bone | `string` |  | geometry bone, lower case; players have root, body, head, hat, rightarm, leftarm, rightleg, leftleg, jacket, rightsleeve, leftsleeve, rightpants, leftpants, cape |
+| blend | [BoneBlend](#boneblend) | Add |  |
+| rx | `f32` | 0 | `@unit(degrees)` |
+| ry | `f32` | 0 | `@unit(degrees)` |
+| rz | `f32` | 0 | `@unit(degrees)` |
+| px | `f32` | 0 | model pixels, 1/16 of a block |
+| py | `f32` | 0 |  |
+| pz | `f32` | 0 |  |
+| sx | `f32` | 1 |  |
+| sy | `f32` | 1 |  |
+| sz | `f32` | 1 |  |
+
+### BonePoseData
+
+Pose the bones of an entity's model: emotes, custom animations, animation packs. Seen on this client only
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| entity | `u64` | 0 | runtime id; 0 is the local player |
+| ticks | `i32` | 2 | `@unit(ticks)` send it every frame or tick while it plays; it stops by itself after this |
+| bones | list&lt;[BonePoseEntry](#boneposeentry)&gt; |  | `@max(128)` |
+
+### AnimationStyleData
+
+Pick the built-in animation set for the first-person hand and for player models
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| firstPerson | [AnimationStyle](#animationstyle) | Default |  |
+| thirdPerson | [AnimationStyle](#animationstyle) | Default |  |
+| ticks | `i32` | 0 | `@unit(ticks)` 0 keeps it until changed or the plugin unloads |
+
+### HandStateData
+
+What the first-person hand is doing this frame, for animation packs that drive ViewModel or BonePose themselves
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| swing | `f32` | 0 | 0 to 1 progress of the main arm swing, 0 when not swinging |
+| offSwing | `f32` | 0 | the same for the offhand |
+| equip | `f32` | 1 | 0 lowered after switching items, 1 fully raised |
+| usingItem | `bool` | false |  |
+| useTicks | `i32` | 0 | `@unit(ticks)` how long the item has been used |
+| useOffhand | `bool` | false | the item in use is the offhand one |
+| blocking | `bool` | false | a shield is raised |
+| mainItem | `string` |  |  |
+| offItem | `string` |  |  |
+| leftHanded | `bool` | false |  |
+| firstPerson | `bool` | true |  |
+| sneaking | `bool` | false |  |
+| sprinting | `bool` | false |  |
+| style | [AnimationStyle](#animationstyle) | Java | the animation set in effect |
+
+### BlockRemapStateData
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| active | `bool` | false |  |
+| hidden | `u32` | 0 | block states currently hidden |
+| replaced | `u32` | 0 | block states currently drawn as another block |
+| fullbright | `bool` | false |  |
+
+### BlockRemapClearRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  | empty clears every set of this plugin |
+
+### EntityBonePoseClearRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| entity | `u64` |  | runtime id, 0 for the local player |
 

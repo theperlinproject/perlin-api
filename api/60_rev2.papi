@@ -1,0 +1,102 @@
+enum CameraMode: i32 @since(2) @doc("How the camera is attached to the player") {
+    Attached = 0 @doc("the normal camera");
+    Freelook = 1 @doc("turns on its own around the player's head while the player keeps facing where it was");
+    Free = 2 @doc("flies on its own at a position the plugin sets: freecam");
+}
+
+enum AnimationStyle: i32 @since(2) @doc("Which set of built-in animations the client plays") {
+    Default = 0 @doc("whatever the player chose");
+    Java = 1 @doc("Java Edition style: arm swing, item hold, sneaking and walking poses");
+    Bedrock = 2 @doc("Bedrock Edition style, from the resource pack's own animations");
+}
+
+enum BoneBlend: i32 @since(2) {
+    Add = 0 @doc("added on top of the animation the game plays");
+    Replace = 1 @doc("replaces the game's animation of that bone");
+}
+
+struct CameraDetachState @since(2) @doc("Detach the camera from the player for freelook or freecam; ends by itself when not repeated within ticks") {
+    mode: CameraMode = Attached;
+    x: f64 = 0 @unit(blocks) @doc("Free: camera position");
+    y: f64 = 0 @unit(blocks);
+    z: f64 = 0 @unit(blocks);
+    yaw: f32 = 0 @unit(degrees) @doc("same convention as PlayerLook");
+    pitch: f32 = 0 @unit(degrees);
+    roll: f32 = 0 @unit(degrees);
+    distance: f32 = 0 @unit(blocks) @doc("Freelook: how far behind the head the camera orbits; 0 looks out of the eyes");
+    fov: f32 = 0 @unit(degrees) @doc("0 keeps the current field of view");
+    showSelf: bool = true @doc("draw the local player while the camera is away from the eyes");
+    freezeMovement: bool = false @doc("stop the player walking, jumping and turning while detached, so the keys can steer the camera");
+    collide: bool = true @doc("Freelook: pull the camera in front of blocks behind the player");
+    mouseLook: bool = true @doc("the mouse turns the detached camera instead of the player; it starts from the player's view and yaw and pitch are ignored");
+    keyFly: bool = true @doc("Free: the movement keys fly the camera (jump up, sneak down, sprint faster) and x, y, z only set where it starts");
+    speed: f32 = 10 @doc("Free with keyFly: blocks per second");
+    ticks: i32 = 2 @unit(ticks);
+}
+
+struct BlockRemapRule @since(2) {
+    match: string @doc("block name such as minecraft:diamond_ore or diamond_ore; *ore matches names ending in ore, deepslate* names starting with deepslate, *copper* names containing copper");
+    to: string @doc("block drawn in its place, same states where they exist; empty hides the block; * keeps it as it is, for onlyListed");
+}
+
+struct BlockRemapData @since(2) @doc("Change how blocks are drawn on this client only: x-ray, ore highlighting, swapped textures. The server never sees it") {
+    id: string @doc("sets with the same id replace each other; every plugin's sets are combined");
+    rules: list<BlockRemapRule> @max(4096);
+    onlyListed: bool = false @doc("hide every block no rule matches: x-ray");
+    keepLiquids: bool = true @doc("with onlyListed, still draw water and lava");
+    fullbright: bool = false @doc("light every drawn block fully, so blocks inside dark caves are visible");
+}
+
+struct BonePoseEntry @since(2) {
+    bone: string @doc("geometry bone, lower case; players have root, body, head, hat, rightarm, leftarm, rightleg, leftleg, jacket, rightsleeve, leftsleeve, rightpants, leftpants, cape");
+    blend: BoneBlend = Add;
+    rx: f32 = 0 @unit(degrees); ry: f32 = 0 @unit(degrees); rz: f32 = 0 @unit(degrees);
+    px: f32 = 0 @doc("model pixels, 1/16 of a block"); py: f32 = 0; pz: f32 = 0;
+    sx: f32 = 1; sy: f32 = 1; sz: f32 = 1;
+}
+
+struct BonePoseData @since(2) @doc("Pose the bones of an entity's model: emotes, custom animations, animation packs. Seen on this client only") {
+    entity: u64 = 0 @doc("runtime id; 0 is the local player");
+    ticks: i32 = 2 @unit(ticks) @doc("send it every frame or tick while it plays; it stops by itself after this");
+    bones: list<BonePoseEntry> @max(128);
+}
+
+struct AnimationStyleData @since(2) @doc("Pick the built-in animation set for the first-person hand and for player models") {
+    firstPerson: AnimationStyle = Default;
+    thirdPerson: AnimationStyle = Default;
+    ticks: i32 = 0 @unit(ticks) @doc("0 keeps it until changed or the plugin unloads");
+}
+
+struct HandStateData @since(2) @doc("What the first-person hand is doing this frame, for animation packs that drive ViewModel or BonePose themselves") {
+    swing: f32 = 0 @doc("0 to 1 progress of the main arm swing, 0 when not swinging");
+    offSwing: f32 = 0 @doc("the same for the offhand");
+    equip: f32 = 1 @doc("0 lowered after switching items, 1 fully raised");
+    usingItem: bool = false;
+    useTicks: i32 = 0 @unit(ticks) @doc("how long the item has been used");
+    useOffhand: bool = false @doc("the item in use is the offhand one");
+    blocking: bool = false @doc("a shield is raised");
+    mainItem: string;
+    offItem: string;
+    leftHanded: bool = false;
+    firstPerson: bool = true;
+    sneaking: bool = false;
+    sprinting: bool = false;
+    style: AnimationStyle = Java @doc("the animation set in effect");
+}
+
+struct BlockRemapStateData @since(2) {
+    active: bool = false;
+    hidden: u32 = 0 @doc("block states currently hidden");
+    replaced: u32 = 0 @doc("block states currently drawn as another block");
+    fullbright: bool = false;
+}
+
+op CameraDetach = 0x1600 @since(2) @hosts(client) @permission(Control) @category(camera) CameraDetachState @doc("freelook and freecam");
+op CameraDetachGet = 0x1601 @since(2) @hosts(client) @category(camera) -> CameraDetachState @doc("the detach in effect, mode Attached when none");
+op BlockRemapSet = 0x1610 @since(2) @hosts(client) @category(render) BlockRemapData;
+op BlockRemapClear = 0x1611 @since(2) @hosts(client) @category(render) (id: string @doc("empty clears every set of this plugin"));
+op BlockRemapState = 0x1612 @since(2) @hosts(client) @category(render) -> BlockRemapStateData;
+op EntityBonePose = 0x1620 @since(2) @hosts(client) @category(render) @hot BonePoseData;
+op EntityBonePoseClear = 0x1621 @since(2) @hosts(client) @category(render) (entity: u64 @doc("runtime id, 0 for the local player"));
+op AnimationStyleSet = 0x1622 @since(2) @hosts(client) @category(render) AnimationStyleData;
+op HandState = 0x1623 @since(2) @hosts(client) @category(render) @hot -> HandStateData;

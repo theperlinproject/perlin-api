@@ -10,6 +10,7 @@
 | [Client hooks](hooks.md) | Messaging other mods and ordering handlers |
 | [Graphics and input](graphics-and-input.md) | Drawing with your own renderer, raw input |
 | [Drawing with the GPU](gpu.md) | The `gpu` permission: shader packs, buffers, textures, pipelines and command streams that draw under or over the HUD; blur, custom fonts, compute |
+| [Camera, block rendering and animation](camera-blocks-animation.md) | Freelook and freecam, x-ray and block remapping, bone poses, emotes, animation packs, faster gfx (revision 2) |
 | [Building real features](feature-guide.md) | HUD, visuals, input, chat, sound and network features, and which calls build them; what is not in the API yet |
 | [Network, audio and slots](live-features.md) | Sockets and WebSockets, audio streams, microphone, item info, slot overlays, connection stats, `Capabilities` |
 | [Using the game API](game-api.md) | `game::`, `act::`, `ui::`, `io::`, camera, motion, blocks |

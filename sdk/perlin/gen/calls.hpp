@@ -545,6 +545,33 @@ namespace perlin::api {
     inline ::perlin::Result<::perlin::abi::GpuErrorsResponse> gpu_errors() {
         return ::perlin::call<::perlin::abi::Op::GpuErrors>();
     }
+    inline ::perlin::Result<void> camera_detach(const ::perlin::abi::CameraDetachState& request) {
+        return ::perlin::call<::perlin::abi::Op::CameraDetach>(request);
+    }
+    inline ::perlin::Result<::perlin::abi::CameraDetachState> camera_detach_get() {
+        return ::perlin::call<::perlin::abi::Op::CameraDetachGet>();
+    }
+    inline ::perlin::Result<void> block_remap_set(const ::perlin::abi::BlockRemapData& request) {
+        return ::perlin::call<::perlin::abi::Op::BlockRemapSet>(request);
+    }
+    inline ::perlin::Result<void> block_remap_clear(std::string id) {
+        return ::perlin::call<::perlin::abi::Op::BlockRemapClear>(::perlin::abi::BlockRemapClearRequest{std::move(id)});
+    }
+    inline ::perlin::Result<::perlin::abi::BlockRemapStateData> block_remap_state() {
+        return ::perlin::call<::perlin::abi::Op::BlockRemapState>();
+    }
+    inline ::perlin::Result<void> entity_bone_pose(const ::perlin::abi::BonePoseData& request) {
+        return ::perlin::call<::perlin::abi::Op::EntityBonePose>(request);
+    }
+    inline ::perlin::Result<void> entity_bone_pose_clear(uint64_t entity) {
+        return ::perlin::call<::perlin::abi::Op::EntityBonePoseClear>(::perlin::abi::EntityBonePoseClearRequest{entity});
+    }
+    inline ::perlin::Result<void> animation_style_set(const ::perlin::abi::AnimationStyleData& request) {
+        return ::perlin::call<::perlin::abi::Op::AnimationStyleSet>(request);
+    }
+    inline ::perlin::Result<::perlin::abi::HandStateData> hand_state() {
+        return ::perlin::call<::perlin::abi::Op::HandState>();
+    }
     inline ::perlin::Result<void> broadcast(const ::perlin::abi::TextMessage& request) {
         return ::perlin::call<::perlin::abi::Op::Broadcast>(request);
     }

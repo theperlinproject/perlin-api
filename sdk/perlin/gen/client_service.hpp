@@ -187,6 +187,15 @@ namespace perlin::abi::host {
         virtual Result<void> OpGpuSubmit(Ctx&, const GpuSubmitRequest&) { return std::unexpected(Status::Unavailable); }
         virtual Result<void> OpGpuLayerClear(Ctx&, const GpuLayerClearRequest&) { return std::unexpected(Status::Unavailable); }
         virtual Result<GpuErrorsResponse> OpGpuErrors(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpCameraDetach(Ctx&, const CameraDetachState&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<CameraDetachState> OpCameraDetachGet(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpBlockRemapSet(Ctx&, const BlockRemapData&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpBlockRemapClear(Ctx&, const BlockRemapClearRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<BlockRemapStateData> OpBlockRemapState(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpEntityBonePose(Ctx&, const BonePoseData&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpEntityBonePoseClear(Ctx&, const EntityBonePoseClearRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpAnimationStyleSet(Ctx&, const AnimationStyleData&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<HandStateData> OpHandState(Ctx&) { return std::unexpected(Status::Unavailable); }
 
         void Bind(OpTable<Ctx>& table) {
             table.template Handle<Op::Log>([this](Ctx& c, const LogRequest& r) { return OpLog(c, r); });
@@ -370,6 +379,15 @@ namespace perlin::abi::host {
             table.template Handle<Op::GpuSubmit>([this](Ctx& c, const GpuSubmitRequest& r) { return OpGpuSubmit(c, r); });
             table.template Handle<Op::GpuLayerClear>([this](Ctx& c, const GpuLayerClearRequest& r) { return OpGpuLayerClear(c, r); });
             table.template Handle<Op::GpuErrors>([this](Ctx& c) { return OpGpuErrors(c); });
+            table.template Handle<Op::CameraDetach>([this](Ctx& c, const CameraDetachState& r) { return OpCameraDetach(c, r); });
+            table.template Handle<Op::CameraDetachGet>([this](Ctx& c) { return OpCameraDetachGet(c); });
+            table.template Handle<Op::BlockRemapSet>([this](Ctx& c, const BlockRemapData& r) { return OpBlockRemapSet(c, r); });
+            table.template Handle<Op::BlockRemapClear>([this](Ctx& c, const BlockRemapClearRequest& r) { return OpBlockRemapClear(c, r); });
+            table.template Handle<Op::BlockRemapState>([this](Ctx& c) { return OpBlockRemapState(c); });
+            table.template Handle<Op::EntityBonePose>([this](Ctx& c, const BonePoseData& r) { return OpEntityBonePose(c, r); });
+            table.template Handle<Op::EntityBonePoseClear>([this](Ctx& c, const EntityBonePoseClearRequest& r) { return OpEntityBonePoseClear(c, r); });
+            table.template Handle<Op::AnimationStyleSet>([this](Ctx& c, const AnimationStyleData& r) { return OpAnimationStyleSet(c, r); });
+            table.template Handle<Op::HandState>([this](Ctx& c) { return OpHandState(c); });
         }
     };
 }

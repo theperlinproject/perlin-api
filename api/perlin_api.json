@@ -1,6 +1,6 @@
 {
  "api": "perlin",
- "version": 1,
+ "version": 2,
  "tags": [
   {
    "name": "doc",
@@ -174,8 +174,8 @@
    "type": "u32",
    "value": {
     "kind": "int",
-    "value": 1,
-    "text": "1"
+    "value": 2,
+    "text": "2"
    },
    "tags": [
     {
@@ -3057,6 +3057,159 @@
        "name": "doc",
        "args": [
         "on the screen after everything, including the HUD and menus"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "CameraMode",
+   "base": "i32",
+   "flags": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "How the camera is attached to the player"
+     ]
+    }
+   ],
+   "members": [
+    {
+     "name": "Attached",
+     "value": 0,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the normal camera"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Freelook",
+     "value": 1,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "turns on its own around the player's head while the player keeps facing where it was"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Free",
+     "value": 2,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "flies on its own at a position the plugin sets: freecam"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "AnimationStyle",
+   "base": "i32",
+   "flags": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Which set of built-in animations the client plays"
+     ]
+    }
+   ],
+   "members": [
+    {
+     "name": "Default",
+     "value": 0,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "whatever the player chose"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Java",
+     "value": 1,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Java Edition style: arm swing, item hold, sneaking and walking poses"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Bedrock",
+     "value": 2,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Bedrock Edition style, from the resource pack's own animations"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BoneBlend",
+   "base": "i32",
+   "flags": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    }
+   ],
+   "members": [
+    {
+     "name": "Add",
+     "value": 0,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "added on top of the animation the game plays"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "Replace",
+     "value": 1,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "replaces the game's animation of that bone"
        ]
       }
      ]
@@ -17937,6 +18090,1068 @@
      "tags": []
     }
    ]
+  },
+  {
+   "name": "CameraDetachState",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Detach the camera from the player for freelook or freecam; ends by itself when not repeated within ticks"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "mode",
+     "type": "CameraMode",
+     "default": {
+      "kind": "ident",
+      "value": "Attached",
+      "text": "Attached"
+     },
+     "tags": []
+    },
+    {
+     "name": "x",
+     "type": "f64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "Free: camera position"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "y",
+     "type": "f64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "z",
+     "type": "f64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "yaw",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "same convention as PlayerLook"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "pitch",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "roll",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "distance",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "Freelook: how far behind the head the camera orbits; 0 looks out of the eyes"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "fov",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "0 keeps the current field of view"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "showSelf",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "draw the local player while the camera is away from the eyes"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "freezeMovement",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "stop the player walking, jumping and turning while detached, so the keys can steer the camera"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "collide",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Freelook: pull the camera in front of blocks behind the player"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "mouseLook",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the mouse turns the detached camera instead of the player; it starts from the player's view and yaw and pitch are ignored"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "keyFly",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Free: the movement keys fly the camera (jump up, sneak down, sprint faster) and x, y, z only set where it starts"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "speed",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 10,
+      "text": "10"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "Free with keyFly: blocks per second"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "ticks",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 2,
+      "text": "2"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "ticks"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapRule",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "match",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "block name such as minecraft:diamond_ore or diamond_ore; *ore matches names ending in ore, deepslate* names starting with deepslate, *copper* names containing copper"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "to",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "block drawn in its place, same states where they exist; empty hides the block; * keeps it as it is, for onlyListed"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapData",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Change how blocks are drawn on this client only: x-ray, ore highlighting, swapped textures. The server never sees it"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "sets with the same id replace each other; every plugin's sets are combined"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "rules",
+     "type": {
+      "generic": "list",
+      "args": [
+       "BlockRemapRule"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        4096
+       ]
+      }
+     ]
+    },
+    {
+     "name": "onlyListed",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "hide every block no rule matches: x-ray"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "keepLiquids",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "with onlyListed, still draw water and lava"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "fullbright",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "light every drawn block fully, so blocks inside dark caves are visible"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BonePoseEntry",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "bone",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "geometry bone, lower case; players have root, body, head, hat, rightarm, leftarm, rightleg, leftleg, jacket, rightsleeve, leftsleeve, rightpants, leftpants, cape"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "blend",
+     "type": "BoneBlend",
+     "default": {
+      "kind": "ident",
+      "value": "Add",
+      "text": "Add"
+     },
+     "tags": []
+    },
+    {
+     "name": "rx",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "ry",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "rz",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "degrees"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "px",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "model pixels, 1/16 of a block"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "py",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "pz",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "sx",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "sy",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "sz",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "BonePoseData",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Pose the bones of an entity's model: emotes, custom animations, animation packs. Seen on this client only"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "entity",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "runtime id; 0 is the local player"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "ticks",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 2,
+      "text": "2"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "ticks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "send it every frame or tick while it plays; it stops by itself after this"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "bones",
+     "type": {
+      "generic": "list",
+      "args": [
+       "BonePoseEntry"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        128
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "AnimationStyleData",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Pick the built-in animation set for the first-person hand and for player models"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "firstPerson",
+     "type": "AnimationStyle",
+     "default": {
+      "kind": "ident",
+      "value": "Default",
+      "text": "Default"
+     },
+     "tags": []
+    },
+    {
+     "name": "thirdPerson",
+     "type": "AnimationStyle",
+     "default": {
+      "kind": "ident",
+      "value": "Default",
+      "text": "Default"
+     },
+     "tags": []
+    },
+    {
+     "name": "ticks",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "ticks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "0 keeps it until changed or the plugin unloads"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "HandStateData",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "What the first-person hand is doing this frame, for animation packs that drive ViewModel or BonePose themselves"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "swing",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 to 1 progress of the main arm swing, 0 when not swinging"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "offSwing",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the same for the offhand"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "equip",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 lowered after switching items, 1 fully raised"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "usingItem",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "useTicks",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "ticks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "how long the item has been used"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "useOffhand",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the item in use is the offhand one"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "blocking",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "a shield is raised"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "mainItem",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "offItem",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "leftHanded",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "firstPerson",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": true,
+      "text": "true"
+     },
+     "tags": []
+    },
+    {
+     "name": "sneaking",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "sprinting",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "style",
+     "type": "AnimationStyle",
+     "default": {
+      "kind": "ident",
+      "value": "Java",
+      "text": "Java"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the animation set in effect"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapStateData",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "active",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    },
+    {
+     "name": "hidden",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "block states currently hidden"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "replaced",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "block states currently drawn as another block"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "fullbright",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapClearRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "empty clears every set of this plugin"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "EntityBonePoseClearRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "entity",
+     "type": "u64",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "runtime id, 0 for the local player"
+       ]
+      }
+     ]
+    }
+   ]
   }
  ],
  "ops": [
@@ -22963,6 +24178,304 @@
      "args": [
       "problems the renderer found in this plugin's resources and streams, oldest first; reading clears them"
      ]
+    }
+   ]
+  },
+  {
+   "name": "CameraDetach",
+   "id": 5632,
+   "request": "CameraDetachState",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [
+    "Control"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "Control"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "camera"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "freelook and freecam"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "CameraDetachGet",
+   "id": 5633,
+   "request": null,
+   "response": "CameraDetachState",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "camera"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "the detach in effect, mode Attached when none"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapSet",
+   "id": 5648,
+   "request": "BlockRemapData",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapClear",
+   "id": 5649,
+   "request": "BlockRemapClearRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "BlockRemapState",
+   "id": 5650,
+   "request": null,
+   "response": "BlockRemapStateData",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "EntityBonePose",
+   "id": 5664,
+   "request": "BonePoseData",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    },
+    {
+     "name": "hot",
+     "args": []
+    }
+   ]
+  },
+  {
+   "name": "EntityBonePoseClear",
+   "id": 5665,
+   "request": "EntityBonePoseClearRequest",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "AnimationStyleSet",
+   "id": 5666,
+   "request": "AnimationStyleData",
+   "response": null,
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "HandState",
+   "id": 5667,
+   "request": null,
+   "response": "HandStateData",
+   "hosts": [
+    "client"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      2
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "render"
+     ]
+    },
+    {
+     "name": "hot",
+     "args": []
     }
    ]
   },

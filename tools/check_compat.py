@@ -72,6 +72,9 @@ def compare(base, cur):
         c = cur_consts.get(k["name"])
         if c is None:
             problems.append(f"const {k['name']}: removed")
+        elif k["name"] == "ApiRevision" and c["type"] == k["type"]:
+            if int(c["value"]["value"]) < int(k["value"]["value"]):
+                problems.append("const ApiRevision: went down")
         elif c["value"] != k["value"] or c["type"] != k["type"]:
             problems.append(f"const {k['name']}: changed")
     cur_alias = by_name(cur["aliases"])

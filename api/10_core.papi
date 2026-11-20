@@ -1,5 +1,5 @@
 const ApiVersion: u32 = 1 @doc("Major generation of the wire contract (the wasm import module is `perlin`); a breaking redesign would be 2, served next to 1");
-const ApiRevision: u32 = 1 @doc("Revision of this schema: it grows with every addition and must equal the `api perlin version` line");
+const ApiRevision: u32 = 2 @doc("Revision of this schema: it grows with every addition and must equal the `api perlin version` line");
 const ApiOldestRevision: u32 = 1 @doc("Oldest revision hosts still serve; plugins built for it keep working");
 const NeedMoreBase: i32 = 16 @doc("perlin.call results below -NeedMoreBase mean the output buffer was too small: -(NeedMoreBase + needed)");
 const EventCancel: u32 = 1 @doc("Bit 0 of a perlin_event result cancels the event");

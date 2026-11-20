@@ -25,7 +25,11 @@ What the API gives you for the kind of features a full client has. Each row name
 
 | Feature | Use |
 | --- | --- |
-| Zoom, FOV changes, free look, camera roll, shift the view | `game::camera({...})`, `game::set_look` |
+| Zoom, FOV changes, camera roll, shift the view | `game::camera({...})`, `game::set_look` |
+| Freelook, freecam, cinematic camera paths | `camera::freelook()`, `camera::freecam()`, `camera::fly_to()`, `camera::Toggle` ([guide](camera-blocks-animation.md)) |
+| X-ray, ore highlighting, hiding or swapping blocks | `blocks::xray()`, `blocks::hide()`, `blocks::replace()`, `blocks::remap()` |
+| Emotes, custom player and mob animation | `anim::pose()`, `anim::Clip`, `anim::parse_bedrock()`, `anim::Player` |
+| Animation packs, 1.7 animations | `anim::style()`, `anim::hand()` with `hooks::view_model` and `anim::pose()` |
 | Fullbright, render distance, other settings | `act::set_option<game::Option::...>(...)` |
 | Time changer (client only) | `hooks::client_time(ticks)` |
 | Weather changer (client only) | `hooks::client_weather(rain, thunder)` |

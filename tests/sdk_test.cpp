@@ -297,6 +297,71 @@ int main() {
     CHECK(std::format("{}", abi::Tool::Pickaxe) == "Pickaxe" &&
           std::format("{}", abi::NameKind::Entity) == "Entity");
 
+    {
+        const auto clips = anim::parse_bedrock(
+            R"({"animations":{"animation.wave":{"loop":true,"animation_length":1.0,"bones":{"RightArm":{"rotation":{"0.0":[0,0,0],"0.5":[-90,0,0],"1.0":[0,0,0]}},"head":{"rotation":[10,0,0]}}}}})");
+        CHECK(clips.size() == 1 && clips[0].loop && clips[0].length == 1.0f);
+        if (clips.size() == 1) {
+            float arm = 0, head = 0;
+            for (const auto& b : clips[0].sample(0.25f)) {
+                if (b.bone == "rightarm")
+                    arm = b.rx;
+                if (b.bone == "head")
+                    head = b.rx;
+            }
+            CHECK(arm < -44.9f && arm > -45.1f && head == 10.0f);
+        }
+        const size_t before = calls.size();
+        anim::Player player;
+        player.play(anim::wave(1.0f));
+        player.update(0.1f);
+        CHECK(calls.size() == before + 1 && calls.back().op == Op::EntityBonePose);
+        player.cancel();
+        CHECK(calls.back().op == Op::EntityBonePoseClear && !player.playing());
+    }
+    {
+        gfx::DrawList list;
+        list.batch(0, 0, 0, 100, 100).rect(0, 0, 10, 10, 0xFFFFFFFF);
+        list.batch(0, 0, 0, 100, 100).rect(10, 10, 20, 20, 0xFFFFFFFF);
+        list.batch(7, 0, 0, 100, 100).rect(0, 0, 5, 5, 0xFFFFFFFF);
+        CHECK(list.commands().size() == 2 && list.indices().size() == 18 && gfx::fits_narrow(list));
+        CHECK(list.indices()[6] == 4 && list.indices()[12] == 0);
+        const size_t before = calls.size();
+        {
+            gfx::Layer layer("hud", 1);
+            layer.begin().batch(0, 0, 0, 50, 50).rect(1, 1, 2, 2, 0xFF00FF00);
+            CHECK(layer.submit());
+            layer.begin().batch(0, 0, 0, 50, 50).rect(1, 1, 2, 2, 0xFF00FF00);
+            CHECK(layer.submit() && layer.skipped() == 1);
+            CHECK(calls.size() == before + 1 && calls.back().op == Op::GfxSubmit);
+            abi::Reader r(calls.back().in.data(), calls.back().in.size());
+            CHECK(r.str() == "hud" && r.get<int32_t>() == 1);
+            const std::vector<uint8_t> blob = r.bytes();
+            abi::GfxHeader h{};
+            std::memcpy(&h, blob.data(), sizeof(h));
+            CHECK(r.Ok() && (h.flags & abi::kGfxIndex32) == 0 && h.indexCount == 6 &&
+                  blob.size() == sizeof(h) + 4 * sizeof(gfx::Vertex) + 6 * 2 + sizeof(gfx::Command));
+        }
+        CHECK(calls.back().op == Op::GfxClear);
+    }
+    {
+        const size_t before = calls.size();
+        CHECK(blocks::xray({"*_ore", "ancient_debris"}));
+        CHECK(calls.size() == before + 1 && calls.back().op == Op::BlockRemapSet);
+        abi::Reader r(calls.back().in.data(), calls.back().in.size());
+        const auto d = r.read<abi::BlockRemapData>();
+        CHECK(r.Ok() && d.id == "xray" && d.onlyListed && d.fullbright && d.rules.size() == 2 &&
+              d.rules[0].to == "*");
+        auto freelook = camera::freelook_toggle(5.0f);
+        freelook.hold(true);
+        freelook.tick();
+        CHECK(calls.back().op == Op::CameraDetach);
+        freelook.hold(false);
+        freelook.tick();
+        abi::Reader cr(calls.back().in.data(), calls.back().in.size());
+        CHECK(calls.back().op == Op::CameraDetach && cr.read<abi::CameraDetachState>().mode == abi::CameraMode::Attached);
+    }
+
     CHECK(schemaMismatches == 0);
     std::printf(failures ? "sdk_test: %d failure(s)\n" : "sdk_test: ok\n", failures);
     return failures ? 1 : 0;

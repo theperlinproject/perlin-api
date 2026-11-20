@@ -76,6 +76,9 @@ namespace perlin::abi {
         const uint8_t* Data() const { return data.data(); }
         size_t Size() const { return data.size(); }
         void Clear() { data.clear(); }
+        void Reserve(size_t n) { data.reserve(n); }
+        void Grow(size_t n) { data.resize(data.size() + n); }
+        uint8_t* MutableData() { return data.data(); }
         std::vector<uint8_t> data;
 
     private:

@@ -8,8 +8,6 @@ It needs the `gpu` [permission](manifest.md). The game checks everything a plugi
 #include <perlin/perlin.hpp>   // includes <perlin/gpu.hpp>
 ```
 
-An [example plugin](../examples/gpu-ui) draws a blurred glass panel under the HUD with its own shader pack.
-
 ## How it fits together
 
 * **Shader pack.** Shaders are written in Slang and compiled ahead of time into a [conduit](https://github.com/theperlinproject/conduit) shader pack, one file with the shaders for every graphics API. The plugin embeds the pack and loads it with `gpu::load_pack`. The game picks the variant its device reads.

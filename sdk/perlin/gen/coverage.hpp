@@ -186,6 +186,15 @@ inline constexpr std::uint32_t kClientOps[] = {
     0x1560,
     0x1561,
     0x1570,
+    0x1600,
+    0x1601,
+    0x1610,
+    0x1611,
+    0x1612,
+    0x1620,
+    0x1621,
+    0x1622,
+    0x1623,
 };
 inline constexpr std::uint32_t kClientEvents[] = {
     1,

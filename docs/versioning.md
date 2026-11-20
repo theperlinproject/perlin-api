@@ -57,7 +57,7 @@ The newest revision stays open to corrections until it ships. Freezing it is one
 python3 tools/check_compat.py --update
 ```
 
-From then on the checker holds every later change to it. Revision 1 is frozen.
+From then on the checker holds every later change to it. Revision 1 is frozen; revision 2 (freelook and freecam, block remapping, bone poses, animation styles, hand state) is open until it ships. `check_compat.py` lets `ApiRevision` grow but never shrink.
 
 ## A breaking redesign
 

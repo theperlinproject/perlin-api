@@ -9,9 +9,9 @@
 #include "perlin/meta.hpp"
 
 namespace perlin::abi {
-    inline constexpr uint32_t kSchemaVersion = 1;
+    inline constexpr uint32_t kSchemaVersion = 2;
     inline constexpr uint32_t kApiVersion = 1;
-    inline constexpr uint32_t kApiRevision = 1;
+    inline constexpr uint32_t kApiRevision = 2;
     inline constexpr uint32_t kApiOldestRevision = 1;
     inline constexpr int32_t kNeedMoreBase = 16;
     inline constexpr uint32_t kEventCancel = 1;
@@ -583,6 +583,23 @@ namespace perlin::abi {
         Pre = 0,
         UnderHud = 1,
         Overlay = 2,
+    };
+
+    enum class CameraMode : int32_t {
+        Attached = 0,
+        Freelook = 1,
+        Free = 2,
+    };
+
+    enum class AnimationStyle : int32_t {
+        Default = 0,
+        Java = 1,
+        Bedrock = 2,
+    };
+
+    enum class BoneBlend : int32_t {
+        Add = 0,
+        Replace = 1,
     };
 
 }
@@ -2979,6 +2996,96 @@ namespace perlin::abi {
         std::string field;
         double number{};
         std::string text;
+    };
+
+    struct CameraDetachState {
+        CameraMode mode = CameraMode::Attached;
+        double x = 0;
+        double y = 0;
+        double z = 0;
+        float yaw = 0.0f;
+        float pitch = 0.0f;
+        float roll = 0.0f;
+        float distance = 0.0f;
+        float fov = 0.0f;
+        bool showSelf = true;
+        bool freezeMovement = false;
+        bool collide = true;
+        bool mouseLook = true;
+        bool keyFly = true;
+        float speed = 10.0f;
+        int32_t ticks = 2;
+    };
+
+    struct BlockRemapRule {
+        std::string match;
+        std::string to;
+    };
+
+    struct BlockRemapData {
+        std::string id;
+        std::vector<BlockRemapRule> rules;
+        bool onlyListed = false;
+        bool keepLiquids = true;
+        bool fullbright = false;
+    };
+
+    struct BonePoseEntry {
+        std::string bone;
+        BoneBlend blend = BoneBlend::Add;
+        float rx = 0.0f;
+        float ry = 0.0f;
+        float rz = 0.0f;
+        float px = 0.0f;
+        float py = 0.0f;
+        float pz = 0.0f;
+        float sx = 1.0f;
+        float sy = 1.0f;
+        float sz = 1.0f;
+    };
+
+    struct BonePoseData {
+        uint64_t entity = 0;
+        int32_t ticks = 2;
+        std::vector<BonePoseEntry> bones;
+    };
+
+    struct AnimationStyleData {
+        AnimationStyle firstPerson = AnimationStyle::Default;
+        AnimationStyle thirdPerson = AnimationStyle::Default;
+        int32_t ticks = 0;
+    };
+
+    struct HandStateData {
+        float swing = 0.0f;
+        float offSwing = 0.0f;
+        float equip = 1.0f;
+        bool usingItem = false;
+        int32_t useTicks = 0;
+        bool useOffhand = false;
+        bool blocking = false;
+        std::string mainItem;
+        std::string offItem;
+        bool leftHanded = false;
+        bool firstPerson = true;
+        bool sneaking = false;
+        bool sprinting = false;
+        AnimationStyle style = AnimationStyle::Java;
+    };
+
+    struct BlockRemapStateData {
+        bool active = false;
+        uint32_t hidden = 0;
+        uint32_t replaced = 0;
+        bool fullbright = false;
+    };
+
+    struct BlockRemapClearRequest {
+        std::string id;
+    };
+
+    struct EntityBonePoseClearRequest {
+        uint64_t entity{};
     };
 
 }

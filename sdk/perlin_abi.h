@@ -165,9 +165,9 @@ static inline int32_t perlin_invoke(uint32_t op, const perlin_writer* request, p
     return -6;
 }
 
-#define PERLIN_SCHEMA_VERSION 1
+#define PERLIN_SCHEMA_VERSION 2
 #define PERLIN_API_VERSION (1u)
-#define PERLIN_API_REVISION (1u)
+#define PERLIN_API_REVISION (2u)
 #define PERLIN_API_OLDEST_REVISION (1u)
 #define PERLIN_NEED_MORE_BASE (16)
 #define PERLIN_EVENT_CANCEL (1u)
@@ -741,6 +741,23 @@ enum {
     PERLIN_GPU_STAGE_UNDER_HUD = 1,
     PERLIN_GPU_STAGE_OVERLAY = 2,
 };
+typedef int32_t PerlinCameraMode;
+enum {
+    PERLIN_CAMERA_MODE_ATTACHED = 0,
+    PERLIN_CAMERA_MODE_FREELOOK = 1,
+    PERLIN_CAMERA_MODE_FREE = 2,
+};
+typedef int32_t PerlinAnimationStyle;
+enum {
+    PERLIN_ANIMATION_STYLE_DEFAULT = 0,
+    PERLIN_ANIMATION_STYLE_JAVA = 1,
+    PERLIN_ANIMATION_STYLE_BEDROCK = 2,
+};
+typedef int32_t PerlinBoneBlend;
+enum {
+    PERLIN_BONE_BLEND_ADD = 0,
+    PERLIN_BONE_BLEND_REPLACE = 1,
+};
 
 enum PerlinOpId {
     PERLIN_OP_LOG = 0x0001,
@@ -924,6 +941,15 @@ enum PerlinOpId {
     PERLIN_OP_GPU_SUBMIT = 0x1560,
     PERLIN_OP_GPU_LAYER_CLEAR = 0x1561,
     PERLIN_OP_GPU_ERRORS = 0x1570,
+    PERLIN_OP_CAMERA_DETACH = 0x1600,
+    PERLIN_OP_CAMERA_DETACH_GET = 0x1601,
+    PERLIN_OP_BLOCK_REMAP_SET = 0x1610,
+    PERLIN_OP_BLOCK_REMAP_CLEAR = 0x1611,
+    PERLIN_OP_BLOCK_REMAP_STATE = 0x1612,
+    PERLIN_OP_ENTITY_BONE_POSE = 0x1620,
+    PERLIN_OP_ENTITY_BONE_POSE_CLEAR = 0x1621,
+    PERLIN_OP_ANIMATION_STYLE_SET = 0x1622,
+    PERLIN_OP_HAND_STATE = 0x1623,
     PERLIN_OP_BROADCAST = 0x7000,
     PERLIN_OP_PLAYER_MESSAGE = 0x7001,
     PERLIN_OP_KICK = 0x7002,
@@ -1403,6 +1429,16 @@ typedef struct PerlinMotdSetRequest PerlinMotdSetRequest;
 typedef struct PerlinLootTableOverrideRequest PerlinLootTableOverrideRequest;
 typedef struct PerlinLootTableGetRequest PerlinLootTableGetRequest;
 typedef struct PerlinEventAmendRequest PerlinEventAmendRequest;
+typedef struct PerlinCameraDetachState PerlinCameraDetachState;
+typedef struct PerlinBlockRemapRule PerlinBlockRemapRule;
+typedef struct PerlinBlockRemapData PerlinBlockRemapData;
+typedef struct PerlinBonePoseEntry PerlinBonePoseEntry;
+typedef struct PerlinBonePoseData PerlinBonePoseData;
+typedef struct PerlinAnimationStyleData PerlinAnimationStyleData;
+typedef struct PerlinHandStateData PerlinHandStateData;
+typedef struct PerlinBlockRemapStateData PerlinBlockRemapStateData;
+typedef struct PerlinBlockRemapClearRequest PerlinBlockRemapClearRequest;
+typedef struct PerlinEntityBonePoseClearRequest PerlinEntityBonePoseClearRequest;
 
 typedef struct PerlinPair_I32_I32 { int32_t first; int32_t second; } PerlinPair_I32_I32;
 typedef struct PerlinList_Pair_I32_I32 { PerlinPair_I32_I32* data; uint32_t len; } PerlinList_Pair_I32_I32;
@@ -1444,6 +1480,8 @@ typedef struct PerlinList_ServerItem { PerlinServerItem* data; uint32_t len; } P
 typedef struct PerlinList_FormButton { PerlinFormButton* data; uint32_t len; } PerlinList_FormButton;
 typedef struct PerlinList_FormControl { PerlinFormControl* data; uint32_t len; } PerlinList_FormControl;
 typedef struct PerlinList_ServerEntity { PerlinServerEntity* data; uint32_t len; } PerlinList_ServerEntity;
+typedef struct PerlinList_BlockRemapRule { PerlinBlockRemapRule* data; uint32_t len; } PerlinList_BlockRemapRule;
+typedef struct PerlinList_BonePoseEntry { PerlinBonePoseEntry* data; uint32_t len; } PerlinList_BonePoseEntry;
 struct PerlinItem {
     perlin_str name;
     int32_t count;
@@ -3452,6 +3490,86 @@ struct PerlinEventAmendRequest {
     double number;
     perlin_str text;
 };
+struct PerlinCameraDetachState {
+    PerlinCameraMode mode;
+    double x;
+    double y;
+    double z;
+    float yaw;
+    float pitch;
+    float roll;
+    float distance;
+    float fov;
+    uint8_t showSelf;
+    uint8_t freezeMovement;
+    uint8_t collide;
+    uint8_t mouseLook;
+    uint8_t keyFly;
+    float speed;
+    int32_t ticks;
+};
+struct PerlinBlockRemapRule {
+    perlin_str match;
+    perlin_str to;
+};
+struct PerlinBlockRemapData {
+    perlin_str id;
+    PerlinList_BlockRemapRule rules;
+    uint8_t onlyListed;
+    uint8_t keepLiquids;
+    uint8_t fullbright;
+};
+struct PerlinBonePoseEntry {
+    perlin_str bone;
+    PerlinBoneBlend blend;
+    float rx;
+    float ry;
+    float rz;
+    float px;
+    float py;
+    float pz;
+    float sx;
+    float sy;
+    float sz;
+};
+struct PerlinBonePoseData {
+    uint64_t entity;
+    int32_t ticks;
+    PerlinList_BonePoseEntry bones;
+};
+struct PerlinAnimationStyleData {
+    PerlinAnimationStyle firstPerson;
+    PerlinAnimationStyle thirdPerson;
+    int32_t ticks;
+};
+struct PerlinHandStateData {
+    float swing;
+    float offSwing;
+    float equip;
+    uint8_t usingItem;
+    int32_t useTicks;
+    uint8_t useOffhand;
+    uint8_t blocking;
+    perlin_str mainItem;
+    perlin_str offItem;
+    uint8_t leftHanded;
+    uint8_t firstPerson;
+    uint8_t sneaking;
+    uint8_t sprinting;
+    PerlinAnimationStyle style;
+};
+struct PerlinBlockRemapStateData {
+    uint8_t active;
+    uint32_t hidden;
+    uint32_t replaced;
+    uint8_t fullbright;
+};
+struct PerlinBlockRemapClearRequest {
+    perlin_str id;
+};
+struct PerlinEntityBonePoseClearRequest {
+    uint64_t entity;
+};
 
 static inline void perlin_write_Item(perlin_writer* w, const PerlinItem* v);
 static inline void perlin_read_Item(perlin_reader* r, PerlinItem* v, perlin_arena* a);
@@ -4125,6 +4243,26 @@ static inline void perlin_write_LootTableGetRequest(perlin_writer* w, const Perl
 static inline void perlin_read_LootTableGetRequest(perlin_reader* r, PerlinLootTableGetRequest* v, perlin_arena* a);
 static inline void perlin_write_EventAmendRequest(perlin_writer* w, const PerlinEventAmendRequest* v);
 static inline void perlin_read_EventAmendRequest(perlin_reader* r, PerlinEventAmendRequest* v, perlin_arena* a);
+static inline void perlin_write_CameraDetachState(perlin_writer* w, const PerlinCameraDetachState* v);
+static inline void perlin_read_CameraDetachState(perlin_reader* r, PerlinCameraDetachState* v, perlin_arena* a);
+static inline void perlin_write_BlockRemapRule(perlin_writer* w, const PerlinBlockRemapRule* v);
+static inline void perlin_read_BlockRemapRule(perlin_reader* r, PerlinBlockRemapRule* v, perlin_arena* a);
+static inline void perlin_write_BlockRemapData(perlin_writer* w, const PerlinBlockRemapData* v);
+static inline void perlin_read_BlockRemapData(perlin_reader* r, PerlinBlockRemapData* v, perlin_arena* a);
+static inline void perlin_write_BonePoseEntry(perlin_writer* w, const PerlinBonePoseEntry* v);
+static inline void perlin_read_BonePoseEntry(perlin_reader* r, PerlinBonePoseEntry* v, perlin_arena* a);
+static inline void perlin_write_BonePoseData(perlin_writer* w, const PerlinBonePoseData* v);
+static inline void perlin_read_BonePoseData(perlin_reader* r, PerlinBonePoseData* v, perlin_arena* a);
+static inline void perlin_write_AnimationStyleData(perlin_writer* w, const PerlinAnimationStyleData* v);
+static inline void perlin_read_AnimationStyleData(perlin_reader* r, PerlinAnimationStyleData* v, perlin_arena* a);
+static inline void perlin_write_HandStateData(perlin_writer* w, const PerlinHandStateData* v);
+static inline void perlin_read_HandStateData(perlin_reader* r, PerlinHandStateData* v, perlin_arena* a);
+static inline void perlin_write_BlockRemapStateData(perlin_writer* w, const PerlinBlockRemapStateData* v);
+static inline void perlin_read_BlockRemapStateData(perlin_reader* r, PerlinBlockRemapStateData* v, perlin_arena* a);
+static inline void perlin_write_BlockRemapClearRequest(perlin_writer* w, const PerlinBlockRemapClearRequest* v);
+static inline void perlin_read_BlockRemapClearRequest(perlin_reader* r, PerlinBlockRemapClearRequest* v, perlin_arena* a);
+static inline void perlin_write_EntityBonePoseClearRequest(perlin_writer* w, const PerlinEntityBonePoseClearRequest* v);
+static inline void perlin_read_EntityBonePoseClearRequest(perlin_reader* r, PerlinEntityBonePoseClearRequest* v, perlin_arena* a);
 static inline void perlin_write_Pair_I32_I32(perlin_writer* w, const PerlinPair_I32_I32* v);
 static inline void perlin_read_Pair_I32_I32(perlin_reader* r, PerlinPair_I32_I32* v, perlin_arena* a);
 static inline void perlin_write_List_Pair_I32_I32(perlin_writer* w, const PerlinList_Pair_I32_I32* v);
@@ -4205,6 +4343,10 @@ static inline void perlin_write_List_FormControl(perlin_writer* w, const PerlinL
 static inline void perlin_read_List_FormControl(perlin_reader* r, PerlinList_FormControl* v, perlin_arena* a);
 static inline void perlin_write_List_ServerEntity(perlin_writer* w, const PerlinList_ServerEntity* v);
 static inline void perlin_read_List_ServerEntity(perlin_reader* r, PerlinList_ServerEntity* v, perlin_arena* a);
+static inline void perlin_write_List_BlockRemapRule(perlin_writer* w, const PerlinList_BlockRemapRule* v);
+static inline void perlin_read_List_BlockRemapRule(perlin_reader* r, PerlinList_BlockRemapRule* v, perlin_arena* a);
+static inline void perlin_write_List_BonePoseEntry(perlin_writer* w, const PerlinList_BonePoseEntry* v);
+static inline void perlin_read_List_BonePoseEntry(perlin_reader* r, PerlinList_BonePoseEntry* v, perlin_arena* a);
 
 static inline void perlin_write_Item(perlin_writer* w, const PerlinItem* v) {
     (void)w;
@@ -9920,6 +10062,216 @@ static inline void perlin_read_EventAmendRequest(perlin_reader* r, PerlinEventAm
     v->number = (double)perlin_r_f64(r);
     v->text = perlin_r_str(r);
 }
+static inline void perlin_write_CameraDetachState(perlin_writer* w, const PerlinCameraDetachState* v) {
+    (void)w;
+    (void)v;
+    perlin_w_i32(w, (int32_t)(v->mode));
+    perlin_w_f64(w, (double)(v->x));
+    perlin_w_f64(w, (double)(v->y));
+    perlin_w_f64(w, (double)(v->z));
+    perlin_w_f32(w, (float)(v->yaw));
+    perlin_w_f32(w, (float)(v->pitch));
+    perlin_w_f32(w, (float)(v->roll));
+    perlin_w_f32(w, (float)(v->distance));
+    perlin_w_f32(w, (float)(v->fov));
+    perlin_w_u8(w, (uint8_t)(v->showSelf));
+    perlin_w_u8(w, (uint8_t)(v->freezeMovement));
+    perlin_w_u8(w, (uint8_t)(v->collide));
+    perlin_w_u8(w, (uint8_t)(v->mouseLook));
+    perlin_w_u8(w, (uint8_t)(v->keyFly));
+    perlin_w_f32(w, (float)(v->speed));
+    perlin_w_i32(w, (int32_t)(v->ticks));
+}
+static inline void perlin_read_CameraDetachState(perlin_reader* r, PerlinCameraDetachState* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->mode = (PerlinCameraMode)perlin_r_i32(r);
+    v->x = (double)perlin_r_f64(r);
+    v->y = (double)perlin_r_f64(r);
+    v->z = (double)perlin_r_f64(r);
+    v->yaw = (float)perlin_r_f32(r);
+    v->pitch = (float)perlin_r_f32(r);
+    v->roll = (float)perlin_r_f32(r);
+    v->distance = (float)perlin_r_f32(r);
+    v->fov = (float)perlin_r_f32(r);
+    v->showSelf = (uint8_t)perlin_r_u8(r);
+    v->freezeMovement = (uint8_t)perlin_r_u8(r);
+    v->collide = (uint8_t)perlin_r_u8(r);
+    v->mouseLook = (uint8_t)perlin_r_u8(r);
+    v->keyFly = (uint8_t)perlin_r_u8(r);
+    v->speed = (float)perlin_r_f32(r);
+    v->ticks = (int32_t)perlin_r_i32(r);
+}
+static inline void perlin_write_BlockRemapRule(perlin_writer* w, const PerlinBlockRemapRule* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->match);
+    perlin_w_str(w, v->to);
+}
+static inline void perlin_read_BlockRemapRule(perlin_reader* r, PerlinBlockRemapRule* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->match = perlin_r_str(r);
+    v->to = perlin_r_str(r);
+}
+static inline void perlin_write_BlockRemapData(perlin_writer* w, const PerlinBlockRemapData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+    perlin_write_List_BlockRemapRule(w, &v->rules);
+    perlin_w_u8(w, (uint8_t)(v->onlyListed));
+    perlin_w_u8(w, (uint8_t)(v->keepLiquids));
+    perlin_w_u8(w, (uint8_t)(v->fullbright));
+}
+static inline void perlin_read_BlockRemapData(perlin_reader* r, PerlinBlockRemapData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+    perlin_read_List_BlockRemapRule(r, &v->rules, a);
+    v->onlyListed = (uint8_t)perlin_r_u8(r);
+    v->keepLiquids = (uint8_t)perlin_r_u8(r);
+    v->fullbright = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_BonePoseEntry(perlin_writer* w, const PerlinBonePoseEntry* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->bone);
+    perlin_w_i32(w, (int32_t)(v->blend));
+    perlin_w_f32(w, (float)(v->rx));
+    perlin_w_f32(w, (float)(v->ry));
+    perlin_w_f32(w, (float)(v->rz));
+    perlin_w_f32(w, (float)(v->px));
+    perlin_w_f32(w, (float)(v->py));
+    perlin_w_f32(w, (float)(v->pz));
+    perlin_w_f32(w, (float)(v->sx));
+    perlin_w_f32(w, (float)(v->sy));
+    perlin_w_f32(w, (float)(v->sz));
+}
+static inline void perlin_read_BonePoseEntry(perlin_reader* r, PerlinBonePoseEntry* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->bone = perlin_r_str(r);
+    v->blend = (PerlinBoneBlend)perlin_r_i32(r);
+    v->rx = (float)perlin_r_f32(r);
+    v->ry = (float)perlin_r_f32(r);
+    v->rz = (float)perlin_r_f32(r);
+    v->px = (float)perlin_r_f32(r);
+    v->py = (float)perlin_r_f32(r);
+    v->pz = (float)perlin_r_f32(r);
+    v->sx = (float)perlin_r_f32(r);
+    v->sy = (float)perlin_r_f32(r);
+    v->sz = (float)perlin_r_f32(r);
+}
+static inline void perlin_write_BonePoseData(perlin_writer* w, const PerlinBonePoseData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u64(w, (uint64_t)(v->entity));
+    perlin_w_i32(w, (int32_t)(v->ticks));
+    perlin_write_List_BonePoseEntry(w, &v->bones);
+}
+static inline void perlin_read_BonePoseData(perlin_reader* r, PerlinBonePoseData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->entity = (uint64_t)perlin_r_u64(r);
+    v->ticks = (int32_t)perlin_r_i32(r);
+    perlin_read_List_BonePoseEntry(r, &v->bones, a);
+}
+static inline void perlin_write_AnimationStyleData(perlin_writer* w, const PerlinAnimationStyleData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_i32(w, (int32_t)(v->firstPerson));
+    perlin_w_i32(w, (int32_t)(v->thirdPerson));
+    perlin_w_i32(w, (int32_t)(v->ticks));
+}
+static inline void perlin_read_AnimationStyleData(perlin_reader* r, PerlinAnimationStyleData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->firstPerson = (PerlinAnimationStyle)perlin_r_i32(r);
+    v->thirdPerson = (PerlinAnimationStyle)perlin_r_i32(r);
+    v->ticks = (int32_t)perlin_r_i32(r);
+}
+static inline void perlin_write_HandStateData(perlin_writer* w, const PerlinHandStateData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_f32(w, (float)(v->swing));
+    perlin_w_f32(w, (float)(v->offSwing));
+    perlin_w_f32(w, (float)(v->equip));
+    perlin_w_u8(w, (uint8_t)(v->usingItem));
+    perlin_w_i32(w, (int32_t)(v->useTicks));
+    perlin_w_u8(w, (uint8_t)(v->useOffhand));
+    perlin_w_u8(w, (uint8_t)(v->blocking));
+    perlin_w_str(w, v->mainItem);
+    perlin_w_str(w, v->offItem);
+    perlin_w_u8(w, (uint8_t)(v->leftHanded));
+    perlin_w_u8(w, (uint8_t)(v->firstPerson));
+    perlin_w_u8(w, (uint8_t)(v->sneaking));
+    perlin_w_u8(w, (uint8_t)(v->sprinting));
+    perlin_w_i32(w, (int32_t)(v->style));
+}
+static inline void perlin_read_HandStateData(perlin_reader* r, PerlinHandStateData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->swing = (float)perlin_r_f32(r);
+    v->offSwing = (float)perlin_r_f32(r);
+    v->equip = (float)perlin_r_f32(r);
+    v->usingItem = (uint8_t)perlin_r_u8(r);
+    v->useTicks = (int32_t)perlin_r_i32(r);
+    v->useOffhand = (uint8_t)perlin_r_u8(r);
+    v->blocking = (uint8_t)perlin_r_u8(r);
+    v->mainItem = perlin_r_str(r);
+    v->offItem = perlin_r_str(r);
+    v->leftHanded = (uint8_t)perlin_r_u8(r);
+    v->firstPerson = (uint8_t)perlin_r_u8(r);
+    v->sneaking = (uint8_t)perlin_r_u8(r);
+    v->sprinting = (uint8_t)perlin_r_u8(r);
+    v->style = (PerlinAnimationStyle)perlin_r_i32(r);
+}
+static inline void perlin_write_BlockRemapStateData(perlin_writer* w, const PerlinBlockRemapStateData* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u8(w, (uint8_t)(v->active));
+    perlin_w_u32(w, (uint32_t)(v->hidden));
+    perlin_w_u32(w, (uint32_t)(v->replaced));
+    perlin_w_u8(w, (uint8_t)(v->fullbright));
+}
+static inline void perlin_read_BlockRemapStateData(perlin_reader* r, PerlinBlockRemapStateData* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->active = (uint8_t)perlin_r_u8(r);
+    v->hidden = (uint32_t)perlin_r_u32(r);
+    v->replaced = (uint32_t)perlin_r_u32(r);
+    v->fullbright = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_BlockRemapClearRequest(perlin_writer* w, const PerlinBlockRemapClearRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+}
+static inline void perlin_read_BlockRemapClearRequest(perlin_reader* r, PerlinBlockRemapClearRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+}
+static inline void perlin_write_EntityBonePoseClearRequest(perlin_writer* w, const PerlinEntityBonePoseClearRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u64(w, (uint64_t)(v->entity));
+}
+static inline void perlin_read_EntityBonePoseClearRequest(perlin_reader* r, PerlinEntityBonePoseClearRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->entity = (uint64_t)perlin_r_u64(r);
+}
 static inline void perlin_write_Pair_I32_I32(perlin_writer* w, const PerlinPair_I32_I32* v) {
     perlin_w_i32(w, (int32_t)(v->first));
     perlin_w_i32(w, (int32_t)(v->second));
@@ -10566,6 +10918,40 @@ static inline void perlin_read_List_ServerEntity(perlin_reader* r, PerlinList_Se
     if (!v->data) { r->failed = 1; v->len = 0; return; }
     for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
         perlin_read_ServerEntity(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_BlockRemapRule(perlin_writer* w, const PerlinList_BlockRemapRule* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_BlockRemapRule(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_BlockRemapRule(perlin_reader* r, PerlinList_BlockRemapRule* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinBlockRemapRule*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_BlockRemapRule(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_BonePoseEntry(perlin_writer* w, const PerlinList_BonePoseEntry* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_BonePoseEntry(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_BonePoseEntry(perlin_reader* r, PerlinList_BonePoseEntry* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinBonePoseEntry*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_BonePoseEntry(r, &v->data[k_], a);
     }
 }
 
@@ -12721,6 +13107,108 @@ static inline int32_t perlin_gpu_errors(PerlinGpuErrorsResponse* out, perlin_are
     if (rc_ < 0) return rc_;
     perlin_reader* r = &rb_;
     perlin_read_GpuErrorsResponse(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_camera_detach(const PerlinCameraDetachState* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_CameraDetachState(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CAMERA_DETACH, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_camera_detach_get(PerlinCameraDetachState* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CAMERA_DETACH_GET, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_CameraDetachState(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_block_remap_set(const PerlinBlockRemapData* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_BlockRemapData(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_BLOCK_REMAP_SET, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_block_remap_clear(const PerlinBlockRemapClearRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_BlockRemapClearRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_BLOCK_REMAP_CLEAR, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_block_remap_state(PerlinBlockRemapStateData* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_BLOCK_REMAP_STATE, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_BlockRemapStateData(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_entity_bone_pose(const PerlinBonePoseData* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_BonePoseData(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_ENTITY_BONE_POSE, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_entity_bone_pose_clear(const PerlinEntityBonePoseClearRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_EntityBonePoseClearRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_ENTITY_BONE_POSE_CLEAR, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_animation_style_set(const PerlinAnimationStyleData* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_AnimationStyleData(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_ANIMATION_STYLE_SET, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_hand_state(PerlinHandStateData* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_HAND_STATE, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_HandStateData(r, &(*out), a);
     return rb_.failed ? -6 : 0;
 }
 static inline int32_t perlin_broadcast(const PerlinTextMessage* in, perlin_arena* a) {

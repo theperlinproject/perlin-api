@@ -188,6 +188,15 @@ namespace perlin::abi {
         GpuSubmit = 0x1560,
         GpuLayerClear = 0x1561,
         GpuErrors = 0x1570,
+        CameraDetach = 0x1600,
+        CameraDetachGet = 0x1601,
+        BlockRemapSet = 0x1610,
+        BlockRemapClear = 0x1611,
+        BlockRemapState = 0x1612,
+        EntityBonePose = 0x1620,
+        EntityBonePoseClear = 0x1621,
+        AnimationStyleSet = 0x1622,
+        HandState = 0x1623,
         Broadcast = 0x7000,
         PlayerMessage = 0x7001,
         Kick = 0x7002,
@@ -2147,6 +2156,96 @@ namespace perlin::abi {
         static constexpr std::string_view kName = "GpuErrors";
         static constexpr std::string_view kCategory = "gpu";
     };
+    template <> struct OpSpec<Op::CameraDetach> {
+        using Request = CameraDetachState;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::Control);
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "CameraDetach";
+        static constexpr std::string_view kCategory = "camera";
+    };
+    template <> struct OpSpec<Op::CameraDetachGet> {
+        using Request = Nothing;
+        using Response = CameraDetachState;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "CameraDetachGet";
+        static constexpr std::string_view kCategory = "camera";
+    };
+    template <> struct OpSpec<Op::BlockRemapSet> {
+        using Request = BlockRemapData;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "BlockRemapSet";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::BlockRemapClear> {
+        using Request = BlockRemapClearRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "BlockRemapClear";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::BlockRemapState> {
+        using Request = Nothing;
+        using Response = BlockRemapStateData;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "BlockRemapState";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::EntityBonePose> {
+        using Request = BonePoseData;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = true;
+        static constexpr std::string_view kName = "EntityBonePose";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::EntityBonePoseClear> {
+        using Request = EntityBonePoseClearRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "EntityBonePoseClear";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::AnimationStyleSet> {
+        using Request = AnimationStyleData;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "AnimationStyleSet";
+        static constexpr std::string_view kCategory = "render";
+    };
+    template <> struct OpSpec<Op::HandState> {
+        using Request = Nothing;
+        using Response = HandStateData;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr uint32_t kSince = 2;
+        static constexpr bool kHot = true;
+        static constexpr std::string_view kName = "HandState";
+        static constexpr std::string_view kCategory = "render";
+    };
     template <> struct OpSpec<Op::Broadcast> {
         using Request = TextMessage;
         using Response = Nothing;
@@ -3619,6 +3718,15 @@ namespace perlin::abi {
         case Op::GpuSubmit: return OpSpec<Op::GpuSubmit>::kPermission;
         case Op::GpuLayerClear: return OpSpec<Op::GpuLayerClear>::kPermission;
         case Op::GpuErrors: return OpSpec<Op::GpuErrors>::kPermission;
+        case Op::CameraDetach: return OpSpec<Op::CameraDetach>::kPermission;
+        case Op::CameraDetachGet: return OpSpec<Op::CameraDetachGet>::kPermission;
+        case Op::BlockRemapSet: return OpSpec<Op::BlockRemapSet>::kPermission;
+        case Op::BlockRemapClear: return OpSpec<Op::BlockRemapClear>::kPermission;
+        case Op::BlockRemapState: return OpSpec<Op::BlockRemapState>::kPermission;
+        case Op::EntityBonePose: return OpSpec<Op::EntityBonePose>::kPermission;
+        case Op::EntityBonePoseClear: return OpSpec<Op::EntityBonePoseClear>::kPermission;
+        case Op::AnimationStyleSet: return OpSpec<Op::AnimationStyleSet>::kPermission;
+        case Op::HandState: return OpSpec<Op::HandState>::kPermission;
         case Op::Broadcast: return OpSpec<Op::Broadcast>::kPermission;
         case Op::PlayerMessage: return OpSpec<Op::PlayerMessage>::kPermission;
         case Op::Kick: return OpSpec<Op::Kick>::kPermission;
@@ -3866,6 +3974,15 @@ namespace perlin::abi {
         case Op::GpuSubmit: return Hosts::Client;
         case Op::GpuLayerClear: return Hosts::Client;
         case Op::GpuErrors: return Hosts::Client;
+        case Op::CameraDetach: return Hosts::Client;
+        case Op::CameraDetachGet: return Hosts::Client;
+        case Op::BlockRemapSet: return Hosts::Client;
+        case Op::BlockRemapClear: return Hosts::Client;
+        case Op::BlockRemapState: return Hosts::Client;
+        case Op::EntityBonePose: return Hosts::Client;
+        case Op::EntityBonePoseClear: return Hosts::Client;
+        case Op::AnimationStyleSet: return Hosts::Client;
+        case Op::HandState: return Hosts::Client;
         case Op::Broadcast: return Hosts::Server;
         case Op::PlayerMessage: return Hosts::Server;
         case Op::Kick: return Hosts::Server;
@@ -4195,6 +4312,15 @@ namespace perlin::abi {
         case Op::GpuSubmit: return "GpuSubmit";
         case Op::GpuLayerClear: return "GpuLayerClear";
         case Op::GpuErrors: return "GpuErrors";
+        case Op::CameraDetach: return "CameraDetach";
+        case Op::CameraDetachGet: return "CameraDetachGet";
+        case Op::BlockRemapSet: return "BlockRemapSet";
+        case Op::BlockRemapClear: return "BlockRemapClear";
+        case Op::BlockRemapState: return "BlockRemapState";
+        case Op::EntityBonePose: return "EntityBonePose";
+        case Op::EntityBonePoseClear: return "EntityBonePoseClear";
+        case Op::AnimationStyleSet: return "AnimationStyleSet";
+        case Op::HandState: return "HandState";
         case Op::Broadcast: return "Broadcast";
         case Op::PlayerMessage: return "PlayerMessage";
         case Op::Kick: return "Kick";
@@ -4606,6 +4732,15 @@ namespace perlin::abi {
         case Op::GpuSubmit: return "gpu_submit";
         case Op::GpuLayerClear: return "gpu_layer_clear";
         case Op::GpuErrors: return "gpu_errors";
+        case Op::CameraDetach: return "camera_detach";
+        case Op::CameraDetachGet: return "camera_detach_get";
+        case Op::BlockRemapSet: return "block_remap_set";
+        case Op::BlockRemapClear: return "block_remap_clear";
+        case Op::BlockRemapState: return "block_remap_state";
+        case Op::EntityBonePose: return "entity_bone_pose";
+        case Op::EntityBonePoseClear: return "entity_bone_pose_clear";
+        case Op::AnimationStyleSet: return "animation_style_set";
+        case Op::HandState: return "hand_state";
         case Op::Broadcast: return "broadcast";
         case Op::PlayerMessage: return "player_message";
         case Op::Kick: return "kick";
@@ -4752,7 +4887,7 @@ namespace perlin::abi {
         return false;
     }
 
-    inline constexpr std::array<Op, 241> kAllOps = {
+    inline constexpr std::array<Op, 250> kAllOps = {
         Op::Log,
         Op::Meta,
         Op::Clock,
@@ -4934,6 +5069,15 @@ namespace perlin::abi {
         Op::GpuSubmit,
         Op::GpuLayerClear,
         Op::GpuErrors,
+        Op::CameraDetach,
+        Op::CameraDetachGet,
+        Op::BlockRemapSet,
+        Op::BlockRemapClear,
+        Op::BlockRemapState,
+        Op::EntityBonePose,
+        Op::EntityBonePoseClear,
+        Op::AnimationStyleSet,
+        Op::HandState,
         Op::Broadcast,
         Op::PlayerMessage,
         Op::Kick,
