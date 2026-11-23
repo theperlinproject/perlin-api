@@ -195,6 +195,8 @@ inline constexpr std::uint32_t kClientOps[] = {
     0x1621,
     0x1622,
     0x1623,
+    0x7105,
+    0x7106,
 };
 inline constexpr std::uint32_t kClientEvents[] = {
     1,
@@ -249,6 +251,8 @@ inline constexpr std::uint32_t kClientEvents[] = {
     74,
     75,
     76,
+    78,
+    79,
 };
 
 inline constexpr std::uint32_t kServerOps[] = {
@@ -333,6 +337,13 @@ inline constexpr std::uint32_t kServerOps[] = {
     0x7082,
     0x7083,
     0x7084,
+    0x7100,
+    0x7101,
+    0x7102,
+    0x7103,
+    0x7104,
+    0x7105,
+    0x7106,
 };
 inline constexpr std::uint32_t kServerEvents[] = {
     1,
@@ -370,6 +381,8 @@ inline constexpr std::uint32_t kServerEvents[] = {
     71,
     72,
     73,
+    77,
+    78,
 };
 
 }

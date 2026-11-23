@@ -9,9 +9,9 @@
 #include "perlin/meta.hpp"
 
 namespace perlin::abi {
-    inline constexpr uint32_t kSchemaVersion = 2;
+    inline constexpr uint32_t kSchemaVersion = 3;
     inline constexpr uint32_t kApiVersion = 1;
-    inline constexpr uint32_t kApiRevision = 2;
+    inline constexpr uint32_t kApiRevision = 3;
     inline constexpr uint32_t kApiOldestRevision = 1;
     inline constexpr int32_t kNeedMoreBase = 16;
     inline constexpr uint32_t kEventCancel = 1;
@@ -3086,6 +3086,109 @@ namespace perlin::abi {
 
     struct EntityBonePoseClearRequest {
         uint64_t entity{};
+    };
+
+    struct ContentDrop {
+        std::string item;
+        uint32_t min = 1;
+        uint32_t max = 1;
+        float chance = 1.0f;
+    };
+
+    struct ContentSpawn {
+        Dimension dimension = Dimension::Overworld;
+        std::vector<std::string> biomes;
+        uint32_t weight = 10;
+        uint32_t minGroup = 1;
+        uint32_t maxGroup = 4;
+        bool hostile = false;
+    };
+
+    struct ContentEntity {
+        std::string id;
+        std::string base;
+        float health = 0.0f;
+        float width = 0.0f;
+        float height = 0.0f;
+        float speed = 0.0f;
+        float attack = 0.0f;
+        std::vector<ContentDrop> drops;
+        std::vector<ContentSpawn> spawns;
+        std::string clientBase;
+    };
+
+    struct ContentItem {
+        std::string id;
+        std::string base;
+        std::string displayName;
+        std::string icon;
+        uint32_t maxStack = 0;
+        uint32_t durability = 0;
+        float attack = 0.0f;
+        int32_t food = 0;
+        float saturation = 0.0f;
+    };
+
+    struct ContentBlock {
+        std::string id;
+        std::string base;
+        float hardness = -1.0f;
+        float blastResistance = -1.0f;
+        int32_t light = -1;
+        std::vector<ContentDrop> drops;
+    };
+
+    struct ContentBiome {
+        std::string id;
+        std::string base;
+        std::vector<std::string> replaces;
+        float share = 0.25f;
+        std::string surface;
+        std::string filler;
+        uint32_t grassColor = 0;
+        uint32_t foliageColor = 0;
+        uint32_t waterColor = 0;
+        uint32_t fogColor = 0;
+        uint32_t skyColor = 0;
+        std::vector<ContentSpawn> spawns;
+    };
+
+    struct ContentEntry {
+        std::string kind;
+        std::string id;
+        std::string owner;
+        std::string json;
+    };
+
+    struct ModChannelMessage {
+        uint64_t player = 0;
+        std::string channel;
+        std::vector<uint8_t> body;
+    };
+
+    struct EventChunkGenerated {
+        Dimension dimension = Dimension::Overworld;
+        int32_t x = 0;
+        int32_t z = 0;
+    };
+
+    struct EventModChannel {
+        uint64_t player = 0;
+        std::string channel;
+        std::vector<uint8_t> body;
+    };
+
+    struct ContentUnregisterRequest {
+        std::string kind;
+        std::string id;
+    };
+
+    struct ContentListResponse {
+        std::vector<ContentEntry> entries;
+    };
+
+    struct EventContentAnnounced {
+        uint32_t count = 0;
     };
 
 }

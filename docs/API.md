@@ -1,4 +1,4 @@
-# Perlin mod API reference (schema v2)
+# Perlin mod API reference (schema v3)
 
 Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this file.
 
@@ -276,6 +276,13 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 0x7082 | LootTableOverride | `perlin_loot_table_override` | [LootTableOverrideRequest](#loottableoverriderequest) | - | server | World | `@category(loot)` |
 | 0x7083 | LootTableGet | `perlin_loot_table_get` | [LootTableGetRequest](#loottablegetrequest) | `rest_text` | server | - | `@category(loot)` |
 | 0x7084 | EventAmend | `perlin_event_amend` | [EventAmendRequest](#eventamendrequest) | - | server | - | changes the event being handled: PlayerDamage amount, EntityDamage amount, PlayerChat message, Explosion power, ServerCommand line, PreLogin reason `@category(events)` |
+| 0x7100 | ContentEntityRegister | `perlin_content_entity_register` | [ContentEntity](#contententity) | - | server | World | `@since(3)` `@category(content)` |
+| 0x7101 | ContentItemRegister | `perlin_content_item_register` | [ContentItem](#contentitem) | - | server | World | `@since(3)` `@category(content)` |
+| 0x7102 | ContentBlockRegister | `perlin_content_block_register` | [ContentBlock](#contentblock) | - | server | World | `@since(3)` `@category(content)` |
+| 0x7103 | ContentBiomeRegister | `perlin_content_biome_register` | [ContentBiome](#contentbiome) | - | server | World | `@since(3)` `@category(content)` |
+| 0x7104 | ContentUnregister | `perlin_content_unregister` | [ContentUnregisterRequest](#contentunregisterrequest) | - | server | World | `@since(3)` `@category(content)` |
+| 0x7105 | ContentList | `perlin_content_list` | - | [ContentListResponse](#contentlistresponse) | client, server | - | server: everything registered; client: what the server announced `@since(3)` `@category(content)` |
+| 0x7106 | ModChannelSend | `perlin_mod_channel_send` | [ModChannelMessage](#modchannelmessage) | - | client, server | - | to the client mods of a player (server) or to the server mods (client), over the game connection `@since(3)` `@category(mods)` |
 
 ## Events
 
@@ -357,6 +364,9 @@ Generated from `api/*.papi` by `codegen/generate.py`. Edit the schema, not this 
 | 74 | MicData | [EventMicData](#eventmicdata) | client | `@category(audio)` `@hot` |
 | 75 | GpuReadback | [EventGpuReadback](#eventgpureadback) | client | `@category(gpu)` |
 | 76 | GpuReset | [EventGpuReset](#eventgpureset) | client | the renderer was recreated; every pack, buffer, texture, sampler and pipeline id is void `@category(gpu)` |
+| 77 | ChunkGenerated | [EventChunkGenerated](#eventchunkgenerated) | server | a new chunk is ready; blocks set now become part of it `@since(3)` `@category(world)` |
+| 78 | ModChannel | [EventModChannel](#eventmodchannel) | client, server | `@since(3)` `@category(mods)` |
+| 79 | ContentAnnounced | [EventContentAnnounced](#eventcontentannounced) | client | the server sent its content list; ContentList has it `@since(3)` `@category(content)` |
 
 ## Enums
 
@@ -3831,4 +3841,143 @@ What the first-person hand is doing this frame, for animation packs that drive V
 | Field | Type | Default | Notes |
 |---|---|---|---|
 | entity | `u64` |  | runtime id, 0 for the local player |
+
+### ContentDrop
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| item | `string` |  | item name such as minecraft:bone or mymod:fang |
+| min | `u32` | 1 |  |
+| max | `u32` | 1 |  |
+| chance | `f32` | 1 | 0 to 1 |
+
+### ContentSpawn
+
+Where a content entity spawns by itself, like the game's spawn rules
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| dimension | [Dimension](#dimension) | Overworld |  |
+| biomes | list&lt;`string`&gt; |  | biome names; empty spawns in every biome of the dimension |
+| weight | `u32` | 10 | relative to the vanilla spawn weights of the same group |
+| minGroup | `u32` | 1 |  |
+| maxGroup | `u32` | 4 |  |
+| hostile | `bool` | false | spawns in the dark like monsters, otherwise on grass in the light like animals |
+
+### ContentEntity
+
+An entity type of a mod. It borrows the body and behaviour of a vanilla entity and overrides what it sets
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  | namespaced, such as mymod:kangaroo; never minecraft: |
+| base | `string` |  | vanilla entity it is simulated as: movement, AI, sounds, hitbox unless set |
+| health | `f32` | 0 | 0 keeps the base's |
+| width | `f32` | 0 | `@unit(blocks)` 0 keeps the base's |
+| height | `f32` | 0 | `@unit(blocks)` |
+| speed | `f32` | 0 | movement speed attribute; 0 keeps the base's |
+| attack | `f32` | 0 | melee damage; 0 keeps the base's |
+| drops | list&lt;[ContentDrop](#contentdrop)&gt; |  | replaces the base's loot; empty keeps it |
+| spawns | list&lt;[ContentSpawn](#contentspawn)&gt; |  |  |
+| clientBase | `string` |  | what clients without the client mod are shown; empty shows the base |
+
+### ContentItem
+
+An item of a mod, sent to clients as a data-driven item
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  |  |
+| base | `string` |  | vanilla item whose use it borrows (a sword, food, a block item) |
+| displayName | `string` |  |  |
+| icon | `string` |  | texture name in the client's resource packs; the client mod or a pack supplies it |
+| maxStack | `u32` | 0 | 0 keeps the base's |
+| durability | `u32` | 0 |  |
+| attack | `f32` | 0 |  |
+| food | `i32` | 0 | hunger points restored when eaten; 0 keeps the base's |
+| saturation | `f32` | 0 |  |
+
+### ContentBlock
+
+A block of a mod. The world stores and simulates it as its base block with the overrides; the client mod draws it
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  |  |
+| base | `string` |  | vanilla block it is simulated as (shape, collision, light, behaviour) |
+| hardness | `f32` | -1 | -1 keeps the base's |
+| blastResistance | `f32` | -1 |  |
+| light | `i32` | -1 | 0 to 15; -1 keeps the base's |
+| drops | list&lt;[ContentDrop](#contentdrop)&gt; |  | empty drops the block itself |
+
+### ContentBiome
+
+A biome of a mod, placed in the world in part of the area of the biomes it replaces
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| id | `string` |  |  |
+| base | `string` |  | vanilla biome it is generated and sent as (features, music, weather) |
+| replaces | list&lt;`string`&gt; |  | vanilla biomes it takes area from |
+| share | `f32` | 0.25 | fraction of their area, in patches, 0 to 1 |
+| surface | `string` |  | top block; empty keeps the generated one |
+| filler | `string` |  | the few blocks under the top; empty keeps them |
+| grassColor | `u32` | 0 | 0xRRGGBB for the client mod; 0 keeps the base's |
+| foliageColor | `u32` | 0 |  |
+| waterColor | `u32` | 0 |  |
+| fogColor | `u32` | 0 |  |
+| skyColor | `u32` | 0 |  |
+| spawns | list&lt;[ContentSpawn](#contentspawn)&gt; |  | extra spawns in this biome |
+
+### ContentEntry
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| kind | `string` |  | entity, item, block or biome |
+| id | `string` |  |  |
+| owner | `string` |  | the mod that registered it |
+| json | `string` |  | the registration, as JSON |
+
+### ModChannelMessage
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| player | `u64` | 0 | server: the player it goes to or came from; client: 0 |
+| channel | `string` |  | `@max(64)` namespaced, such as mymod:sync |
+| body | `bytes` |  | `@max(65536)` |
+
+### EventChunkGenerated
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| dimension | [Dimension](#dimension) | Overworld |  |
+| x | `i32` | 0 | chunk coordinates |
+| z | `i32` | 0 |  |
+
+### EventModChannel
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| player | `u64` | 0 | server: who sent it; client: 0 |
+| channel | `string` |  |  |
+| body | `bytes` |  |  |
+
+### ContentUnregisterRequest
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| kind | `string` |  |  |
+| id | `string` |  |  |
+
+### ContentListResponse
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| entries | list&lt;[ContentEntry](#contententry)&gt; |  |  |
+
+### EventContentAnnounced
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| count | `u32` | 0 | entries in ContentList |
 

@@ -257,6 +257,13 @@ namespace perlin::abi {
         LootTableOverride = 0x7082,
         LootTableGet = 0x7083,
         EventAmend = 0x7084,
+        ContentEntityRegister = 0x7100,
+        ContentItemRegister = 0x7101,
+        ContentBlockRegister = 0x7102,
+        ContentBiomeRegister = 0x7103,
+        ContentUnregister = 0x7104,
+        ContentList = 0x7105,
+        ModChannelSend = 0x7106,
     };
 
     enum class Event : uint32_t {
@@ -336,13 +343,16 @@ namespace perlin::abi {
         MicData = 74,
         GpuReadback = 75,
         GpuReset = 76,
+        ChunkGenerated = 77,
+        ModChannel = 78,
+        ContentAnnounced = 79,
     };
 
     enum class Hosts : uint8_t { Client = 1, Server = 2, Both = 3 };
     struct Raw {};
     using Nothing = EventNothing;
 
-    inline constexpr uint32_t kEventCount = 77;
+    inline constexpr uint32_t kEventCount = 80;
     inline constexpr uint32_t kSubscriptionWords = (kEventCount + 31) / 32;
 
     template <Op O> struct OpSpec;
@@ -2846,6 +2856,76 @@ namespace perlin::abi {
         static constexpr std::string_view kName = "EventAmend";
         static constexpr std::string_view kCategory = "events";
     };
+    template <> struct OpSpec<Op::ContentEntityRegister> {
+        using Request = ContentEntity;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentEntityRegister";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ContentItemRegister> {
+        using Request = ContentItem;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentItemRegister";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ContentBlockRegister> {
+        using Request = ContentBlock;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentBlockRegister";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ContentBiomeRegister> {
+        using Request = ContentBiome;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentBiomeRegister";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ContentUnregister> {
+        using Request = ContentUnregisterRequest;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = static_cast<uint32_t>(Permission::World);
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentUnregister";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ContentList> {
+        using Request = Nothing;
+        using Response = ContentListResponse;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Both;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ContentList";
+        static constexpr std::string_view kCategory = "content";
+    };
+    template <> struct OpSpec<Op::ModChannelSend> {
+        using Request = ModChannelMessage;
+        using Response = Nothing;
+        static constexpr uint32_t kPermission = 0u;
+        static constexpr Hosts kHosts = Hosts::Both;
+        static constexpr uint32_t kSince = 3;
+        static constexpr bool kHot = false;
+        static constexpr std::string_view kName = "ModChannelSend";
+        static constexpr std::string_view kCategory = "mods";
+    };
 
     template <Event E> struct EventSpec;
     template <> struct EventSpec<Event::Load> {
@@ -3532,6 +3612,33 @@ namespace perlin::abi {
         static constexpr uint32_t kSince = 1;
         static constexpr std::string_view kName = "GpuReset";
     };
+    template <> struct EventSpec<Event::ChunkGenerated> {
+        using Payload = EventChunkGenerated;
+        static constexpr Hosts kHosts = Hosts::Server;
+        static constexpr bool kMethod = true;
+        static constexpr bool kCancellable = false;
+        static constexpr bool kHot = false;
+        static constexpr uint32_t kSince = 3;
+        static constexpr std::string_view kName = "ChunkGenerated";
+    };
+    template <> struct EventSpec<Event::ModChannel> {
+        using Payload = EventModChannel;
+        static constexpr Hosts kHosts = Hosts::Both;
+        static constexpr bool kMethod = true;
+        static constexpr bool kCancellable = false;
+        static constexpr bool kHot = false;
+        static constexpr uint32_t kSince = 3;
+        static constexpr std::string_view kName = "ModChannel";
+    };
+    template <> struct EventSpec<Event::ContentAnnounced> {
+        using Payload = EventContentAnnounced;
+        static constexpr Hosts kHosts = Hosts::Client;
+        static constexpr bool kMethod = true;
+        static constexpr bool kCancellable = false;
+        static constexpr bool kHot = false;
+        static constexpr uint32_t kSince = 3;
+        static constexpr std::string_view kName = "ContentAnnounced";
+    };
 
     template <Event E> using payload_t = typename EventSpec<E>::Payload;
 
@@ -3787,6 +3894,13 @@ namespace perlin::abi {
         case Op::LootTableOverride: return OpSpec<Op::LootTableOverride>::kPermission;
         case Op::LootTableGet: return OpSpec<Op::LootTableGet>::kPermission;
         case Op::EventAmend: return OpSpec<Op::EventAmend>::kPermission;
+        case Op::ContentEntityRegister: return OpSpec<Op::ContentEntityRegister>::kPermission;
+        case Op::ContentItemRegister: return OpSpec<Op::ContentItemRegister>::kPermission;
+        case Op::ContentBlockRegister: return OpSpec<Op::ContentBlockRegister>::kPermission;
+        case Op::ContentBiomeRegister: return OpSpec<Op::ContentBiomeRegister>::kPermission;
+        case Op::ContentUnregister: return OpSpec<Op::ContentUnregister>::kPermission;
+        case Op::ContentList: return OpSpec<Op::ContentList>::kPermission;
+        case Op::ModChannelSend: return OpSpec<Op::ModChannelSend>::kPermission;
         }
         return 0;
     }
@@ -4043,6 +4157,13 @@ namespace perlin::abi {
         case Op::LootTableOverride: return Hosts::Server;
         case Op::LootTableGet: return Hosts::Server;
         case Op::EventAmend: return Hosts::Server;
+        case Op::ContentEntityRegister: return Hosts::Server;
+        case Op::ContentItemRegister: return Hosts::Server;
+        case Op::ContentBlockRegister: return Hosts::Server;
+        case Op::ContentBiomeRegister: return Hosts::Server;
+        case Op::ContentUnregister: return Hosts::Server;
+        case Op::ContentList: return Hosts::Both;
+        case Op::ModChannelSend: return Hosts::Both;
         }
         return Hosts::Both;
     }
@@ -4125,6 +4246,9 @@ namespace perlin::abi {
         case Event::MicData: return Hosts::Client;
         case Event::GpuReadback: return Hosts::Client;
         case Event::GpuReset: return Hosts::Client;
+        case Event::ChunkGenerated: return Hosts::Server;
+        case Event::ModChannel: return Hosts::Both;
+        case Event::ContentAnnounced: return Hosts::Client;
         }
         return Hosts::Both;
     }
@@ -4381,6 +4505,13 @@ namespace perlin::abi {
         case Op::LootTableOverride: return "LootTableOverride";
         case Op::LootTableGet: return "LootTableGet";
         case Op::EventAmend: return "EventAmend";
+        case Op::ContentEntityRegister: return "ContentEntityRegister";
+        case Op::ContentItemRegister: return "ContentItemRegister";
+        case Op::ContentBlockRegister: return "ContentBlockRegister";
+        case Op::ContentBiomeRegister: return "ContentBiomeRegister";
+        case Op::ContentUnregister: return "ContentUnregister";
+        case Op::ContentList: return "ContentList";
+        case Op::ModChannelSend: return "ModChannelSend";
         }
         return "?";
     }
@@ -4463,6 +4594,9 @@ namespace perlin::abi {
         case Event::MicData: return "MicData";
         case Event::GpuReadback: return "GpuReadback";
         case Event::GpuReset: return "GpuReset";
+        case Event::ChunkGenerated: return "ChunkGenerated";
+        case Event::ModChannel: return "ModChannel";
+        case Event::ContentAnnounced: return "ContentAnnounced";
         }
         return "?";
     }
@@ -4545,6 +4679,9 @@ namespace perlin::abi {
         case Event::MicData: return "mic_data";
         case Event::GpuReadback: return "gpu_readback";
         case Event::GpuReset: return "gpu_reset";
+        case Event::ChunkGenerated: return "chunk_generated";
+        case Event::ModChannel: return "mod_channel";
+        case Event::ContentAnnounced: return "content_announced";
         }
         return {};
     }
@@ -4801,6 +4938,13 @@ namespace perlin::abi {
         case Op::LootTableOverride: return "loot_table_override";
         case Op::LootTableGet: return "loot_table_get";
         case Op::EventAmend: return "event_amend";
+        case Op::ContentEntityRegister: return "content_entity_register";
+        case Op::ContentItemRegister: return "content_item_register";
+        case Op::ContentBlockRegister: return "content_block_register";
+        case Op::ContentBiomeRegister: return "content_biome_register";
+        case Op::ContentUnregister: return "content_unregister";
+        case Op::ContentList: return "content_list";
+        case Op::ModChannelSend: return "mod_channel_send";
         }
         return {};
     }
@@ -4883,11 +5027,14 @@ namespace perlin::abi {
         case Event::MicData: return false;
         case Event::GpuReadback: return false;
         case Event::GpuReset: return false;
+        case Event::ChunkGenerated: return false;
+        case Event::ModChannel: return false;
+        case Event::ContentAnnounced: return false;
         }
         return false;
     }
 
-    inline constexpr std::array<Op, 250> kAllOps = {
+    inline constexpr std::array<Op, 257> kAllOps = {
         Op::Log,
         Op::Meta,
         Op::Clock,
@@ -5138,8 +5285,15 @@ namespace perlin::abi {
         Op::LootTableOverride,
         Op::LootTableGet,
         Op::EventAmend,
+        Op::ContentEntityRegister,
+        Op::ContentItemRegister,
+        Op::ContentBlockRegister,
+        Op::ContentBiomeRegister,
+        Op::ContentUnregister,
+        Op::ContentList,
+        Op::ModChannelSend,
     };
-    inline constexpr std::array<Event, 76> kAllEvents = {
+    inline constexpr std::array<Event, 79> kAllEvents = {
         Event::Load,
         Event::Unload,
         Event::Tick,
@@ -5216,5 +5370,8 @@ namespace perlin::abi {
         Event::MicData,
         Event::GpuReadback,
         Event::GpuReset,
+        Event::ChunkGenerated,
+        Event::ModChannel,
+        Event::ContentAnnounced,
     };
 }

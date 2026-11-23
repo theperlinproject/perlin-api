@@ -165,9 +165,9 @@ static inline int32_t perlin_invoke(uint32_t op, const perlin_writer* request, p
     return -6;
 }
 
-#define PERLIN_SCHEMA_VERSION 2
+#define PERLIN_SCHEMA_VERSION 3
 #define PERLIN_API_VERSION (1u)
-#define PERLIN_API_REVISION (2u)
+#define PERLIN_API_REVISION (3u)
 #define PERLIN_API_OLDEST_REVISION (1u)
 #define PERLIN_NEED_MORE_BASE (16)
 #define PERLIN_EVENT_CANCEL (1u)
@@ -1010,6 +1010,13 @@ enum PerlinOpId {
     PERLIN_OP_LOOT_TABLE_OVERRIDE = 0x7082,
     PERLIN_OP_LOOT_TABLE_GET = 0x7083,
     PERLIN_OP_EVENT_AMEND = 0x7084,
+    PERLIN_OP_CONTENT_ENTITY_REGISTER = 0x7100,
+    PERLIN_OP_CONTENT_ITEM_REGISTER = 0x7101,
+    PERLIN_OP_CONTENT_BLOCK_REGISTER = 0x7102,
+    PERLIN_OP_CONTENT_BIOME_REGISTER = 0x7103,
+    PERLIN_OP_CONTENT_UNREGISTER = 0x7104,
+    PERLIN_OP_CONTENT_LIST = 0x7105,
+    PERLIN_OP_MOD_CHANNEL_SEND = 0x7106,
 };
 enum PerlinEventId {
     PERLIN_EVENT_LOAD = 1,
@@ -1088,8 +1095,11 @@ enum PerlinEventId {
     PERLIN_EVENT_MIC_DATA = 74,
     PERLIN_EVENT_GPU_READBACK = 75,
     PERLIN_EVENT_GPU_RESET = 76,
+    PERLIN_EVENT_CHUNK_GENERATED = 77,
+    PERLIN_EVENT_MOD_CHANNEL = 78,
+    PERLIN_EVENT_CONTENT_ANNOUNCED = 79,
 };
-#define PERLIN_EVENT_COUNT 77
+#define PERLIN_EVENT_COUNT 80
 #define PERLIN_SUBSCRIPTION_WORDS 3
 #define PERLIN_SUBSCRIBE(words, event) ((words)[(event) / 32] |= (1u << ((event) % 32)))
 
@@ -1439,6 +1449,19 @@ typedef struct PerlinHandStateData PerlinHandStateData;
 typedef struct PerlinBlockRemapStateData PerlinBlockRemapStateData;
 typedef struct PerlinBlockRemapClearRequest PerlinBlockRemapClearRequest;
 typedef struct PerlinEntityBonePoseClearRequest PerlinEntityBonePoseClearRequest;
+typedef struct PerlinContentDrop PerlinContentDrop;
+typedef struct PerlinContentSpawn PerlinContentSpawn;
+typedef struct PerlinContentEntity PerlinContentEntity;
+typedef struct PerlinContentItem PerlinContentItem;
+typedef struct PerlinContentBlock PerlinContentBlock;
+typedef struct PerlinContentBiome PerlinContentBiome;
+typedef struct PerlinContentEntry PerlinContentEntry;
+typedef struct PerlinModChannelMessage PerlinModChannelMessage;
+typedef struct PerlinEventChunkGenerated PerlinEventChunkGenerated;
+typedef struct PerlinEventModChannel PerlinEventModChannel;
+typedef struct PerlinContentUnregisterRequest PerlinContentUnregisterRequest;
+typedef struct PerlinContentListResponse PerlinContentListResponse;
+typedef struct PerlinEventContentAnnounced PerlinEventContentAnnounced;
 
 typedef struct PerlinPair_I32_I32 { int32_t first; int32_t second; } PerlinPair_I32_I32;
 typedef struct PerlinList_Pair_I32_I32 { PerlinPair_I32_I32* data; uint32_t len; } PerlinList_Pair_I32_I32;
@@ -1482,6 +1505,9 @@ typedef struct PerlinList_FormControl { PerlinFormControl* data; uint32_t len; }
 typedef struct PerlinList_ServerEntity { PerlinServerEntity* data; uint32_t len; } PerlinList_ServerEntity;
 typedef struct PerlinList_BlockRemapRule { PerlinBlockRemapRule* data; uint32_t len; } PerlinList_BlockRemapRule;
 typedef struct PerlinList_BonePoseEntry { PerlinBonePoseEntry* data; uint32_t len; } PerlinList_BonePoseEntry;
+typedef struct PerlinList_ContentDrop { PerlinContentDrop* data; uint32_t len; } PerlinList_ContentDrop;
+typedef struct PerlinList_ContentSpawn { PerlinContentSpawn* data; uint32_t len; } PerlinList_ContentSpawn;
+typedef struct PerlinList_ContentEntry { PerlinContentEntry* data; uint32_t len; } PerlinList_ContentEntry;
 struct PerlinItem {
     perlin_str name;
     int32_t count;
@@ -3570,6 +3596,96 @@ struct PerlinBlockRemapClearRequest {
 struct PerlinEntityBonePoseClearRequest {
     uint64_t entity;
 };
+struct PerlinContentDrop {
+    perlin_str item;
+    uint32_t min;
+    uint32_t max;
+    float chance;
+};
+struct PerlinContentSpawn {
+    PerlinDimension dimension;
+    PerlinList_Str biomes;
+    uint32_t weight;
+    uint32_t minGroup;
+    uint32_t maxGroup;
+    uint8_t hostile;
+};
+struct PerlinContentEntity {
+    perlin_str id;
+    perlin_str base;
+    float health;
+    float width;
+    float height;
+    float speed;
+    float attack;
+    PerlinList_ContentDrop drops;
+    PerlinList_ContentSpawn spawns;
+    perlin_str clientBase;
+};
+struct PerlinContentItem {
+    perlin_str id;
+    perlin_str base;
+    perlin_str displayName;
+    perlin_str icon;
+    uint32_t maxStack;
+    uint32_t durability;
+    float attack;
+    int32_t food;
+    float saturation;
+};
+struct PerlinContentBlock {
+    perlin_str id;
+    perlin_str base;
+    float hardness;
+    float blastResistance;
+    int32_t light;
+    PerlinList_ContentDrop drops;
+};
+struct PerlinContentBiome {
+    perlin_str id;
+    perlin_str base;
+    PerlinList_Str replaces;
+    float share;
+    perlin_str surface;
+    perlin_str filler;
+    uint32_t grassColor;
+    uint32_t foliageColor;
+    uint32_t waterColor;
+    uint32_t fogColor;
+    uint32_t skyColor;
+    PerlinList_ContentSpawn spawns;
+};
+struct PerlinContentEntry {
+    perlin_str kind;
+    perlin_str id;
+    perlin_str owner;
+    perlin_str json;
+};
+struct PerlinModChannelMessage {
+    uint64_t player;
+    perlin_str channel;
+    perlin_bytes body;
+};
+struct PerlinEventChunkGenerated {
+    PerlinDimension dimension;
+    int32_t x;
+    int32_t z;
+};
+struct PerlinEventModChannel {
+    uint64_t player;
+    perlin_str channel;
+    perlin_bytes body;
+};
+struct PerlinContentUnregisterRequest {
+    perlin_str kind;
+    perlin_str id;
+};
+struct PerlinContentListResponse {
+    PerlinList_ContentEntry entries;
+};
+struct PerlinEventContentAnnounced {
+    uint32_t count;
+};
 
 static inline void perlin_write_Item(perlin_writer* w, const PerlinItem* v);
 static inline void perlin_read_Item(perlin_reader* r, PerlinItem* v, perlin_arena* a);
@@ -4263,6 +4379,32 @@ static inline void perlin_write_BlockRemapClearRequest(perlin_writer* w, const P
 static inline void perlin_read_BlockRemapClearRequest(perlin_reader* r, PerlinBlockRemapClearRequest* v, perlin_arena* a);
 static inline void perlin_write_EntityBonePoseClearRequest(perlin_writer* w, const PerlinEntityBonePoseClearRequest* v);
 static inline void perlin_read_EntityBonePoseClearRequest(perlin_reader* r, PerlinEntityBonePoseClearRequest* v, perlin_arena* a);
+static inline void perlin_write_ContentDrop(perlin_writer* w, const PerlinContentDrop* v);
+static inline void perlin_read_ContentDrop(perlin_reader* r, PerlinContentDrop* v, perlin_arena* a);
+static inline void perlin_write_ContentSpawn(perlin_writer* w, const PerlinContentSpawn* v);
+static inline void perlin_read_ContentSpawn(perlin_reader* r, PerlinContentSpawn* v, perlin_arena* a);
+static inline void perlin_write_ContentEntity(perlin_writer* w, const PerlinContentEntity* v);
+static inline void perlin_read_ContentEntity(perlin_reader* r, PerlinContentEntity* v, perlin_arena* a);
+static inline void perlin_write_ContentItem(perlin_writer* w, const PerlinContentItem* v);
+static inline void perlin_read_ContentItem(perlin_reader* r, PerlinContentItem* v, perlin_arena* a);
+static inline void perlin_write_ContentBlock(perlin_writer* w, const PerlinContentBlock* v);
+static inline void perlin_read_ContentBlock(perlin_reader* r, PerlinContentBlock* v, perlin_arena* a);
+static inline void perlin_write_ContentBiome(perlin_writer* w, const PerlinContentBiome* v);
+static inline void perlin_read_ContentBiome(perlin_reader* r, PerlinContentBiome* v, perlin_arena* a);
+static inline void perlin_write_ContentEntry(perlin_writer* w, const PerlinContentEntry* v);
+static inline void perlin_read_ContentEntry(perlin_reader* r, PerlinContentEntry* v, perlin_arena* a);
+static inline void perlin_write_ModChannelMessage(perlin_writer* w, const PerlinModChannelMessage* v);
+static inline void perlin_read_ModChannelMessage(perlin_reader* r, PerlinModChannelMessage* v, perlin_arena* a);
+static inline void perlin_write_EventChunkGenerated(perlin_writer* w, const PerlinEventChunkGenerated* v);
+static inline void perlin_read_EventChunkGenerated(perlin_reader* r, PerlinEventChunkGenerated* v, perlin_arena* a);
+static inline void perlin_write_EventModChannel(perlin_writer* w, const PerlinEventModChannel* v);
+static inline void perlin_read_EventModChannel(perlin_reader* r, PerlinEventModChannel* v, perlin_arena* a);
+static inline void perlin_write_ContentUnregisterRequest(perlin_writer* w, const PerlinContentUnregisterRequest* v);
+static inline void perlin_read_ContentUnregisterRequest(perlin_reader* r, PerlinContentUnregisterRequest* v, perlin_arena* a);
+static inline void perlin_write_ContentListResponse(perlin_writer* w, const PerlinContentListResponse* v);
+static inline void perlin_read_ContentListResponse(perlin_reader* r, PerlinContentListResponse* v, perlin_arena* a);
+static inline void perlin_write_EventContentAnnounced(perlin_writer* w, const PerlinEventContentAnnounced* v);
+static inline void perlin_read_EventContentAnnounced(perlin_reader* r, PerlinEventContentAnnounced* v, perlin_arena* a);
 static inline void perlin_write_Pair_I32_I32(perlin_writer* w, const PerlinPair_I32_I32* v);
 static inline void perlin_read_Pair_I32_I32(perlin_reader* r, PerlinPair_I32_I32* v, perlin_arena* a);
 static inline void perlin_write_List_Pair_I32_I32(perlin_writer* w, const PerlinList_Pair_I32_I32* v);
@@ -4347,6 +4489,12 @@ static inline void perlin_write_List_BlockRemapRule(perlin_writer* w, const Perl
 static inline void perlin_read_List_BlockRemapRule(perlin_reader* r, PerlinList_BlockRemapRule* v, perlin_arena* a);
 static inline void perlin_write_List_BonePoseEntry(perlin_writer* w, const PerlinList_BonePoseEntry* v);
 static inline void perlin_read_List_BonePoseEntry(perlin_reader* r, PerlinList_BonePoseEntry* v, perlin_arena* a);
+static inline void perlin_write_List_ContentDrop(perlin_writer* w, const PerlinList_ContentDrop* v);
+static inline void perlin_read_List_ContentDrop(perlin_reader* r, PerlinList_ContentDrop* v, perlin_arena* a);
+static inline void perlin_write_List_ContentSpawn(perlin_writer* w, const PerlinList_ContentSpawn* v);
+static inline void perlin_read_List_ContentSpawn(perlin_reader* r, PerlinList_ContentSpawn* v, perlin_arena* a);
+static inline void perlin_write_List_ContentEntry(perlin_writer* w, const PerlinList_ContentEntry* v);
+static inline void perlin_read_List_ContentEntry(perlin_reader* r, PerlinList_ContentEntry* v, perlin_arena* a);
 
 static inline void perlin_write_Item(perlin_writer* w, const PerlinItem* v) {
     (void)w;
@@ -10272,6 +10420,251 @@ static inline void perlin_read_EntityBonePoseClearRequest(perlin_reader* r, Perl
     __builtin_memset(v, 0, sizeof *v);
     v->entity = (uint64_t)perlin_r_u64(r);
 }
+static inline void perlin_write_ContentDrop(perlin_writer* w, const PerlinContentDrop* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->item);
+    perlin_w_u32(w, (uint32_t)(v->min));
+    perlin_w_u32(w, (uint32_t)(v->max));
+    perlin_w_f32(w, (float)(v->chance));
+}
+static inline void perlin_read_ContentDrop(perlin_reader* r, PerlinContentDrop* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->item = perlin_r_str(r);
+    v->min = (uint32_t)perlin_r_u32(r);
+    v->max = (uint32_t)perlin_r_u32(r);
+    v->chance = (float)perlin_r_f32(r);
+}
+static inline void perlin_write_ContentSpawn(perlin_writer* w, const PerlinContentSpawn* v) {
+    (void)w;
+    (void)v;
+    perlin_w_i32(w, (int32_t)(v->dimension));
+    perlin_write_List_Str(w, &v->biomes);
+    perlin_w_u32(w, (uint32_t)(v->weight));
+    perlin_w_u32(w, (uint32_t)(v->minGroup));
+    perlin_w_u32(w, (uint32_t)(v->maxGroup));
+    perlin_w_u8(w, (uint8_t)(v->hostile));
+}
+static inline void perlin_read_ContentSpawn(perlin_reader* r, PerlinContentSpawn* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->dimension = (PerlinDimension)perlin_r_i32(r);
+    perlin_read_List_Str(r, &v->biomes, a);
+    v->weight = (uint32_t)perlin_r_u32(r);
+    v->minGroup = (uint32_t)perlin_r_u32(r);
+    v->maxGroup = (uint32_t)perlin_r_u32(r);
+    v->hostile = (uint8_t)perlin_r_u8(r);
+}
+static inline void perlin_write_ContentEntity(perlin_writer* w, const PerlinContentEntity* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+    perlin_w_str(w, v->base);
+    perlin_w_f32(w, (float)(v->health));
+    perlin_w_f32(w, (float)(v->width));
+    perlin_w_f32(w, (float)(v->height));
+    perlin_w_f32(w, (float)(v->speed));
+    perlin_w_f32(w, (float)(v->attack));
+    perlin_write_List_ContentDrop(w, &v->drops);
+    perlin_write_List_ContentSpawn(w, &v->spawns);
+    perlin_w_str(w, v->clientBase);
+}
+static inline void perlin_read_ContentEntity(perlin_reader* r, PerlinContentEntity* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+    v->base = perlin_r_str(r);
+    v->health = (float)perlin_r_f32(r);
+    v->width = (float)perlin_r_f32(r);
+    v->height = (float)perlin_r_f32(r);
+    v->speed = (float)perlin_r_f32(r);
+    v->attack = (float)perlin_r_f32(r);
+    perlin_read_List_ContentDrop(r, &v->drops, a);
+    perlin_read_List_ContentSpawn(r, &v->spawns, a);
+    v->clientBase = perlin_r_str(r);
+}
+static inline void perlin_write_ContentItem(perlin_writer* w, const PerlinContentItem* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+    perlin_w_str(w, v->base);
+    perlin_w_str(w, v->displayName);
+    perlin_w_str(w, v->icon);
+    perlin_w_u32(w, (uint32_t)(v->maxStack));
+    perlin_w_u32(w, (uint32_t)(v->durability));
+    perlin_w_f32(w, (float)(v->attack));
+    perlin_w_i32(w, (int32_t)(v->food));
+    perlin_w_f32(w, (float)(v->saturation));
+}
+static inline void perlin_read_ContentItem(perlin_reader* r, PerlinContentItem* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+    v->base = perlin_r_str(r);
+    v->displayName = perlin_r_str(r);
+    v->icon = perlin_r_str(r);
+    v->maxStack = (uint32_t)perlin_r_u32(r);
+    v->durability = (uint32_t)perlin_r_u32(r);
+    v->attack = (float)perlin_r_f32(r);
+    v->food = (int32_t)perlin_r_i32(r);
+    v->saturation = (float)perlin_r_f32(r);
+}
+static inline void perlin_write_ContentBlock(perlin_writer* w, const PerlinContentBlock* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+    perlin_w_str(w, v->base);
+    perlin_w_f32(w, (float)(v->hardness));
+    perlin_w_f32(w, (float)(v->blastResistance));
+    perlin_w_i32(w, (int32_t)(v->light));
+    perlin_write_List_ContentDrop(w, &v->drops);
+}
+static inline void perlin_read_ContentBlock(perlin_reader* r, PerlinContentBlock* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+    v->base = perlin_r_str(r);
+    v->hardness = (float)perlin_r_f32(r);
+    v->blastResistance = (float)perlin_r_f32(r);
+    v->light = (int32_t)perlin_r_i32(r);
+    perlin_read_List_ContentDrop(r, &v->drops, a);
+}
+static inline void perlin_write_ContentBiome(perlin_writer* w, const PerlinContentBiome* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->id);
+    perlin_w_str(w, v->base);
+    perlin_write_List_Str(w, &v->replaces);
+    perlin_w_f32(w, (float)(v->share));
+    perlin_w_str(w, v->surface);
+    perlin_w_str(w, v->filler);
+    perlin_w_u32(w, (uint32_t)(v->grassColor));
+    perlin_w_u32(w, (uint32_t)(v->foliageColor));
+    perlin_w_u32(w, (uint32_t)(v->waterColor));
+    perlin_w_u32(w, (uint32_t)(v->fogColor));
+    perlin_w_u32(w, (uint32_t)(v->skyColor));
+    perlin_write_List_ContentSpawn(w, &v->spawns);
+}
+static inline void perlin_read_ContentBiome(perlin_reader* r, PerlinContentBiome* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->id = perlin_r_str(r);
+    v->base = perlin_r_str(r);
+    perlin_read_List_Str(r, &v->replaces, a);
+    v->share = (float)perlin_r_f32(r);
+    v->surface = perlin_r_str(r);
+    v->filler = perlin_r_str(r);
+    v->grassColor = (uint32_t)perlin_r_u32(r);
+    v->foliageColor = (uint32_t)perlin_r_u32(r);
+    v->waterColor = (uint32_t)perlin_r_u32(r);
+    v->fogColor = (uint32_t)perlin_r_u32(r);
+    v->skyColor = (uint32_t)perlin_r_u32(r);
+    perlin_read_List_ContentSpawn(r, &v->spawns, a);
+}
+static inline void perlin_write_ContentEntry(perlin_writer* w, const PerlinContentEntry* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->kind);
+    perlin_w_str(w, v->id);
+    perlin_w_str(w, v->owner);
+    perlin_w_str(w, v->json);
+}
+static inline void perlin_read_ContentEntry(perlin_reader* r, PerlinContentEntry* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->kind = perlin_r_str(r);
+    v->id = perlin_r_str(r);
+    v->owner = perlin_r_str(r);
+    v->json = perlin_r_str(r);
+}
+static inline void perlin_write_ModChannelMessage(perlin_writer* w, const PerlinModChannelMessage* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u64(w, (uint64_t)(v->player));
+    perlin_w_str(w, v->channel);
+    perlin_w_bytes(w, v->body);
+}
+static inline void perlin_read_ModChannelMessage(perlin_reader* r, PerlinModChannelMessage* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->player = (uint64_t)perlin_r_u64(r);
+    v->channel = perlin_r_str(r);
+    v->body = perlin_r_bytes(r);
+}
+static inline void perlin_write_EventChunkGenerated(perlin_writer* w, const PerlinEventChunkGenerated* v) {
+    (void)w;
+    (void)v;
+    perlin_w_i32(w, (int32_t)(v->dimension));
+    perlin_w_i32(w, (int32_t)(v->x));
+    perlin_w_i32(w, (int32_t)(v->z));
+}
+static inline void perlin_read_EventChunkGenerated(perlin_reader* r, PerlinEventChunkGenerated* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->dimension = (PerlinDimension)perlin_r_i32(r);
+    v->x = (int32_t)perlin_r_i32(r);
+    v->z = (int32_t)perlin_r_i32(r);
+}
+static inline void perlin_write_EventModChannel(perlin_writer* w, const PerlinEventModChannel* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u64(w, (uint64_t)(v->player));
+    perlin_w_str(w, v->channel);
+    perlin_w_bytes(w, v->body);
+}
+static inline void perlin_read_EventModChannel(perlin_reader* r, PerlinEventModChannel* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->player = (uint64_t)perlin_r_u64(r);
+    v->channel = perlin_r_str(r);
+    v->body = perlin_r_bytes(r);
+}
+static inline void perlin_write_ContentUnregisterRequest(perlin_writer* w, const PerlinContentUnregisterRequest* v) {
+    (void)w;
+    (void)v;
+    perlin_w_str(w, v->kind);
+    perlin_w_str(w, v->id);
+}
+static inline void perlin_read_ContentUnregisterRequest(perlin_reader* r, PerlinContentUnregisterRequest* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->kind = perlin_r_str(r);
+    v->id = perlin_r_str(r);
+}
+static inline void perlin_write_ContentListResponse(perlin_writer* w, const PerlinContentListResponse* v) {
+    (void)w;
+    (void)v;
+    perlin_write_List_ContentEntry(w, &v->entries);
+}
+static inline void perlin_read_ContentListResponse(perlin_reader* r, PerlinContentListResponse* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    perlin_read_List_ContentEntry(r, &v->entries, a);
+}
+static inline void perlin_write_EventContentAnnounced(perlin_writer* w, const PerlinEventContentAnnounced* v) {
+    (void)w;
+    (void)v;
+    perlin_w_u32(w, (uint32_t)(v->count));
+}
+static inline void perlin_read_EventContentAnnounced(perlin_reader* r, PerlinEventContentAnnounced* v, perlin_arena* a) {
+    (void)r;
+    (void)a;
+    __builtin_memset(v, 0, sizeof *v);
+    v->count = (uint32_t)perlin_r_u32(r);
+}
 static inline void perlin_write_Pair_I32_I32(perlin_writer* w, const PerlinPair_I32_I32* v) {
     perlin_w_i32(w, (int32_t)(v->first));
     perlin_w_i32(w, (int32_t)(v->second));
@@ -10952,6 +11345,57 @@ static inline void perlin_read_List_BonePoseEntry(perlin_reader* r, PerlinList_B
     if (!v->data) { r->failed = 1; v->len = 0; return; }
     for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
         perlin_read_BonePoseEntry(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_ContentDrop(perlin_writer* w, const PerlinList_ContentDrop* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_ContentDrop(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_ContentDrop(perlin_reader* r, PerlinList_ContentDrop* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinContentDrop*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_ContentDrop(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_ContentSpawn(perlin_writer* w, const PerlinList_ContentSpawn* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_ContentSpawn(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_ContentSpawn(perlin_reader* r, PerlinList_ContentSpawn* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinContentSpawn*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_ContentSpawn(r, &v->data[k_], a);
+    }
+}
+static inline void perlin_write_List_ContentEntry(perlin_writer* w, const PerlinList_ContentEntry* v) {
+    perlin_w_u32(w, v->len);
+    for (uint32_t k_ = 0; k_ < v->len; k_++) {
+        perlin_write_ContentEntry(w, &v->data[k_]);
+    }
+}
+static inline void perlin_read_List_ContentEntry(perlin_reader* r, PerlinList_ContentEntry* v, perlin_arena* a) {
+    v->len = perlin_r_u32(r);
+    v->data = NULL;
+    if (r->failed || v->len == 0) { v->len = 0; return; }
+    if ((size_t)v->len > (size_t)(r->end - r->p)) { r->failed = 1; v->len = 0; return; }
+    v->data = (PerlinContentEntry*)perlin_arena_alloc(a, sizeof(*v->data) * v->len);
+    if (!v->data) { r->failed = 1; v->len = 0; return; }
+    for (uint32_t k_ = 0; k_ < v->len && !r->failed; k_++) {
+        perlin_read_ContentEntry(r, &v->data[k_], a);
     }
 }
 
@@ -14005,6 +14449,92 @@ static inline int32_t perlin_event_amend(const PerlinEventAmendRequest* in, perl
     if (rc_ < 0) return rc_;
     return 0;
 }
+static inline int32_t perlin_content_entity_register(const PerlinContentEntity* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ContentEntity(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_ENTITY_REGISTER, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_content_item_register(const PerlinContentItem* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ContentItem(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_ITEM_REGISTER, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_content_block_register(const PerlinContentBlock* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ContentBlock(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_BLOCK_REGISTER, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_content_biome_register(const PerlinContentBiome* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ContentBiome(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_BIOME_REGISTER, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_content_unregister(const PerlinContentUnregisterRequest* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ContentUnregisterRequest(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_UNREGISTER, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
+static inline int32_t perlin_content_list(PerlinContentListResponse* out, perlin_arena* a) {
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_CONTENT_LIST, NULL, &rb_, a);
+    if (rc_ < 0) return rc_;
+    perlin_reader* r = &rb_;
+    perlin_read_ContentListResponse(r, &(*out), a);
+    return rb_.failed ? -6 : 0;
+}
+static inline int32_t perlin_mod_channel_send(const PerlinModChannelMessage* in, perlin_arena* a) {
+    size_t mark_ = a->used;
+    uint32_t room_ = (uint32_t)(a->cap > a->used + 8 ? (a->cap - a->used - 8) / 2 : 0);
+    perlin_writer wb_ = perlin_writer_make(perlin_arena_alloc(a, room_), room_);
+    perlin_writer* w = &wb_;
+    perlin_write_ModChannelMessage(w, &(*in));
+    if (!wb_.data || wb_.overflow) { a->used = mark_; return -3; }
+    a->used = mark_ + ((size_t)(wb_.data - (a->base + mark_))) + wb_.len;
+    perlin_reader rb_;
+    int32_t rc_ = perlin_invoke(PERLIN_OP_MOD_CHANNEL_SEND, &wb_, &rb_, a);
+    if (rc_ < 0) return rc_;
+    return 0;
+}
 
 static inline int perlin_decode_event_tick(const void* data, uint32_t len, PerlinEventTick* out, perlin_arena* a) {
     perlin_reader rb_ = perlin_reader_make(data, len);
@@ -14349,6 +14879,21 @@ static inline int perlin_decode_event_gpu_readback(const void* data, uint32_t le
 static inline int perlin_decode_event_gpu_reset(const void* data, uint32_t len, PerlinEventGpuReset* out, perlin_arena* a) {
     perlin_reader rb_ = perlin_reader_make(data, len);
     perlin_read_EventGpuReset(&rb_, out, a);
+    return rb_.failed ? -3 : 0;
+}
+static inline int perlin_decode_event_chunk_generated(const void* data, uint32_t len, PerlinEventChunkGenerated* out, perlin_arena* a) {
+    perlin_reader rb_ = perlin_reader_make(data, len);
+    perlin_read_EventChunkGenerated(&rb_, out, a);
+    return rb_.failed ? -3 : 0;
+}
+static inline int perlin_decode_event_mod_channel(const void* data, uint32_t len, PerlinEventModChannel* out, perlin_arena* a) {
+    perlin_reader rb_ = perlin_reader_make(data, len);
+    perlin_read_EventModChannel(&rb_, out, a);
+    return rb_.failed ? -3 : 0;
+}
+static inline int perlin_decode_event_content_announced(const void* data, uint32_t len, PerlinEventContentAnnounced* out, perlin_arena* a) {
+    perlin_reader rb_ = perlin_reader_make(data, len);
+    perlin_read_EventContentAnnounced(&rb_, out, a);
     return rb_.failed ? -3 : 0;
 }
 

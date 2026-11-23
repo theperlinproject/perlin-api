@@ -77,4 +77,7 @@ namespace perlin::event {
     using MicData = EventTag<abi::Event::MicData>;
     using GpuReadback = EventTag<abi::Event::GpuReadback>;
     using GpuReset = EventTag<abi::Event::GpuReset>;
+    using ChunkGenerated = EventTag<abi::Event::ChunkGenerated>;
+    using ModChannel = EventTag<abi::Event::ModChannel>;
+    using ContentAnnounced = EventTag<abi::Event::ContentAnnounced>;
 }

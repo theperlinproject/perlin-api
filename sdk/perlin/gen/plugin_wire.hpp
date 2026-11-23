@@ -289,4 +289,16 @@ template <class T> void wire_events(T& self, Context& ctx) {
         ctx.on<event::GpuReset>([&self](const typename event::GpuReset::Payload& p) { return self.onGpuReset(p); });
     else if constexpr (requires(T& t) { t.onGpuReset(); })
         ctx.on<event::GpuReset>([&self]() { return self.onGpuReset(); });
+    if constexpr (requires(T& t, const typename event::ChunkGenerated::Payload& p) { t.onChunkGenerated(p); })
+        ctx.on<event::ChunkGenerated>([&self](const typename event::ChunkGenerated::Payload& p) { return self.onChunkGenerated(p); });
+    else if constexpr (requires(T& t) { t.onChunkGenerated(); })
+        ctx.on<event::ChunkGenerated>([&self]() { return self.onChunkGenerated(); });
+    if constexpr (requires(T& t, const typename event::ModChannel::Payload& p) { t.onModChannel(p); })
+        ctx.on<event::ModChannel>([&self](const typename event::ModChannel::Payload& p) { return self.onModChannel(p); });
+    else if constexpr (requires(T& t) { t.onModChannel(); })
+        ctx.on<event::ModChannel>([&self]() { return self.onModChannel(); });
+    if constexpr (requires(T& t, const typename event::ContentAnnounced::Payload& p) { t.onContentAnnounced(p); })
+        ctx.on<event::ContentAnnounced>([&self](const typename event::ContentAnnounced::Payload& p) { return self.onContentAnnounced(p); });
+    else if constexpr (requires(T& t) { t.onContentAnnounced(); })
+        ctx.on<event::ContentAnnounced>([&self]() { return self.onContentAnnounced(); });
 }

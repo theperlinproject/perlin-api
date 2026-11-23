@@ -1,7 +1,7 @@
 #ifndef PERLIN_ABI_TABLE_H
 #define PERLIN_ABI_TABLE_H
 
-#define PERLIN_ABI_VERSION 2
+#define PERLIN_ABI_VERSION 3
 
 #define PERLIN_ABI_OPS(X) \
     X(Log, 0x0001, LogRequest, Nothing, None, Both) \
@@ -253,7 +253,14 @@
     X(MotdSet, 0x7081, MotdSetRequest, Nothing, Admin, Server) \
     X(LootTableOverride, 0x7082, LootTableOverrideRequest, Nothing, World, Server) \
     X(LootTableGet, 0x7083, LootTableGetRequest, RestText, None, Server) \
-    X(EventAmend, 0x7084, EventAmendRequest, Nothing, None, Server)
+    X(EventAmend, 0x7084, EventAmendRequest, Nothing, None, Server) \
+    X(ContentEntityRegister, 0x7100, ContentEntity, Nothing, World, Server) \
+    X(ContentItemRegister, 0x7101, ContentItem, Nothing, World, Server) \
+    X(ContentBlockRegister, 0x7102, ContentBlock, Nothing, World, Server) \
+    X(ContentBiomeRegister, 0x7103, ContentBiome, Nothing, World, Server) \
+    X(ContentUnregister, 0x7104, ContentUnregisterRequest, Nothing, World, Server) \
+    X(ContentList, 0x7105, Nothing, ContentListResponse, None, Both) \
+    X(ModChannelSend, 0x7106, ModChannelMessage, Nothing, None, Both)
 
 #define PERLIN_ABI_EVENTS(X) \
     X(Load, 1, EventNothing, Both, Internal) \
@@ -331,6 +338,9 @@
     X(SocketClose, 73, EventSocketClose, Both, Method) \
     X(MicData, 74, EventMicData, Client, Method) \
     X(GpuReadback, 75, EventGpuReadback, Client, Method) \
-    X(GpuReset, 76, EventGpuReset, Client, Method)
+    X(GpuReset, 76, EventGpuReset, Client, Method) \
+    X(ChunkGenerated, 77, EventChunkGenerated, Server, Method) \
+    X(ModChannel, 78, EventModChannel, Both, Method) \
+    X(ContentAnnounced, 79, EventContentAnnounced, Client, Method)
 
 #endif

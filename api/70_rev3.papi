@@ -1,0 +1,107 @@
+# Revision 3: content mods. A server mod adds entities, items, blocks and biomes the game simulates;
+# a client mod built for the same content draws them; the two talk over a mod channel that rides on
+# the game connection. See docs/content-mods.md.
+
+struct ContentDrop @since(3) {
+    item: string @doc("item name such as minecraft:bone or mymod:fang");
+    min: u32 = 1;
+    max: u32 = 1;
+    chance: f32 = 1 @doc("0 to 1");
+}
+
+struct ContentSpawn @since(3) @doc("Where a content entity spawns by itself, like the game's spawn rules") {
+    dimension: Dimension = Overworld;
+    biomes: list<string> @doc("biome names; empty spawns in every biome of the dimension");
+    weight: u32 = 10 @doc("relative to the vanilla spawn weights of the same group");
+    minGroup: u32 = 1;
+    maxGroup: u32 = 4;
+    hostile: bool = false @doc("spawns in the dark like monsters, otherwise on grass in the light like animals");
+}
+
+struct ContentEntity @since(3) @doc("An entity type of a mod. It borrows the body and behaviour of a vanilla entity and overrides what it sets") {
+    id: string @doc("namespaced, such as mymod:kangaroo; never minecraft:");
+    base: string @doc("vanilla entity it is simulated as: movement, AI, sounds, hitbox unless set");
+    health: f32 = 0 @doc("0 keeps the base's");
+    width: f32 = 0 @unit(blocks) @doc("0 keeps the base's");
+    height: f32 = 0 @unit(blocks);
+    speed: f32 = 0 @doc("movement speed attribute; 0 keeps the base's");
+    attack: f32 = 0 @doc("melee damage; 0 keeps the base's");
+    drops: list<ContentDrop> @doc("replaces the base's loot; empty keeps it");
+    spawns: list<ContentSpawn>;
+    clientBase: string @doc("what clients without the client mod are shown; empty shows the base");
+}
+
+struct ContentItem @since(3) @doc("An item of a mod, sent to clients as a data-driven item") {
+    id: string;
+    base: string @doc("vanilla item whose use it borrows (a sword, food, a block item)");
+    displayName: string;
+    icon: string @doc("texture name in the client's resource packs; the client mod or a pack supplies it");
+    maxStack: u32 = 0 @doc("0 keeps the base's");
+    durability: u32 = 0;
+    attack: f32 = 0;
+    food: i32 = 0 @doc("hunger points restored when eaten; 0 keeps the base's");
+    saturation: f32 = 0;
+}
+
+struct ContentBlock @since(3) @doc("A block of a mod. The world stores and simulates it as its base block with the overrides; the client mod draws it") {
+    id: string;
+    base: string @doc("vanilla block it is simulated as (shape, collision, light, behaviour)");
+    hardness: f32 = -1 @doc("-1 keeps the base's");
+    blastResistance: f32 = -1;
+    light: i32 = -1 @doc("0 to 15; -1 keeps the base's");
+    drops: list<ContentDrop> @doc("empty drops the block itself");
+}
+
+struct ContentBiome @since(3) @doc("A biome of a mod, placed in the world in part of the area of the biomes it replaces") {
+    id: string;
+    base: string @doc("vanilla biome it is generated and sent as (features, music, weather)");
+    replaces: list<string> @doc("vanilla biomes it takes area from");
+    share: f32 = 0.25 @doc("fraction of their area, in patches, 0 to 1");
+    surface: string @doc("top block; empty keeps the generated one");
+    filler: string @doc("the few blocks under the top; empty keeps them");
+    grassColor: u32 = 0 @doc("0xRRGGBB for the client mod; 0 keeps the base's");
+    foliageColor: u32 = 0;
+    waterColor: u32 = 0;
+    fogColor: u32 = 0;
+    skyColor: u32 = 0;
+    spawns: list<ContentSpawn> @doc("extra spawns in this biome");
+}
+
+struct ContentEntry @since(3) {
+    kind: string @doc("entity, item, block or biome");
+    id: string;
+    owner: string @doc("the mod that registered it");
+    json: string @doc("the registration, as JSON");
+}
+
+struct ModChannelMessage @since(3) {
+    player: u64 = 0 @doc("server: the player it goes to or came from; client: 0");
+    channel: string @max(64) @doc("namespaced, such as mymod:sync");
+    body: bytes @max(65536);
+}
+
+struct EventChunkGenerated @since(3) {
+    dimension: Dimension = Overworld;
+    x: i32 = 0 @doc("chunk coordinates");
+    z: i32 = 0;
+}
+
+struct EventModChannel @since(3) {
+    player: u64 = 0 @doc("server: who sent it; client: 0");
+    channel: string;
+    body: bytes;
+}
+
+op ContentEntityRegister = 0x7100 @since(3) @hosts(server) @permission(World) @category(content) ContentEntity;
+op ContentItemRegister = 0x7101 @since(3) @hosts(server) @permission(World) @category(content) ContentItem;
+op ContentBlockRegister = 0x7102 @since(3) @hosts(server) @permission(World) @category(content) ContentBlock;
+op ContentBiomeRegister = 0x7103 @since(3) @hosts(server) @permission(World) @category(content) ContentBiome;
+op ContentUnregister = 0x7104 @since(3) @hosts(server) @permission(World) @category(content) (kind: string, id: string);
+op ContentList = 0x7105 @since(3) @hosts(client, server) @category(content) -> (entries: list<ContentEntry>) @doc("server: everything registered; client: what the server announced");
+op ModChannelSend = 0x7106 @since(3) @hosts(client, server) @category(mods) ModChannelMessage @doc("to the client mods of a player (server) or to the server mods (client), over the game connection");
+
+event ChunkGenerated = 77 @since(3) @hosts(server) @category(world) EventChunkGenerated @doc("a new chunk is ready; blocks set now become part of it");
+event ModChannel = 78 @since(3) @hosts(client, server) @category(mods) EventModChannel;
+struct EventContentAnnounced @since(3) { count: u32 = 0 @doc("entries in ContentList"); }
+
+event ContentAnnounced = 79 @since(3) @hosts(client) @category(content) @doc("the server sent its content list; ContentList has it") EventContentAnnounced;

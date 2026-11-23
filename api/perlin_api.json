@@ -1,6 +1,6 @@
 {
  "api": "perlin",
- "version": 2,
+ "version": 3,
  "tags": [
   {
    "name": "doc",
@@ -174,8 +174,8 @@
    "type": "u32",
    "value": {
     "kind": "int",
-    "value": 2,
-    "text": "2"
+    "value": 3,
+    "text": "3"
    },
    "tags": [
     {
@@ -19152,6 +19152,1033 @@
      ]
     }
    ]
+  },
+  {
+   "name": "ContentDrop",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "item",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "item name such as minecraft:bone or mymod:fang"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "min",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "max",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "chance",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 to 1"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentSpawn",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "Where a content entity spawns by itself, like the game's spawn rules"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "dimension",
+     "type": "Dimension",
+     "default": {
+      "kind": "ident",
+      "value": "Overworld",
+      "text": "Overworld"
+     },
+     "tags": []
+    },
+    {
+     "name": "biomes",
+     "type": {
+      "generic": "list",
+      "args": [
+       "string"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "biome names; empty spawns in every biome of the dimension"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "weight",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 10,
+      "text": "10"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "relative to the vanilla spawn weights of the same group"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "minGroup",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 1,
+      "text": "1"
+     },
+     "tags": []
+    },
+    {
+     "name": "maxGroup",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 4,
+      "text": "4"
+     },
+     "tags": []
+    },
+    {
+     "name": "hostile",
+     "type": "bool",
+     "default": {
+      "kind": "bool",
+      "value": false,
+      "text": "false"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "spawns in the dark like monsters, otherwise on grass in the light like animals"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentEntity",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "An entity type of a mod. It borrows the body and behaviour of a vanilla entity and overrides what it sets"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "namespaced, such as mymod:kangaroo; never minecraft:"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "base",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vanilla entity it is simulated as: movement, AI, sounds, hitbox unless set"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "health",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "width",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "height",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "unit",
+       "args": [
+        "blocks"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "speed",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "movement speed attribute; 0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "attack",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "melee damage; 0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "drops",
+     "type": {
+      "generic": "list",
+      "args": [
+       "ContentDrop"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "replaces the base's loot; empty keeps it"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "spawns",
+     "type": {
+      "generic": "list",
+      "args": [
+       "ContentSpawn"
+      ]
+     },
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "clientBase",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "what clients without the client mod are shown; empty shows the base"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentItem",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "An item of a mod, sent to clients as a data-driven item"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "base",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vanilla item whose use it borrows (a sword, food, a block item)"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "displayName",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "icon",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "texture name in the client's resource packs; the client mod or a pack supplies it"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "maxStack",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "durability",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "attack",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "food",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "hunger points restored when eaten; 0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "saturation",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "ContentBlock",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "A block of a mod. The world stores and simulates it as its base block with the overrides; the client mod draws it"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "base",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vanilla block it is simulated as (shape, collision, light, behaviour)"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "hardness",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": -1,
+      "text": "-1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "-1 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "blastResistance",
+     "type": "f32",
+     "default": {
+      "kind": "int",
+      "value": -1,
+      "text": "-1"
+     },
+     "tags": []
+    },
+    {
+     "name": "light",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": -1,
+      "text": "-1"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0 to 15; -1 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "drops",
+     "type": {
+      "generic": "list",
+      "args": [
+       "ContentDrop"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "empty drops the block itself"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentBiome",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "A biome of a mod, placed in the world in part of the area of the biomes it replaces"
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "base",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vanilla biome it is generated and sent as (features, music, weather)"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "replaces",
+     "type": {
+      "generic": "list",
+      "args": [
+       "string"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "vanilla biomes it takes area from"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "share",
+     "type": "f32",
+     "default": {
+      "kind": "float",
+      "value": 0.25,
+      "text": "0.25"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "fraction of their area, in patches, 0 to 1"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "surface",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "top block; empty keeps the generated one"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "filler",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the few blocks under the top; empty keeps them"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "grassColor",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "0xRRGGBB for the client mod; 0 keeps the base's"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "foliageColor",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "waterColor",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "fogColor",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "skyColor",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    },
+    {
+     "name": "spawns",
+     "type": {
+      "generic": "list",
+      "args": [
+       "ContentSpawn"
+      ]
+     },
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "extra spawns in this biome"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentEntry",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "kind",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "entity, item, block or biome"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "owner",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the mod that registered it"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "json",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "the registration, as JSON"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ModChannelMessage",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "player",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "server: the player it goes to or came from; client: 0"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "channel",
+     "type": "string",
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        64
+       ]
+      },
+      {
+       "name": "doc",
+       "args": [
+        "namespaced, such as mymod:sync"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "body",
+     "type": "bytes",
+     "default": null,
+     "tags": [
+      {
+       "name": "max",
+       "args": [
+        65536
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "name": "EventChunkGenerated",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "dimension",
+     "type": "Dimension",
+     "default": {
+      "kind": "ident",
+      "value": "Overworld",
+      "text": "Overworld"
+     },
+     "tags": []
+    },
+    {
+     "name": "x",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "chunk coordinates"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "z",
+     "type": "i32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "EventModChannel",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "player",
+     "type": "u64",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "server: who sent it; client: 0"
+       ]
+      }
+     ]
+    },
+    {
+     "name": "channel",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "body",
+     "type": "bytes",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "ContentUnregisterRequest",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "kind",
+     "type": "string",
+     "default": null,
+     "tags": []
+    },
+    {
+     "name": "id",
+     "type": "string",
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "ContentListResponse",
+   "synthetic": true,
+   "tags": [],
+   "fields": [
+    {
+     "name": "entries",
+     "type": {
+      "generic": "list",
+      "args": [
+       "ContentEntry"
+      ]
+     },
+     "default": null,
+     "tags": []
+    }
+   ]
+  },
+  {
+   "name": "EventContentAnnounced",
+   "synthetic": false,
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    }
+   ],
+   "fields": [
+    {
+     "name": "count",
+     "type": "u32",
+     "default": {
+      "kind": "int",
+      "value": 0,
+      "text": "0"
+     },
+     "tags": [
+      {
+       "name": "doc",
+       "args": [
+        "entries in ContentList"
+       ]
+      }
+     ]
+    }
+   ]
   }
  ],
  "ops": [
@@ -26234,6 +27261,272 @@
      ]
     }
    ]
+  },
+  {
+   "name": "ContentEntityRegister",
+   "id": 28928,
+   "request": "ContentEntity",
+   "response": null,
+   "hosts": [
+    "server"
+   ],
+   "permissions": [
+    "World"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "World"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentItemRegister",
+   "id": 28929,
+   "request": "ContentItem",
+   "response": null,
+   "hosts": [
+    "server"
+   ],
+   "permissions": [
+    "World"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "World"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentBlockRegister",
+   "id": 28930,
+   "request": "ContentBlock",
+   "response": null,
+   "hosts": [
+    "server"
+   ],
+   "permissions": [
+    "World"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "World"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentBiomeRegister",
+   "id": 28931,
+   "request": "ContentBiome",
+   "response": null,
+   "hosts": [
+    "server"
+   ],
+   "permissions": [
+    "World"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "World"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentUnregister",
+   "id": 28932,
+   "request": "ContentUnregisterRequest",
+   "response": null,
+   "hosts": [
+    "server"
+   ],
+   "permissions": [
+    "World"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "permission",
+     "args": [
+      "World"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentList",
+   "id": 28933,
+   "request": null,
+   "response": "ContentListResponse",
+   "hosts": [
+    "client",
+    "server"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client",
+      "server"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "server: everything registered; client: what the server announced"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ModChannelSend",
+   "id": 28934,
+   "request": "ModChannelMessage",
+   "response": null,
+   "hosts": [
+    "client",
+    "server"
+   ],
+   "permissions": [],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client",
+      "server"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "mods"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "to the client mods of a player (server) or to the server mods (client), over the game connection"
+     ]
+    }
+   ]
   }
  ],
  "events": [
@@ -27677,6 +28970,104 @@
      "name": "doc",
      "args": [
       "the renderer was recreated; every pack, buffer, texture, sampler and pipeline id is void"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ChunkGenerated",
+   "id": 77,
+   "payload": "EventChunkGenerated",
+   "hosts": [
+    "server"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "server"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "world"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "a new chunk is ready; blocks set now become part of it"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ModChannel",
+   "id": 78,
+   "payload": "EventModChannel",
+   "hosts": [
+    "client",
+    "server"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client",
+      "server"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "mods"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "ContentAnnounced",
+   "id": 79,
+   "payload": "EventContentAnnounced",
+   "hosts": [
+    "client"
+   ],
+   "tags": [
+    {
+     "name": "since",
+     "args": [
+      3
+     ]
+    },
+    {
+     "name": "hosts",
+     "args": [
+      "client"
+     ]
+    },
+    {
+     "name": "category",
+     "args": [
+      "content"
+     ]
+    },
+    {
+     "name": "doc",
+     "args": [
+      "the server sent its content list; ContentList has it"
      ]
     }
    ]

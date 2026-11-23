@@ -87,6 +87,13 @@ namespace perlin::abi::host {
         virtual Result<void> OpLootTableOverride(Ctx&, const LootTableOverrideRequest&) { return std::unexpected(Status::Unavailable); }
         virtual Result<RestText> OpLootTableGet(Ctx&, const LootTableGetRequest&) { return std::unexpected(Status::Unavailable); }
         virtual Result<void> OpEventAmend(Ctx&, const EventAmendRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpContentEntityRegister(Ctx&, const ContentEntity&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpContentItemRegister(Ctx&, const ContentItem&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpContentBlockRegister(Ctx&, const ContentBlock&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpContentBiomeRegister(Ctx&, const ContentBiome&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpContentUnregister(Ctx&, const ContentUnregisterRequest&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<ContentListResponse> OpContentList(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpModChannelSend(Ctx&, const ModChannelMessage&) { return std::unexpected(Status::Unavailable); }
 
         void Bind(OpTable<Ctx>& table) {
             table.template Handle<Op::Log>([this](Ctx& c, const LogRequest& r) { return OpLog(c, r); });
@@ -170,6 +177,13 @@ namespace perlin::abi::host {
             table.template Handle<Op::LootTableOverride>([this](Ctx& c, const LootTableOverrideRequest& r) { return OpLootTableOverride(c, r); });
             table.template Handle<Op::LootTableGet>([this](Ctx& c, const LootTableGetRequest& r) { return OpLootTableGet(c, r); });
             table.template Handle<Op::EventAmend>([this](Ctx& c, const EventAmendRequest& r) { return OpEventAmend(c, r); });
+            table.template Handle<Op::ContentEntityRegister>([this](Ctx& c, const ContentEntity& r) { return OpContentEntityRegister(c, r); });
+            table.template Handle<Op::ContentItemRegister>([this](Ctx& c, const ContentItem& r) { return OpContentItemRegister(c, r); });
+            table.template Handle<Op::ContentBlockRegister>([this](Ctx& c, const ContentBlock& r) { return OpContentBlockRegister(c, r); });
+            table.template Handle<Op::ContentBiomeRegister>([this](Ctx& c, const ContentBiome& r) { return OpContentBiomeRegister(c, r); });
+            table.template Handle<Op::ContentUnregister>([this](Ctx& c, const ContentUnregisterRequest& r) { return OpContentUnregister(c, r); });
+            table.template Handle<Op::ContentList>([this](Ctx& c) { return OpContentList(c); });
+            table.template Handle<Op::ModChannelSend>([this](Ctx& c, const ModChannelMessage& r) { return OpModChannelSend(c, r); });
         }
     };
 }

@@ -196,6 +196,8 @@ namespace perlin::abi::host {
         virtual Result<void> OpEntityBonePoseClear(Ctx&, const EntityBonePoseClearRequest&) { return std::unexpected(Status::Unavailable); }
         virtual Result<void> OpAnimationStyleSet(Ctx&, const AnimationStyleData&) { return std::unexpected(Status::Unavailable); }
         virtual Result<HandStateData> OpHandState(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<ContentListResponse> OpContentList(Ctx&) { return std::unexpected(Status::Unavailable); }
+        virtual Result<void> OpModChannelSend(Ctx&, const ModChannelMessage&) { return std::unexpected(Status::Unavailable); }
 
         void Bind(OpTable<Ctx>& table) {
             table.template Handle<Op::Log>([this](Ctx& c, const LogRequest& r) { return OpLog(c, r); });
@@ -388,6 +390,8 @@ namespace perlin::abi::host {
             table.template Handle<Op::EntityBonePoseClear>([this](Ctx& c, const EntityBonePoseClearRequest& r) { return OpEntityBonePoseClear(c, r); });
             table.template Handle<Op::AnimationStyleSet>([this](Ctx& c, const AnimationStyleData& r) { return OpAnimationStyleSet(c, r); });
             table.template Handle<Op::HandState>([this](Ctx& c) { return OpHandState(c); });
+            table.template Handle<Op::ContentList>([this](Ctx& c) { return OpContentList(c); });
+            table.template Handle<Op::ModChannelSend>([this](Ctx& c, const ModChannelMessage& r) { return OpModChannelSend(c, r); });
         }
     };
 }

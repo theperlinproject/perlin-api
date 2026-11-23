@@ -11,11 +11,23 @@
   "version": "1.0.0",
   "author": "You",
   "website": "https://example.com",
+  "target": ["client"],
   "permissions": ["network", "files", "packets", "control", "native", "sockets", "microphone", "clipboard", "window", "gpu"]
 }
 ```
 
 `name.png` is the icon in the Mods screen.
+
+### Target
+
+`target` says which programs the mod is for: `["client"]` (the game), `["server"]` (a server such as Perlite) or
+`["client", "server"]` (one `.wasm` that runs on both, checking `game::meta()` for where it is). A host refuses to load a
+mod whose target does not name it, and says so in its log and Mods screen, so a server mod dropped into the game's mods
+folder (or a client mod into a server's) never runs half-working against operations its host does not have.
+
+A manifest without `target`, or a mod without a manifest, is taken as both (that is how every mod before revision 3
+behaved). Content mods ship as a pair: a server mod that registers the content (`target: ["server"]`) and a client mod
+that draws it (`target: ["client"]`), see [Content mods](content-mods.md).
 
 ## Permissions
 

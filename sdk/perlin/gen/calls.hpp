@@ -752,4 +752,25 @@ namespace perlin::api {
     inline ::perlin::Result<void> event_amend(std::string field, double number, std::string text) {
         return ::perlin::call<::perlin::abi::Op::EventAmend>(::perlin::abi::EventAmendRequest{std::move(field), number, std::move(text)});
     }
+    inline ::perlin::Result<void> content_entity_register(const ::perlin::abi::ContentEntity& request) {
+        return ::perlin::call<::perlin::abi::Op::ContentEntityRegister>(request);
+    }
+    inline ::perlin::Result<void> content_item_register(const ::perlin::abi::ContentItem& request) {
+        return ::perlin::call<::perlin::abi::Op::ContentItemRegister>(request);
+    }
+    inline ::perlin::Result<void> content_block_register(const ::perlin::abi::ContentBlock& request) {
+        return ::perlin::call<::perlin::abi::Op::ContentBlockRegister>(request);
+    }
+    inline ::perlin::Result<void> content_biome_register(const ::perlin::abi::ContentBiome& request) {
+        return ::perlin::call<::perlin::abi::Op::ContentBiomeRegister>(request);
+    }
+    inline ::perlin::Result<void> content_unregister(std::string kind, std::string id) {
+        return ::perlin::call<::perlin::abi::Op::ContentUnregister>(::perlin::abi::ContentUnregisterRequest{std::move(kind), std::move(id)});
+    }
+    inline ::perlin::Result<::perlin::abi::ContentListResponse> content_list() {
+        return ::perlin::call<::perlin::abi::Op::ContentList>();
+    }
+    inline ::perlin::Result<void> mod_channel_send(const ::perlin::abi::ModChannelMessage& request) {
+        return ::perlin::call<::perlin::abi::Op::ModChannelSend>(request);
+    }
 }
