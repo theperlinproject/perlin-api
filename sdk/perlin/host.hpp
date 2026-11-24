@@ -120,17 +120,21 @@ namespace perlin::abi::host {
     }
 
     namespace detail {
+        template <bool Response, size_t I> bool DecodesOpAt(std::span<const uint8_t> bytes) {
+            return DecodesExactly<std::conditional_t<Response, typename OpSpec<kAllOps[I]>::Response,
+                                                     typename OpSpec<kAllOps[I]>::Request>>(bytes);
+        }
+
+        // A table of one decoder per operation, looked up by position. (A fold over every
+        // operation nests one level per operation, and clang stops at 256 levels.)
         template <bool Response, size_t... I>
         bool MatchesSchema(Op op, std::span<const uint8_t> bytes, std::index_sequence<I...>) {
-            bool known = false, ok = false;
-            (void)((kAllOps[I] == op
-                        ? (known = true,
-                           ok = DecodesExactly<std::conditional_t<Response, typename OpSpec<kAllOps[I]>::Response,
-                                                                  typename OpSpec<kAllOps[I]>::Request>>(bytes),
-                           true)
-                        : false) ||
-                   ...);
-            return known && ok;
+            using Decoder = bool (*)(std::span<const uint8_t>);
+            static constexpr Decoder kDecoders[] = {&DecodesOpAt<Response, I>...};
+            for (size_t i = 0; i < kAllOps.size(); i++)
+                if (kAllOps[i] == op)
+                    return kDecoders[i](bytes);
+            return false;
         }
     }
 
